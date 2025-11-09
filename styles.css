@@ -1,0 +1,152 @@
+/* === Paleta === */
+:root {
+  --azul-escuro: #0A2540;
+  --azul-medio: #1E4D8B;
+  --azul-claro: #58A6FF;
+  --branco: #F5F5F5;
+  --cinza: #A9A9A9;
+}
+
+/* === Reset === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", "Roboto", sans-serif;
+}
+
+body {
+  background-color: var(--azul-escuro);
+  color: var(--branco);
+  line-height: 1.6;
+}
+
+/* === Header === */
+header {
+  background: linear-gradient(90deg, var(--azul-escuro), var(--azul-medio));
+  text-align: center;
+  padding: 1.5rem;
+  border-bottom: 2px solid var(--azul-claro);
+}
+
+header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+nav a {
+  color: var(--branco);
+  text-decoration: none;
+  margin: 0 10px;
+  font-size: 0.95rem;
+}
+
+nav a:hover {
+  color: var(--azul-claro);
+}
+
+/* === Seções === */
+.section {
+  padding: 3rem 1rem;
+  text-align: center;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.section h2 {
+  color: var(--azul-claro);
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--azul-claro);
+  display: inline-block;
+  padding-bottom: 0.3rem;
+}
+
+.section p {
+  color: var(--branco);
+  margin-top: 0.5rem;
+}
+
+.quote {
+  margin-top: 1rem;
+  font-style: italic;
+  color: var(--cinza);
+}
+
+/* === Cards de progresso === */
+.progress-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.card {
+  background-color: var(--azul-medio);
+  border: 1px solid var(--azul-claro);
+  border-radius: 10px;
+  padding: 1.5rem;
+  width: 280px;
+  text-align: left;
+  box-shadow: 0 0 10px rgba(88, 166, 255, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card h3 {
+  color: var(--azul-claro);
+  margin-bottom: 0.5rem;
+}
+
+.upcoming {
+  opacity: 0.7;
+}
+
+/* === Links === */
+.links a {
+  display: inline-block;
+  margin: 0.5rem;
+  padding: 0.5rem 1rem;
+  color: var(--branco);
+  background-color: var(--azul-medio);
+  border-radius: 8px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.links a:hover {
+  background-color: var(--azul-claro);
+  color: var(--azul-escuro);
+}
+
+.note {
+  color: var(--cinza);
+  font-size: 0.85rem;
+  margin-top: 0.8rem;
+}
+
+/* === Contactos === */
+.social a {
+  display: inline-block;
+  margin: 0.3rem 0.6rem;
+  color: var(--azul-claro);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.social a:hover {
+  color: var(--branco);
+}
+
+/* === Footer === */
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  border-top: 1px solid var(--azul-claro);
+  color: var(--cinza);
+  font-size: 0.9rem;
+}
