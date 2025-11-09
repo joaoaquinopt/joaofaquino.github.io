@@ -150,3 +150,75 @@ footer {
   color: var(--cinza);
   font-size: 0.9rem;
 }
+
+/* === Card de progresso Strava === */
+
+.progress-card {
+  background: radial-gradient(circle at top left, var(--azul-claro) 0%, var(--azul-medio) 35%, var(--azul-escuro) 100%);
+  border: 1px solid rgba(88, 166, 255, 0.4);
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.45);
+  position: relative;
+}
+
+.progress-card h3 {
+  text-align: center;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.week-range {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--cinza);
+  margin-bottom: 1.5rem;
+}
+
+.badge-week {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--azul-claro);
+  color: var(--azul-escuro);
+  padding: 0.2rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.metrics {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+}
+
+.metrics li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid rgba(245, 245, 245, 0.1);
+}
+
+.metrics li:last-child {
+  border-bottom: none;
+}
+
+.metrics .label {
+  font-size: 0.85rem;
+  color: var(--cinza);
+}
+
+.metrics .value {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.progress-card .quote {
+  margin-top: 0.5rem;
+  font-style: italic;
+  text-align: center;
+  color: var(--cinza);
+}
+
