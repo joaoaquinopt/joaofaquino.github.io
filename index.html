@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>João Aquino | Road to Marathon 2026</title>
-  <meta name="description" content="A jornada real de João Aquino rumo à sua primeira maratona. Dados, superação e propósito. #RoadToMarathon2026">
+  <meta name="description"
+    content="A jornada real de João Aquino rumo à sua primeira maratona. Dados, superação e propósito. #RoadToMarathon2026">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/7/7e/Running_icon_-_Noun_Project_17904.svg" />
 </head>
+
 <body>
   <header>
     <h1>🏃‍♂️ Road to Marathon 2026</h1>
@@ -34,28 +37,22 @@
     <!-- Seção Progresso -->
     <section id="progresso" class="section">
       <h2>Progresso</h2>
-      <p>Resumo semanal dos meus treinos e evolução:</p>
+      <p>Resumo da última semana de treinos, direto do Strava:</p>
+
       <div class="progress-grid">
         <div class="card">
-          <h3>Semana 1</h3>
-          <p>🏃 Distância: 22 km</p>
-          <p>⏱ Ritmo médio: 6:18/km</p>
-          <p>❤️ FC média: 152 bpm</p>
-          <p>🗻 Elevação: 180 m</p>
-        </div>
-        <div class="card">
-          <h3>Semana 2</h3>
-          <p>🏃 Distância: 27 km</p>
-          <p>⏱ Ritmo médio: 6:10/km</p>
-          <p>❤️ FC média: 150 bpm</p>
-          <p>🗻 Elevação: 210 m</p>
-        </div>
-        <div class="card upcoming">
-          <h3>Em atualização...</h3>
-          <p>🚧 Próximos treinos em processamento.</p>
+          <h3>Últimos 7 dias</h3>
+          <p>📅 De <span id="week-start">--</span> a <span id="week-end">--</span></p>
+          <p>🏃 Distância total: <span id="distancia">--</span> km</p>
+          <p>⏱ Ritmo médio: <span id="pace">--:--</span> /km</p>
+          <p>⏰ Tempo em movimento: <span id="tempo">--</span> h</p>
+          <p>❤️ FC média: <span id="fc">--</span> bpm</p>
+          <p>📊 Nº de treinos: <span id="atividades">--</span></p>
+          <p class="note" id="no-data-msg"></p>
         </div>
       </div>
     </section>
+
 
     <!-- Seção Afiliados -->
     <section id="afiliados" class="section">
@@ -85,5 +82,7 @@
   <footer>
     <p>© 2025 João Aquino | Road to Marathon 2026 🏃‍♂️</p>
   </footer>
+  <script src="script.js"></script>
 </body>
+
 </html>
