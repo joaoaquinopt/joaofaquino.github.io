@@ -40,19 +40,43 @@
       <p>Resumo da última semana de treinos, direto do Strava:</p>
 
       <div class="progress-grid">
-        <div class="card">
-          <h3>Últimos 7 dias</h3>
-          <p>📅 De <span id="week-start">--</span> a <span id="week-end">--</span></p>
-          <p>🏃 Distância total: <span id="distancia">--</span> km</p>
-          <p>⏱ Ritmo médio: <span id="pace">--:--</span> /km</p>
-          <p>⏰ Tempo em movimento: <span id="tempo">--</span> h</p>
-          <p>❤️ FC média: <span id="fc">--</span> bpm</p>
-          <p>📊 Nº de treinos: <span id="atividades">--</span></p>
+        <div class="card progress-card">
+          <div class="badge-week">
+            Últimos 7 dias
+          </div>
+          <h3>Road to Marathon 2026</h3>
+          <p class="week-range">
+            <span id="week-start">--</span> ➝ <span id="week-end">--</span>
+          </p>
+
+          <ul class="metrics">
+            <li>
+              <span class="label">Distância</span>
+              <span class="value"><span id="distancia">--</span> km</span>
+            </li>
+            <li>
+              <span class="label">Ritmo médio</span>
+              <span class="value"><span id="pace">--:--</span> /km</span>
+            </li>
+            <li>
+              <span class="label">Tempo em movimento</span>
+              <span class="value"><span id="tempo">--</span> h</span>
+            </li>
+            <li>
+              <span class="label">FC média</span>
+              <span class="value"><span id="fc">--</span> bpm</span>
+            </li>
+            <li>
+              <span class="label">Nº de treinos</span>
+              <span class="value"><span id="atividades">--</span></span>
+            </li>
+          </ul>
+
           <p class="note" id="no-data-msg"></p>
+          <p class="quote">“Nem sempre perfeito, mas sempre em frente.”</p>
         </div>
       </div>
     </section>
-
 
     <!-- Seção Afiliados -->
     <section id="afiliados" class="section">
