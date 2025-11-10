@@ -1,0 +1,27 @@
+{
+  "name": "joaofaquino.run",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Site pessoal de João Aquino — jornada real até à Maratona 2026, com integração Strava e design minimalista.",
+  "author": "João Aquino <joao@joaofaquino.run>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.4.21",
+    "next": "^16.0.1",
+    "postcss": "^8.5.6",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tailwindcss": "^4.1.17",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.0",
+    "@types/react": "^19.2.2"
+  }
+}
