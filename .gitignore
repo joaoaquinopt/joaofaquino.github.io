@@ -1,1 +1,24 @@
-fetch_strava_data.py
+# Node
+node_modules
+.next
+out
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build
+dist
+.cache
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Python scripts cache
+__pycache__/
+*.pyc
