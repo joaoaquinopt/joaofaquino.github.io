@@ -1,7 +1,9 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 body {
-  background-color: var(--color-secondary);
-  color: var(--color-primary);
-  font-family: var(--font-sans, sans-serif);
+  background-color: #f5f6fa;
+  color: #0A2342;
+  font-family: 'Inter', sans-serif;
 }
