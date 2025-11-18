@@ -1,8 +1,8 @@
 import json, os
 from datetime import datetime
 
-JSON_PATH = "frontend/public/data/strava_summary.json"
-OUTPUT_PATH = "frontend/public/cards/last_activity.svg"
+JSON_PATH = "public/data/strava_summary.json"
+OUTPUT_PATH = "public/cards/last_activity.svg"
 
 def generate_svg(activity):
     svg = f"""<svg width="400" height="180" xmlns="http://www.w3.org/2000/svg">

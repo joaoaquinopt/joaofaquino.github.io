@@ -13,6 +13,15 @@
   --font-primary: 'Inter', sans-serif;
 }
 
+/* Light mode variables */
+.light {
+  --color-primary: #f0f7ff;
+  --color-secondary: #dbeafe;
+  --color-accent: #3b82f6;
+  --color-light: #1e293b;
+  --color-gray: #475569;
+}
+
 /* === Base Styles === */
 html {
   scroll-behavior: smooth;

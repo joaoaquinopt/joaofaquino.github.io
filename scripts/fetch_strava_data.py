@@ -1,18 +1,29 @@
 import requests
 import json
 import os
+import certifi
+import urllib3
 from datetime import datetime
 from dotenv import load_dotenv
 
+# Disable SSL warnings (temporary for debugging)
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 # Carrega as credenciais
-load_dotenv()
+# Load from parent directory (where .env.local is located)
+env_path = os.path.join(os.path.dirname(__file__), '..', '.env.local')
+load_dotenv(dotenv_path=env_path)
+
+# Configure SSL certificate verification
+os.environ['REQUESTS_CA_BUNDLE'] = certifi.where()
+os.environ['SSL_CERT_FILE'] = certifi.where()
 
 CLIENT_ID = os.getenv("STRAVA_CLIENT_ID")
 CLIENT_SECRET = os.getenv("STRAVA_CLIENT_SECRET")
 REFRESH_TOKEN = os.getenv("STRAVA_REFRESH_TOKEN")
 
 # Caminho onde o JSON será salvo
-OUTPUT_PATH = "frontend/public/data/strava_summary.json"
+OUTPUT_PATH = "public/data/strava_summary.json"
 
 def refresh_access_token():
     """Atualiza o token de acesso da Strava API"""
@@ -23,7 +34,9 @@ def refresh_access_token():
         "grant_type": "refresh_token",
         "refresh_token": REFRESH_TOKEN
     }
-    response = requests.post(url, data=payload)
+    # Note: Using verify=False temporarily to bypass SSL issues on Windows
+    # In production, use: verify=certifi.where()
+    response = requests.post(url, data=payload, verify=False)
     response.raise_for_status()
     return response.json()["access_token"]
 
@@ -31,7 +44,7 @@ def fetch_activities(access_token, per_page=10):
     """Busca atividades recentes do atleta"""
     url = f"https://www.strava.com/api/v3/athlete/activities?per_page={per_page}"
     headers = {"Authorization": f"Bearer {access_token}"}
-    response = requests.get(url, headers=headers)
+    response = requests.get(url, headers=headers, verify=False)
     response.raise_for_status()
     return response.json()
 
@@ -58,10 +71,19 @@ def save_to_json(activities):
 if __name__ == "__main__":
     print("🔄 Atualizando dados do Strava...")
     try:
+        # Debug: Check if credentials are loaded
+        print(f"📋 Client ID: {CLIENT_ID}")
+        print(f"📋 Client Secret: {'***' + CLIENT_SECRET[-4:] if CLIENT_SECRET and len(CLIENT_SECRET) > 4 else 'Not set'}")
+        print(f"📋 Refresh Token: {'***' + REFRESH_TOKEN[-4:] if REFRESH_TOKEN and len(REFRESH_TOKEN) > 4 else 'Not set'}")
+        
         token = refresh_access_token()
         activities = fetch_activities(token)
         formatted = [format_activity(a) for a in activities]
         save_to_json(formatted)
         print("🏁 Atualização concluída com sucesso.")
+    except requests.exceptions.HTTPError as e:
+        print(f"❌ HTTP Error: {e}")
+        if e.response is not None:
+            print(f"📄 Response: {e.response.text}")
     except Exception as e:
         print("❌ Erro ao atualizar dados:", e)

@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  output: 'export', // compatível com GitHub Pages ou Vercel
+  // Remove 'output: export' for API routes to work
   images: { unoptimized: true },
 };
 
