@@ -1,64 +1,77 @@
-'use client';
-import { useEffect, useState } from 'react';
-
-interface Activity {
-  date: string;
-  distance: number;
-  moving_time: number;
-  pace: string;
-}
+import Header from "../components/Header";
+import ProgressSection from "../components/ProgressSection";
+import { Watch, Dumbbell, ShoppingBag } from "lucide-react";
 
 export default function HomePage() {
-  const [activities, setActivities] = useState<Activity[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch('/data/strava_summary.json')
-      .then((res) => res.json())
-      .then((data) => {
-        setActivities(data);
-      })
-      .catch((err) => console.error('Erro ao carregar dados:', err))
-      .finally(() => setLoading(false));
-  }, []);
-
   return (
-    <div className="flex flex-col items-center text-center">
-      {/* Título principal */}
-      <h1 className="text-3xl md:text-4xl font-extrabold mb-3">
-        A minha Jornada até à Maratona 2026
-      </h1>
-      <p className="text-gray-600 mb-8">
-        Dados reais de treino — esforço, ritmo e consistência.
-      </p>
+    <>
+      <Header />
+      <main>
+        <section id="jornada">
+          <h2>A Jornada</h2>
+          <p>Soy João Aquino, QA Engineer e corredor amador.</p>
+          <p>
+            Este espaço documenta o meu caminho até à maratona de 2026 —
+            com dados reais, desafios e muita persistência.
+          </p>
+          <p><em>“Nem sempre perfeito, mas sempre em frente.”</em></p>
+        </section>
 
-      {/* Dados ou Placeholder */}
-      <section className="w-full max-w-2xl">
-        {loading ? (
-          <p className="text-gray-500">Carregando dados...</p>
-        ) : activities.length === 0 ? (
-          <div className="bg-white p-8 rounded-2xl shadow text-center">
-            <p className="text-gray-700">
-              🏃‍♂️ Nenhum treino disponível ainda.<br />
-              Conecta o Strava e volta depois para acompanhar o progresso!
-            </p>
-          </div>
-        ) : (
-          activities.map((act, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-2xl shadow-sm p-6 mb-4 border border-gray-100 text-left"
+        <ProgressSection />
+
+        <section id="equipamentos" className="text-center mt-20">
+          <h2 className="text-2xl font-bold text-blue-400 mb-4">
+            Equipamentos e Parceiros
+          </h2>
+          <p className="text-gray-300 mb-8">
+            Produtos e ferramentas que uso na jornada:
+          </p>
+
+          <div className="flex flex-wrap justify-center gap-7 mt-7">
+            {/* Garmin */}
+            <a
+              href="https://www.garmin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-medium transition-all duration-200 shadow-md hover:shadow-blue-500/30"
             >
-              <h3 className="font-semibold text-lg mb-2">{act.date}</h3>
-              <div className="space-y-1 text-gray-700">
-                <p>🏃‍♂️ {act.distance} km</p>
-                <p>⏱️ {Math.round(act.moving_time / 60)} min</p>
-                <p>⚡ Ritmo médio: {act.pace}</p>
-              </div>
-            </div>
-          ))
-        )}
-      </section>
-    </div>
+              <Watch className="w-5 h-5" />
+              Garmin
+            </a>
+
+            {/* Decathlon */}
+            <a
+              href="https://www.decathlon.pt"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-medium transition-all duration-200 shadow-md hover:shadow-blue-500/30"
+            >
+              <Dumbbell className="w-5 h-5" />
+              Decathlon
+            </a>
+
+            {/* Amazon */}
+            <a
+              href="https://www.amazon.pt"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-medium transition-all duration-200 shadow-md hover:shadow-blue-500/30"
+            >
+              <ShoppingBag className="w-5 h-5" />
+              Amazon
+            </a>
+          </div>
+        </section>
+
+        <section id="contacto">
+          <h2>Contacto</h2>
+          <p>
+            Entra em contacto: <a href="mailto:contacto@joaofaquino.run" className="text-blue-400 hover:underline">
+              contacto@joaofaquino.run
+            </a>
+          </p>
+        </section>
+      </main>
+    </>
   );
 }

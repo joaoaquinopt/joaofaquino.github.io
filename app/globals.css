@@ -2,8 +2,112 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background-color: #f5f6fa;
-  color: #0A2342;
-  font-family: 'Inter', sans-serif;
+/* === Paleta === */
+:root {
+  --azul-claro: #58A6FF;
+  --azul-medio: #1E4D8B;
+  --azul-escuro: #0A2342;
+  --cinza: #D1D5DB;
+  --branco: #F5F6FA;
+}
+
+/* === Base geral === */
+html, body {
+  background-color: var(--azul-escuro);
+  color: var(--branco);
+  font-family: 'Inter', 'Montserrat', sans-serif;
+  scroll-behavior: smooth;
+  text-align: center;
+}
+
+/* === Cabeçalhos === */
+h1, h2, h3 {
+  color: var(--azul-claro);
+  font-weight: 700;
+  text-align: center;
+}
+
+p {
+  line-height: 1.6;
+  color: #e1e7f0;
+}
+
+/* === Header / Nav === */
+header {
+  background: linear-gradient(90deg, var(--azul-medio), var(--azul-escuro));
+  border-bottom: 1px solid rgba(88, 166, 255, 0.3);
+  padding: 0.75rem 1rem;
+}
+
+header nav a {
+  color: var(--branco);
+  font-weight: 500;
+  margin: 0 0.75rem;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+header nav a:hover {
+  color: var(--azul-claro);
+}
+
+/* === Seções === */
+section {
+  padding: 4rem 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* === Card de progresso === */
+.progress-card {
+  background: radial-gradient(circle at top left, var(--azul-claro) 0%, var(--azul-medio) 35%, var(--azul-escuro) 100%);
+  border: 1px solid rgba(88, 166, 255, 0.4);
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.45);
+  color: var(--branco);
+  border-radius: 1rem;
+  padding: 2rem;
+  position: relative;
+}
+
+.badge-week {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--azul-claro);
+  color: var(--azul-escuro);
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.metrics {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.metrics li {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(245, 245, 245, 0.1);
+  padding: 0.25rem 0;
+}
+
+.metrics li:last-child {
+  border-bottom: none;
+}
+
+.quote {
+  margin-top: 1rem;
+  font-style: italic;
+  color: var(--cinza);
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
