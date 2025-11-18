@@ -66,8 +66,8 @@ export default function HomePage() {
         <section id="contacto">
           <h2>Contacto</h2>
           <p>
-            Entra em contacto: <a href="mailto:contacto@joaofaquino.run" className="text-blue-400 hover:underline">
-              contacto@joaofaquino.run
+            Entra em contacto: <a href="mailto:jmfaquino@gmail.com" className="text-blue-400 hover:underline">
+              jmfaquino@gmail.com
             </a>
           </p>
         </section>
