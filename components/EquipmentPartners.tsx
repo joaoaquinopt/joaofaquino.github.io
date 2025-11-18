@@ -8,7 +8,7 @@ export default function EquipmentPartners() {
         Produtos e ferramentas que uso na jornada:
       </p>
 
-      <div className="flex flex-wrap justify-center gap-6 mt-6">
+      <div className="flex flex-wrap justify-center gap-6 mt-8">
         {["Garmin", "Decathlon", "Amazon"].map((brand) => (
           <ul
             key={brand}

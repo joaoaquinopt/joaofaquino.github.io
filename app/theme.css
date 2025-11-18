@@ -1,0 +1,26 @@
+:root {
+  --color-primary: #0A2342;
+  --color-secondary: #1E4D8B;
+  --color-accent: #58A6FF;
+  --color-light: #F5F6FA;
+  --color-gray: #D1D5DB;
+  --color-dark: #020817;
+
+  --font-primary: "Inter", sans-serif;
+  --font-secondary: "Montserrat", sans-serif;
+}
+
+/* Gradiente do topo (header) */
+.bg-header {
+  background: linear-gradient(90deg, var(--color-secondary), var(--color-primary));
+}
+
+/* Gradiente geral (background) */
+.bg-main {
+  background: linear-gradient(180deg, var(--color-primary), #071C33);
+}
+
+/* Gradiente de destaque (para cards, botões, etc.) */
+.bg-accent {
+  background: radial-gradient(circle at top left, var(--color-accent), var(--color-secondary));
+}

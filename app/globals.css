@@ -1,35 +1,46 @@
+@import "./theme.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* === Paleta === */
 :root {
-  --azul-claro: #58A6FF;
-  --azul-medio: #1E4D8B;
-  --azul-escuro: #0A2342;
-  --cinza: #D1D5DB;
-  --branco: #F5F6FA;
+  --color-primary: #0A2540;      /* Azul escuro de fundo */
+  --color-secondary: #1E4D8B;    /* Azul médio */
+  --color-accent: #58A6FF;       /* Azul claro (destaques) */
+  --color-light: #f5f5f5;        /* Branco quebrado */
+  --color-gray: #A9A9A9;         /* Cinza texto secundário */
+  --font-primary: 'Inter', sans-serif;
 }
 
-/* === Base geral === */
-html, body {
-  background-color: var(--azul-escuro);
-  color: var(--branco);
-  font-family: 'Inter', 'Montserrat', sans-serif;
+/* === Base Styles === */
+html {
   scroll-behavior: smooth;
-  text-align: center;
 }
 
-/* === Cabeçalhos === */
+main {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  background: linear-gradient(to bottom, var(--color-secondary), var(--color-primary));
+  color: var(--color-light);
+  font-family: var(--font-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
 h1, h2, h3 {
-  color: var(--azul-claro);
-  font-weight: 700;
-  text-align: center;
+  font-family: var(--font-secondary);
+  letter-spacing: -0.02em;
+}
+
+a {
+  text-decoration: none;
 }
 
 p {
-  line-height: 1.6;
-  color: #e1e7f0;
+  color: var(--color-gray);
 }
 
 /* === Header / Nav === */
@@ -58,14 +69,16 @@ section {
   margin: 0 auto;
 }
 
-/* === Card de progresso === */
+/* === Progress Card === */
 .progress-card {
-  background: radial-gradient(circle at top left, var(--azul-claro) 0%, var(--azul-medio) 35%, var(--azul-escuro) 100%);
-  border: 1px solid rgba(88, 166, 255, 0.4);
+  background: radial-gradient(
+    circle at top left,
+    var(--color-accent) 0%,
+    var(--color-secondary) 35%,
+    var(--color-primary) 100%
+  );
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.45);
-  color: var(--branco);
-  border-radius: 1rem;
-  padding: 2rem;
+  color: var(--color-light);
   position: relative;
 }
 
@@ -111,3 +124,81 @@ ul {
   padding: 0;
   margin: 0;
 }
+
+/* === Glassmorphism Cards === */
+.glass-card {
+  background: rgba(10, 35, 66, 0.6);
+  border: 1px solid rgba(88, 166, 255, 0.4);
+  border-radius: 1rem;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+  padding: 2rem 1.5rem;
+  width: 220px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: white;
+}
+
+.glass-card:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 0 25px rgba(88, 166, 255, 0.5);
+  border-color: rgba(88, 166, 255, 0.6);
+}
+
+.glass-card h3 {
+  color: #f5f5f5;
+}
+
+.glass-card p {
+  color: #d1d5db;
+}
+
+/* Efeito suave nos ícones sociais */
+footer a svg {
+  transition: transform 0.25s ease, color 0.25s ease;
+}
+
+footer a:hover svg {
+  transform: scale(1.2);
+  color: var(--color-accent);
+}
+
+/* === Hover refinado em links === */
+a {
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+a:hover {
+  color: var(--color-accent);
+  transform: translateY(-1px);
+}
+
+/* === Efeito de foco suave nos botões === */
+button {
+  transition: all 0.25s ease;
+}
+
+button:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 20px rgba(88, 166, 255, 0.3);
+}
+
+/* === Responsividade Global === */
+@media (max-width: 640px) {
+  h1, h2 {
+    font-size: 1.5rem;
+  }
+
+  p {
+    font-size: 0.95rem;
+  }
+
+  .progress-card h3 {
+    font-size: 1.1rem;
+  }
+
+  .metrics li {
+    font-size: 0.9rem;
+  }
+}
+

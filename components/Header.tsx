@@ -1,20 +1,37 @@
 "use client";
 
-export default function Header() {
-  return (
-    <header>
-      <div className="flex flex-col items-center md:flex-row md:justify-between max-w-6xl mx-auto w-full">
-        <h1 className="text-xl font-semibold text-white flex items-center gap-2">
-          🏃‍♂️ Road to Marathon 2026
-        </h1>
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-        <nav className="mt-2 md:mt-0">
-          <ul className="flex flex-wrap justify-center gap-6 text-white font-medium list-none">
-            <li><a href="#jornada" className="hover:text-blue-400">A Jornada</a></li>
-            <li><a href="#progresso" className="hover:text-blue-400">Progresso</a></li>
-            <li><a href="#equipamentos" className="hover:text-blue-400">Equipamentos</a></li>
-            <li><a href="#contacto" className="hover:text-blue-400">Contacto</a></li>
-          </ul>
+export default function Header() {
+  const pathname = usePathname();
+
+  const navLinks = [
+    { href: "/", label: "Jornada" },
+    { href: "/progresso", label: "Progresso" },
+    { href: "/equipamentos", label: "Equipamentos" },
+    { href: "/contacto", label: "Contacto" },
+  ];
+
+  return (
+    <header className="bg-gradient-to-b from-blue-900 to-blue-950 border-b border-blue-800/50 py-4">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 px-6">
+        <div className="text-center md:text-left">
+          <h1 className="text-2xl font-bold text-white">João Aquino</h1>
+          <p className="text-blue-400 text-sm">🏃 Road to Marathon 2026</p>
+        </div>
+
+        <nav className="flex gap-6 text-gray-300 text-sm">
+          {navLinks.map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className={`hover:text-blue-400 transition ${pathname === href ? "text-blue-400 font-semibold" : ""
+                }`}
+            >
+              {label}
+            </Link>
+          ))}
         </nav>
       </div>
     </header>
