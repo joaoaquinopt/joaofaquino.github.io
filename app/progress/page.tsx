@@ -5,7 +5,7 @@ import PageWrapper from "../../components/PageWrapper";
 import MotionCard from "../../components/MotionCard";
 import ProgressCharts from "../../components/ProgressCharts";
 
-interface StravaActivity {
+interface Activity {
   date: string;
   distance: number;
   moving_time: number;
@@ -13,7 +13,7 @@ interface StravaActivity {
 }
 
 export default function ProgressoPage() {
-  const [activities, setActivities] = useState<StravaActivity[]>([]);
+  const [activities, setActivities] = useState<Activity[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'atividades' | 'dashboard'>('atividades');
   const [stats, setStats] = useState({
@@ -24,7 +24,8 @@ export default function ProgressoPage() {
   });
 
   useEffect(() => {
-    fetch('/api/strava')
+    // Carregar dados do Garmin exportados
+    fetch('/data/activities.json')
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
@@ -34,12 +35,12 @@ export default function ProgressoPage() {
         setLoading(false);
       })
       .catch(err => {
-        console.error('Error loading Strava data:', err);
+        console.error('Error loading activities:', err);
         setLoading(false);
       });
   }, []);
 
-  const calculateStats = (data: StravaActivity[]) => {
+  const calculateStats = (data: Activity[]) => {
     const totalDistance = data.reduce((sum, act) => sum + act.distance, 0);
     const totalTime = data.reduce((sum, act) => sum + act.moving_time, 0);
     const avgPaceSeconds = totalTime / totalDistance;
@@ -58,7 +59,7 @@ export default function ProgressoPage() {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = seconds % 60;
-    
+
     if (hours > 0) {
       return `${hours}h ${minutes}m`;
     }
@@ -84,7 +85,7 @@ export default function ProgressoPage() {
             Progresso
           </h1>
           <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-            Estatísticas reais vindas do Strava — cada quilómetro conta,
+            Estatísticas reais vindas da Garmin Connect — cada quilómetro conta,
             cada corrida é um passo rumo à maratona de 2026.
           </p>
         </div>
@@ -134,21 +135,19 @@ export default function ProgressoPage() {
         <div className="flex gap-4 mb-8 border-b border-blue-500/20">
           <button
             onClick={() => setActiveTab('atividades')}
-            className={`pb-4 px-6 font-semibold transition-all ${
-              activeTab === 'atividades'
+            className={`pb-4 px-6 font-semibold transition-all ${activeTab === 'atividades'
                 ? 'text-blue-400 border-b-2 border-blue-400'
                 : 'text-gray-400 hover:text-gray-300'
-            }`}
+              }`}
           >
             🏃‍♂️ Atividades Recentes
           </button>
           <button
             onClick={() => setActiveTab('dashboard')}
-            className={`pb-4 px-6 font-semibold transition-all ${
-              activeTab === 'dashboard'
+            className={`pb-4 px-6 font-semibold transition-all ${activeTab === 'dashboard'
                 ? 'text-blue-400 border-b-2 border-blue-400'
                 : 'text-gray-400 hover:text-gray-300'
-            }`}
+              }`}
           >
             📊 Dashboard & Gráficos
           </button>
@@ -158,86 +157,86 @@ export default function ProgressoPage() {
         {activeTab === 'atividades' && (
           <>
             <div className="mb-8">
-              <p className="text-gray-400">Últimas corridas registadas no Strava</p>
+              <p className="text-gray-400">Últimas corridas registadas no Garmin Connect</p>
             </div>
 
-        {/* Loading State */}
-        {loading && (
-          <div className="text-center py-20">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-400 border-t-transparent"></div>
-            <p className="text-gray-400 mt-4">Carregando dados...</p>
-          </div>
-        )}
+            {/* Loading State */}
+            {loading && (
+              <div className="text-center py-20">
+                <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-400 border-t-transparent"></div>
+                <p className="text-gray-400 mt-4">Carregando dados...</p>
+              </div>
+            )}
 
-        {/* Empty State */}
-        {!loading && activities.length === 0 && (
-          <div className="text-center py-20">
-            <p className="text-gray-400 text-lg italic">
-              Ainda sem dados disponíveis. Execute o script Python para sincronizar.
-            </p>
-          </div>
-        )}
+            {/* Empty State */}
+            {!loading && activities.length === 0 && (
+              <div className="text-center py-20">
+                <p className="text-gray-400 text-lg italic">
+                  Ainda sem dados disponíveis. Importe os dados CSV do Garmin Connect.
+                </p>
+              </div>
+            )}
 
-        {/* Individual Run Cards */}
-        {!loading && activities.length > 0 && (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
-            {activities.map((activity, index) => (
-              <MotionCard key={`${activity.date}-${index}`} delay={index * 0.1}>
-                <div className="p-6">
-                  {/* Card Header */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <div className="text-sm text-gray-400 mb-1">
-                        📅 {formatDate(activity.date)}
+            {/* Individual Run Cards */}
+            {!loading && activities.length > 0 && (
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
+                {activities.map((activity, index) => (
+                  <MotionCard key={`${activity.date}-${index}`} delay={index * 0.1}>
+                    <div className="p-6">
+                      {/* Card Header */}
+                      <div className="flex items-start justify-between mb-4">
+                        <div>
+                          <div className="text-sm text-gray-400 mb-1">
+                            📅 {formatDate(activity.date)}
+                          </div>
+                          <div className="text-xl font-bold text-white">
+                            Corrida #{activities.length - index}
+                          </div>
+                        </div>
+                        <div className="bg-blue-500/20 rounded-full px-3 py-1">
+                          <span className="text-blue-400 text-sm font-semibold">
+                            {activity.pace}
+                          </span>
+                        </div>
                       </div>
-                      <div className="text-xl font-bold text-white">
-                        Corrida #{activities.length - index}
-                      </div>
-                    </div>
-                    <div className="bg-blue-500/20 rounded-full px-3 py-1">
-                      <span className="text-blue-400 text-sm font-semibold">
-                        {activity.pace}
-                      </span>
-                    </div>
-                  </div>
 
-                  {/* Card Stats */}
-                  <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-blue-500/20">
-                    <div>
-                      <div className="text-gray-400 text-xs uppercase tracking-wider mb-1">
-                        Distância
+                      {/* Card Stats */}
+                      <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-blue-500/20">
+                        <div>
+                          <div className="text-gray-400 text-xs uppercase tracking-wider mb-1">
+                            Distância
+                          </div>
+                          <div className="text-2xl font-bold text-blue-400">
+                            {activity.distance} km
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-gray-400 text-xs uppercase tracking-wider mb-1">
+                            Tempo
+                          </div>
+                          <div className="text-2xl font-bold text-blue-400">
+                            {formatTime(activity.moving_time)}
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-2xl font-bold text-blue-400">
-                        {activity.distance} km
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-gray-400 text-xs uppercase tracking-wider mb-1">
-                        Tempo
-                      </div>
-                      <div className="text-2xl font-bold text-blue-400">
-                        {formatTime(activity.moving_time)}
-                      </div>
-                    </div>
-                  </div>
 
-                  {/* Progress Bar */}
-                  <div className="mt-4">
-                    <div className="h-2 bg-blue-950 rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full transition-all duration-500"
-                        style={{ width: `${Math.min((activity.distance / 42.195) * 100, 100)}%` }}
-                      />
+                      {/* Progress Bar */}
+                      <div className="mt-4">
+                        <div className="h-2 bg-blue-950 rounded-full overflow-hidden">
+                          <div
+                            className="h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full transition-all duration-500"
+                            style={{ width: `${Math.min((activity.distance / 42.195) * 100, 100)}%` }}
+                          />
+                        </div>
+                        <div className="text-xs text-gray-500 mt-1 text-right">
+                          {((activity.distance / 42.195) * 100).toFixed(1)}% da maratona
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-xs text-gray-500 mt-1 text-right">
-                      {((activity.distance / 42.195) * 100).toFixed(1)}% da maratona
-                    </div>
-                  </div>
-                </div>
-              </MotionCard>
-            ))}
-          </div>
-        )}
+                  </MotionCard>
+                ))}
+              </div>
+            )}
           </>
         )}
 

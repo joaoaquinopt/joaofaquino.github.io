@@ -3,43 +3,68 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ThemeToggle from "./ThemeToggle";
+import LanguageToggle from "./LanguageToggle";
+import { useTranslation } from "./TranslationProvider";
+import { Home, TrendingUp, Watch, Store, Image, Mail } from "lucide-react";
 
 export default function Header() {
   const pathname = usePathname();
+  const { t } = useTranslation();
 
   const navLinks = [
-    { href: "/", label: "Jornada" },
-    { href: "/progress", label: "Progresso" },
-    { href: "/equipment", label: "Equipamento" },
-    { href: "/affiliates", label: "Afiliados" },
-    { href: "/gallery", label: "Galeria" },
-    { href: "/contact", label: "Contacto" },
+    { href: "/", label: t("nav.journey"), icon: Home },
+    { href: "/progress", label: t("nav.progress"), icon: TrendingUp },
+    { href: "/equipment", label: t("nav.equipment"), icon: Watch },
+    { href: "/affiliates", label: t("nav.affiliates"), icon: Store },
+    { href: "/gallery", label: t("nav.gallery"), icon: Image },
+    { href: "/contact", label: t("nav.contact"), icon: Mail },
   ];
 
   return (
-    <header className="bg-gradient-to-b from-blue-900 to-blue-950 dark:from-blue-900 dark:to-blue-950 light:from-blue-100 light:to-blue-200 border-b border-blue-800/50 py-4">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 px-6">
-        <div className="text-center md:text-left">
-          <h1 className="text-2xl font-bold text-white dark:text-white light:text-blue-900">João Aquino</h1>
-          <p className="text-blue-400 dark:text-blue-400 light:text-blue-600 text-sm">🏃 Road to Marathon 2026</p>
+    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-white/5 backdrop-blur supports-[backdrop-filter]:bg-white/5">
+      <div className="mx-auto max-w-[98%] px-4">
+        {/* Primeira linha: Logo, Nome centralizado, Toggles */}
+        <div className="flex h-16 items-center justify-between gap-6">
+          {/* Logo */}
+          <Link href="/" className="flex items-center hover:opacity-80 transition-opacity shrink-0">
+            <img 
+              src="/logo.jpg" 
+              alt="Road to Marathon 2026" 
+              className="h-12 w-12 rounded-lg object-cover"
+            />
+          </Link>
+          
+          {/* Nome centralizado */}
+          <div className="absolute left-1/2 -translate-x-1/2 text-center">
+            <p className="text-lg font-bold text-white leading-tight whitespace-nowrap">João Aquino</p>
+            <p className="text-xs text-gray-400 whitespace-nowrap">Road to Marathon 2026</p>
+          </div>
+          
+          {/* Toggles - Right */}
+          <div className="flex items-center gap-3 shrink-0 min-w-fit">
+            <LanguageToggle />
+            <ThemeToggle />
+          </div>
         </div>
-
-        <div className="flex items-center gap-6">
-          <nav className="flex gap-6 text-gray-300 dark:text-gray-300 light:text-gray-700 text-sm">
-            {navLinks.map(({ href, label }) => (
+        
+        {/* Segunda linha: Navigation centralizada */}
+        <nav className="flex items-center justify-center gap-4 text-sm font-medium pb-3">
+          {navLinks.map(({ href, label, icon: Icon }) => {
+            const isActive = pathname === href;
+            return (
               <Link
                 key={href}
                 href={href}
-                className={`hover:text-blue-400 transition ${pathname === href ? "text-blue-400 font-semibold" : ""
-                  }`}
+                className={`flex items-center gap-1.5 transition-colors hover:text-blue-400 whitespace-nowrap ${
+                  isActive ? "text-blue-400" : "text-gray-300"
+                }`}
               >
-                {label}
+                <Icon className="h-4 w-4" />
+                <span>{label}</span>
               </Link>
-            ))}
-          </nav>
-          
-          <ThemeToggle />
-        </div>
+            );
+          })}
+        </nav>
       </div>
     </header>
   );

@@ -25,6 +25,7 @@
 /* === Base Styles === */
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 main {
@@ -32,11 +33,22 @@ main {
 }
 
 body {
-  background: linear-gradient(to bottom, var(--color-secondary), var(--color-primary));
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
   color: var(--color-light);
   font-family: var(--font-primary);
   line-height: 1.6;
   min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Hide scrollbar for mobile nav */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
 h1, h2, h3 {

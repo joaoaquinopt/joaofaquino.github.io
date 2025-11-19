@@ -3,9 +3,9 @@
 > **Road to Marathon 2026** — A jornada real de João Aquino, documentada com dados de treino, design minimalista e automação.
 
 [![Deploy Status](https://img.shields.io/badge/Deploy-Vercel-black?logo=vercel)](https://joaofaquino.run)
-[![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=next.js)](https://nextjs.org)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript)](https://www.typescriptlang.org/)
-[![Strava](https://img.shields.io/badge/Strava-API-orange?logo=strava)](https://developers.strava.com/)
+[![Garmin](https://img.shields.io/badge/Garmin-Connect-blue?logo=garmin)](https://connect.garmin.com/)
 
 ---
 
@@ -13,10 +13,10 @@
 
 **joaofaquino.run** é um site pessoal que documenta minha preparação para a **Maratona de 2026**, integrando:
 
-- ✅ Dados reais do Strava (API v3)
+- ✅ Dados reais do Garmin Connect (export CSV)
 - ✅ Design minimalista com animações suaves (Framer Motion)
 - ✅ Modo Dark/Light com persistência
-- ✅ Automação via GitHub Actions
+- ✅ Multi-idioma (PT/EN)
 - ✅ Dashboards dinâmicos de progresso
 
 ---
@@ -25,12 +25,12 @@
 
 | Tecnologia | Função |
 |------------|--------|
-| **Next.js 14** (App Router) | Framework React com SSR/ISR |
+| **Next.js 16** (App Router) | Framework React com SSR/ISR |
 | **TypeScript** | Tipagem estática e código escalável |
 | **TailwindCSS** | Estilos utilitários e design responsivo |
 | **Framer Motion** | Animações e transições |
 | **next-themes** | Dark/Light mode com persistência |
-| **Strava API** | Integração de dados de treino |
+| **Garmin Connect** | Dados de treino via export CSV |
 | **Python 3.11** | Scripts de automação |
 | **Vercel** | Hospedagem e CI/CD |
 
@@ -51,26 +51,7 @@ cd joaofaquino.github.io
 npm install
 ```
 
-### 3️⃣ Configure as variáveis de ambiente
-
-Copie o ficheiro de exemplo e preencha com suas credenciais do Strava:
-
-```bash
-cp .env.local.example .env.local
-```
-
-Edite `.env.local`:
-
-```env
-STRAVA_CLIENT_ID=your_client_id
-STRAVA_CLIENT_SECRET=your_client_secret
-STRAVA_REFRESH_TOKEN=your_refresh_token
-STRAVA_REDIRECT_URI=http://localhost
-```
-
-> 💡 Obtenha suas credenciais em: https://www.strava.com/settings/api
-
-### 4️⃣ Execute o servidor de desenvolvimento
+### 3️⃣ Execute o servidor de desenvolvimento
 
 ```bash
 npm run dev
@@ -82,22 +63,18 @@ Abra [http://localhost:3000](http://localhost:3000) no seu navegador.
 
 ## 🐍 Scripts Python (Automação)
 
-### Fetch de dados do Strava
+### Import de dados do Garmin
 
 ```bash
 cd scripts
 pip install -r requirements.txt
-python fetch_strava_data.py
+python import_garmin_exports.py
 ```
 
 Isto irá:
-- ✅ Autenticar com a API do Strava
-- ✅ Buscar as últimas 10 atividades
-- ✅ Salvar em `public/data/strava_summary.json`
-
-### Gerar SVG cards
-
-```bash
+- ✅ Ler os ficheiros CSV exportados do Garmin Connect
+- ✅ Processar e normalizar os dados
+- ✅ Salvar em `public/data/activities.json`
 python generate_svg_cards.py
 ```
 

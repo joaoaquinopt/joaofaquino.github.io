@@ -54,5 +54,12 @@ scripts/*_debug.py
 scripts/exchange_*.py
 scripts/*.ps1
 
+# Garmin exports (raw data - don't commit)
+data/garmin_exports/*.fit
+data/garmin_exports/*.csv
+data/garmin_exports/*.tcx
+data/garmin_exports/*.gpx
+!data/garmin_exports/README.md
+
 # Data files (optional - remove if you want to commit)
 # public/data/*.json
