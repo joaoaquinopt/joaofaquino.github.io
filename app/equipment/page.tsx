@@ -1,147 +1,334 @@
 "use client";
 
-import Reveal from "../../components/Reveal";
-import ModernCard from "../../components/ModernCard";
-import { Watch, ShoppingBag, Shirt, Backpack } from "lucide-react";
+import { useState } from "react";
+import PageWrapper from "../../components/PageWrapper";
+import { ChevronDown } from "lucide-react";
+import styles from "./equipment.module.css";
+
+// Tipos de produtos
+type ProductType = "affiliate" | "personal";
+type Category = "shoes" | "watch" | "clothing" | "supplements" | "accessories";
+
+interface Product {
+  id: string;
+  name: string;
+  brand: string;
+  category: Category;
+  type: ProductType;
+  price?: string;
+  image: string;
+  link?: string;
+  description: string;
+  specs?: string[];
+}
 
 export default function EquipmentPage() {
-  const equipment = [
+  const [selectedType, setSelectedType] = useState<ProductType | "all">("all");
+  const [selectedBrand, setSelectedBrand] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState<Category | "all">("all");
+  const [showTypeFilter, setShowTypeFilter] = useState(true);
+  const [showBrandFilter, setShowBrandFilter] = useState(true);
+  const [showCategoryFilter, setShowCategoryFilter] = useState(true);
+
+  // Base de dados de produtos (depois podes mover para JSON)
+  const products: Product[] = [
+    // AFILIADOS - Ténis
     {
-      category: "Relógios GPS",
-      icon: <Watch className="w-6 h-6 text-blue-400" />,
-      items: [
-        {
-          name: "Garmin Forerunner 255",
-          description: "Relógio GPS com métricas avançadas de corrida",
-          status: "Em uso",
-          specs: ["GPS Multibanda", "Autonomia: 14 dias", "Monitor de FC"]
-        }
-      ]
+      id: "nike-pegasus-40",
+      name: "Nike Pegasus 40",
+      brand: "Nike",
+      category: "shoes",
+      type: "affiliate",
+      price: "€140",
+      image: "/placeholder-shoe.jpg",
+      link: "https://amazon.com/...",
+      description: "Ténis de treino diário com amortecimento React",
+      specs: ["Drop: 10mm", "Peso: 280g", "React Foam"]
     },
     {
-      category: "Ténis de Corrida",
-      icon: <ShoppingBag className="w-6 h-6 text-purple-400" />,
-      items: [
-        {
-          name: "Nike Pegasus 40",
-          description: "Ténis de treino diário",
-          status: "Principal",
-          specs: ["Drop: 10mm", "Peso: 280g", "Amortecimento React"]
-        },
-        {
-          name: "Adidas Ultraboost",
-          description: "Para corridas longas",
-          status: "Rotação",
-          specs: ["Drop: 10mm", "Peso: 310g", "Boost Technology"]
-        }
-      ]
+      id: "adidas-ultraboost",
+      name: "Adidas Ultraboost 23",
+      brand: "Adidas",
+      category: "shoes",
+      type: "affiliate",
+      price: "€180",
+      image: "/placeholder-shoe.jpg",
+      link: "https://amazon.com/...",
+      description: "Corridas longas com tecnologia Boost",
+      specs: ["Drop: 10mm", "Peso: 310g", "Boost Tech"]
+    },
+    
+    // AFILIADOS - Suplementos
+    {
+      id: "myprotein-whey",
+      name: "Whey Protein Impact",
+      brand: "MyProtein",
+      category: "supplements",
+      type: "affiliate",
+      price: "€25",
+      image: "/placeholder-supplement.jpg",
+      link: "https://myprotein.com/...",
+      description: "Proteína de soro de leite isolada",
+      specs: ["80% proteína", "Sabor: Chocolate", "1kg"]
+    },
+    
+    // EQUIPAMENTO PESSOAL
+    {
+      id: "garmin-255",
+      name: "Garmin Forerunner 255",
+      brand: "Garmin",
+      category: "watch",
+      type: "personal",
+      image: "/placeholder-watch.jpg",
+      description: "Relógio GPS que uso em todos os treinos",
+      specs: ["GPS Multibanda", "Autonomia: 14 dias", "Monitor FC"]
     },
     {
-      category: "Vestuário",
-      icon: <Shirt className="w-6 h-6 text-green-400" />,
-      items: [
-        {
-          name: "Camisolas Técnicas",
-          description: "Material respirável para treinos",
-          status: "Essencial",
-          specs: ["Dri-FIT", "Anti-odor", "Secagem rápida"]
-        },
-        {
-          name: "Calções de Corrida",
-          description: "Leves e com bolsos",
-          status: "Essencial",
-          specs: ["Tecido leve", "Bolsos laterais", "Forro interno"]
-        }
-      ]
-    },
-    {
-      category: "Acessórios",
-      icon: <Backpack className="w-6 h-6 text-orange-400" />,
-      items: [
-        {
-          name: "Mochila de Hidratação",
-          description: "Para treinos longos",
-          status: "Ocasional",
-          specs: ["Capacidade: 1.5L", "Bolsos múltiplos", "Ajustável"]
-        },
-        {
-          name: "Faixa de Cardio",
-          description: "Monitor de frequência cardíaca",
-          status: "Em uso",
-          specs: ["Bluetooth", "ANT+", "Bateria: 1 ano"]
-        }
-      ]
+      id: "nike-dri-fit",
+      name: "Camisola Nike Dri-FIT",
+      brand: "Nike",
+      category: "clothing",
+      type: "personal",
+      image: "/placeholder-shirt.jpg",
+      description: "Camisola técnica para treinos",
+      specs: ["Dri-FIT", "Anti-odor", "Secagem rápida"]
     }
   ];
 
+  // Filtrar produtos
+  const filteredProducts = products.filter(product => {
+    if (selectedType !== "all" && product.type !== selectedType) return false;
+    if (selectedBrand !== "all" && product.brand !== selectedBrand) return false;
+    if (selectedCategory !== "all" && product.category !== selectedCategory) return false;
+    return true;
+  });
+
+  // Extrair marcas únicas
+  const brands = Array.from(new Set(products.map(p => p.brand))).sort((a, b) => a.localeCompare(b));
+
   return (
-    <section className="max-w-7xl mx-auto mt-8 px-4 min-h-screen pb-20">
-      {/* Header */}
-      <Reveal>
-        <div className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
-            Equipamento Pessoal
-          </h1>
-          <p className="text-gray-400 text-lg">
-            Ferramentas que uso no caminho até à maratona
-          </p>
+    <PageWrapper>
+      <div className={styles.equipmentPage}>
+        {/* Breadcrumb */}
+        <div className={styles.breadcrumb}>
+          <div className={styles.breadcrumbContainer}>
+            <p className={styles.breadcrumbText}>Equipamento / Corrida</p>
+          </div>
         </div>
-      </Reveal>
 
-      {/* Equipment Grid */}
-      <div className="grid gap-6 md:grid-cols-2">
-        {equipment.map((section, index) => (
-          <Reveal key={section.category} delay={index * 0.1}>
-            <ModernCard
-              title={section.category}
-              subtitle={`${section.items.length} item${section.items.length > 1 ? 's' : ''}`}
-              icon={section.icon}
-              collapsible={true}
-              defaultExpanded={index === 0}
-            >
-              <div className="space-y-4">
-                {section.items.map((item) => (
-                  <div 
-                    key={item.name}
-                    className="p-4 bg-white/5 rounded-xl border border-white/5 hover:border-white/10 transition-all"
+        <div className={styles.container}>
+          
+          {/* Header com Hide Filters */}
+          <div className={styles.header}>
+            <h1 className={styles.title}>
+              Equipamento de Corrida ({filteredProducts.length})
+            </h1>
+            <button className={styles.hideFiltersBtn}>
+              Esconder Filtros
+            </button>
+          </div>
+
+          <div className={styles.content}>
+            
+            {/* SIDEBAR - Filtros NIKE STYLE */}
+            <aside className={styles.sidebar}>
+              
+                {/* Filtro: Tipo */}
+                <div className={styles.filterSection}>
+                  <button
+                    onClick={() => setShowTypeFilter(!showTypeFilter)}
+                    className={`${styles.filterHeader} ${showTypeFilter ? '' : styles.collapsed}`}
                   >
-                    <div className="flex items-start justify-between mb-2">
-                      <h4 className="text-lg font-semibold text-white">{item.name}</h4>
-                      <span className="px-3 py-1 text-xs font-medium rounded-full bg-blue-500/20 text-blue-400">
-                        {item.status}
-                      </span>
+                    <span>Tipo</span>
+                    <ChevronDown className="w-4 h-4" />
+                  </button>
+                  
+                  {showTypeFilter && (
+                    <div className={styles.filterOptions}>
+                      <label className={styles.filterOption}>
+                        <input
+                          type="radio"
+                          name="type"
+                          checked={selectedType === "all"}
+                          onChange={() => setSelectedType("all")}
+                        />
+                        <span>Todos</span>
+                      </label>
+                      <label className={styles.filterOption}>
+                        <input
+                          type="radio"
+                          name="type"
+                          checked={selectedType === "affiliate"}
+                          onChange={() => setSelectedType("affiliate")}
+                        />
+                        <span>Afiliados</span>
+                      </label>
+                      <label className={styles.filterOption}>
+                        <input
+                          type="radio"
+                          name="type"
+                          checked={selectedType === "personal"}
+                          onChange={() => setSelectedType("personal")}
+                        />
+                        <span>Meu Equipamento</span>
+                      </label>
                     </div>
-                    <p className="text-sm text-gray-400 mb-3">{item.description}</p>
-                    {item.specs && (
-                      <div className="flex flex-wrap gap-2">
-                        {item.specs.map((spec) => (
-                          <span 
-                            key={spec}
-                            className="px-2 py-1 text-xs bg-white/5 text-gray-300 rounded-md"
-                          >
-                            {spec}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </ModernCard>
-          </Reveal>
-        ))}
-      </div>
+                  )}
+                </div>
 
-      {/* Footer Note */}
-      <Reveal delay={0.4}>
-        <div className="mt-12 p-6 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-white/10 rounded-2xl">
-          <p className="text-gray-300 text-center">
-            💡 <strong>Nota:</strong> Este equipamento é pessoal e baseado nas minhas necessidades. 
-            Consulta a página de <a href="/affiliates" className="text-blue-400 hover:text-blue-300 underline">Parceiros & Afiliados</a> para 
-            ver onde compro e encontrar produtos recomendados.
-          </p>
+                {/* Filtro: Marca */}
+                <div className={styles.filterSection}>
+                  <button
+                    onClick={() => setShowBrandFilter(!showBrandFilter)}
+                    className={`${styles.filterHeader} ${showBrandFilter ? '' : styles.collapsed}`}
+                  >
+                    <span>Marca</span>
+                    <ChevronDown className="w-4 h-4" />
+                  </button>
+                  
+                  {showBrandFilter && (
+                    <div className={styles.filterOptions}>
+                      <label className={styles.filterOption}>
+                        <input
+                          type="radio"
+                          name="brand"
+                          checked={selectedBrand === "all"}
+                          onChange={() => setSelectedBrand("all")}
+                        />
+                        <span>Todas</span>
+                      </label>
+                      {brands.map(brand => (
+                        <label key={brand} className={styles.filterOption}>
+                          <input
+                            type="radio"
+                            name="brand"
+                            checked={selectedBrand === brand}
+                            onChange={() => setSelectedBrand(brand)}
+                          />
+                          <span>{brand}</span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Filtro: Categoria */}
+                <div className={styles.filterSection}>
+                  <button
+                    onClick={() => setShowCategoryFilter(!showCategoryFilter)}
+                    className={`${styles.filterHeader} ${showCategoryFilter ? '' : styles.collapsed}`}
+                  >
+                    <span>Categoria</span>
+                    <ChevronDown className="w-4 h-4" />
+                  </button>
+                  
+                  {showCategoryFilter && (
+                    <div className={styles.filterOptions}>
+                      <label className={styles.filterOption}>
+                        <input
+                          type="radio"
+                          name="category"
+                          checked={selectedCategory === "all"}
+                          onChange={() => setSelectedCategory("all")}
+                        />
+                        <span>Todas</span>
+                      </label>
+                      <label className={styles.filterOption}>
+                        <input
+                          type="radio"
+                          name="category"
+                          checked={selectedCategory === "shoes"}
+                          onChange={() => setSelectedCategory("shoes")}
+                        />
+                        <span>Ténis</span>
+                      </label>
+                      <label className={styles.filterOption}>
+                        <input
+                          type="radio"
+                          name="category"
+                          checked={selectedCategory === "watch"}
+                          onChange={() => setSelectedCategory("watch")}
+                        />
+                        <span>Relógios</span>
+                      </label>
+                      <label className={styles.filterOption}>
+                        <input
+                          type="radio"
+                          name="category"
+                          checked={selectedCategory === "clothing"}
+                          onChange={() => setSelectedCategory("clothing")}
+                        />
+                        <span>Roupa</span>
+                      </label>
+                      <label className={styles.filterOption}>
+                        <input
+                          type="radio"
+                          name="category"
+                          checked={selectedCategory === "supplements"}
+                          onChange={() => setSelectedCategory("supplements")}
+                        />
+                        <span>Suplementos</span>
+                      </label>
+                      <label className={styles.filterOption}>
+                        <input
+                          type="radio"
+                          name="category"
+                          checked={selectedCategory === "accessories"}
+                          onChange={() => setSelectedCategory("accessories")}
+                        />
+                        <span>Acessórios</span>
+                      </label>
+                    </div>
+                  )}
+                </div>
+
+            </aside>
+
+            {/* GRID - Produtos NIKE STYLE */}
+            <main className={styles.productGrid}>
+              {filteredProducts.length === 0 ? (
+                <div className={styles.emptyState}>
+                  <p>Nenhum produto encontrado</p>
+                </div>
+              ) : (
+                <div className={styles.grid}>
+                  {filteredProducts.map(product => (
+                    <div key={product.id} className={styles.productCard}>
+                      {/* Imagem */}
+                      <div className={styles.productImage}>
+                        <span>📦</span>
+                      </div>
+
+                      {/* Conteúdo */}
+                      <div className={styles.productInfo}>
+                        {/* Badge */}
+                        {product.type === "affiliate" && (
+                          <p className={styles.productBadge}>Parceiro</p>
+                        )}
+                        
+                        {/* Nome */}
+                        <h3 className={styles.productName}>{product.name}</h3>
+                        
+                        {/* Descrição */}
+                        <p className={styles.productDescription}>{product.description}</p>
+                        
+                        {/* Marca */}
+                        <p className={styles.productBrand}>{product.brand}</p>
+                        
+                        {/* Preço */}
+                        {product.price && (
+                          <p className={styles.productPrice}>{product.price}</p>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </main>
+
+          </div>
         </div>
-      </Reveal>
-    </section>
+      </div>
+    </PageWrapper>
   );
 }

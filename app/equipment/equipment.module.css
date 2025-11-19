@@ -1,0 +1,257 @@
+/* Equipment Page - Nike Style com tema do site */
+.equipmentPage {
+  min-h: 100vh;
+  background: #0A2540;
+  position: relative;
+  z-index: 1;
+}
+
+.breadcrumb {
+  border-bottom: 1px solid rgba(88, 166, 255, 0.2);
+  background: rgba(30, 77, 139, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.breadcrumbContainer {
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 16px 48px;
+}
+
+.breadcrumbText {
+  font-size: 14px;
+  color: rgba(245, 245, 245, 0.7);
+}
+
+.container {
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 32px 48px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 500;
+  color: #f5f5f5;
+}
+
+.hideFiltersBtn {
+  font-size: 14px;
+  color: #f5f5f5;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 16px;
+  transition: color 0.2s ease;
+}
+
+.hideFiltersBtn:hover {
+  color: #58A6FF;
+}
+
+.content {
+  display: flex;
+  gap: 64px;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 260px;
+  flex-shrink: 0;
+}
+
+.filterSection {
+  border-bottom: 1px solid rgba(88, 166, 255, 0.2);
+  padding-bottom: 20px;
+  margin-bottom: 24px;
+}
+
+.filterHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: 16px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  color: #f5f5f5;
+  text-align: left;
+  transition: color 0.2s ease;
+}
+
+.filterHeader:hover {
+  color: #58A6FF;
+}
+
+.filterHeader svg {
+  transition: transform 0.2s ease;
+  color: #58A6FF;
+}
+
+.filterHeader.collapsed svg {
+  transform: rotate(-90deg);
+}
+
+.filterOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.filterOption {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  color: #A9A9A9;
+  transition: color 0.2s ease;
+}
+
+.filterOption:hover {
+  color: #f5f5f5;
+}
+
+.filterOption input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #58A6FF;
+}
+
+.filterOption span {
+  font-size: 16px;
+}
+
+/* GRID */
+.productGrid {
+  flex: 1;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 80px 20px;
+  color: #A9A9A9;
+  font-size: 18px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .content {
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .sidebar {
+    width: 100%;
+  }
+}
+
+/* PRODUCT CARD */
+.productCard {
+  cursor: pointer;
+  background: rgba(30, 77, 139, 0.15);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(88, 166, 255, 0.15);
+  transition: all 0.3s ease;
+}
+
+.productCard:hover {
+  background: rgba(30, 77, 139, 0.25);
+  border-color: rgba(88, 166, 255, 0.4);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(88, 166, 255, 0.15);
+}
+
+.productImage {
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, rgba(30, 77, 139, 0.3) 0%, rgba(10, 37, 64, 0.3) 100%);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.productImage span {
+  font-size: 80px;
+  opacity: 0.2;
+  transition: transform 0.3s ease;
+}
+
+.productCard:hover .productImage span {
+  transform: scale(1.1);
+}
+
+.productInfo {
+  padding: 16px;
+}
+
+.productBadge {
+  color: #58A6FF;
+  font-weight: 600;
+  font-size: 12px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.productName {
+  font-weight: 600;
+  font-size: 18px;
+  color: #f5f5f5;
+  margin-bottom: 6px;
+  transition: color 0.2s ease;
+}
+
+.productCard:hover .productName {
+  color: #58A6FF;
+}
+
+.productDescription {
+  color: #A9A9A9;
+  font-size: 14px;
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.productBrand {
+  color: rgba(169, 169, 169, 0.8);
+  font-size: 13px;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.productPrice {
+  font-weight: 700;
+  font-size: 20px;
+  color: #f5f5f5;
+  margin-top: 8px;
+}
