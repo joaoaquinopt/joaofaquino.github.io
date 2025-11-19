@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import ThemeToggle from "./ThemeToggle";
 import LanguageToggle from "./LanguageToggle";
 import { useTranslation } from "./TranslationProvider";
 import { Home, TrendingUp, Watch, Store, Image, Mail } from "lucide-react";
@@ -21,11 +20,11 @@ export default function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-white/5 backdrop-blur supports-[backdrop-filter]:bg-white/5">
+    <header className="bg-header border-b border-blue-800/30 sticky top-0 z-50">
       <div className="mx-auto max-w-[98%] px-4">
-        {/* Primeira linha: Logo, Nome centralizado, Toggles */}
+        {/* Primeira linha: Logo, Nome centralizado, Language Toggle */}
         <div className="flex h-16 items-center justify-between gap-6">
-          {/* Logo */}
+          {/* Logo - Esquerda */}
           <Link href="/" className="flex items-center hover:opacity-80 transition-opacity shrink-0">
             <img 
               src="/logo.jpg" 
@@ -37,13 +36,11 @@ export default function Header() {
           {/* Nome centralizado */}
           <div className="absolute left-1/2 -translate-x-1/2 text-center">
             <p className="text-lg font-bold text-white leading-tight whitespace-nowrap">João Aquino</p>
-            <p className="text-xs text-gray-400 whitespace-nowrap">Road to Marathon 2026</p>
           </div>
           
-          {/* Toggles - Right */}
+          {/* Language Toggle - Direita */}
           <div className="flex items-center gap-3 shrink-0 min-w-fit">
             <LanguageToggle />
-            <ThemeToggle />
           </div>
         </div>
         

@@ -1,1 +1,74 @@
-[]
+{
+  "total_distance": 58.66,
+  "total_time": 26373,
+  "total_runs": 7,
+  "avg_distance": 8.38,
+  "avg_pace": 7.49,
+  "activities": [
+    {
+      "date": "2025-11-16 17:50:34",
+      "distance": 11.12,
+      "total_time": 5346,
+      "calories": 891,
+      "average_heartrate": 158,
+      "average_pace": 8.012589928057555,
+      "average_speed": 7.488215488215488
+    },
+    {
+      "date": "2025-11-13 07:08:59",
+      "distance": 7.81,
+      "total_time": 3609,
+      "calories": 587,
+      "average_heartrate": 135,
+      "average_pace": 7.701664532650449,
+      "average_speed": 7.790523690773067
+    },
+    {
+      "date": "2025-11-11 13:34:36",
+      "distance": 6.28,
+      "total_time": 2921,
+      "calories": 505,
+      "average_heartrate": 156,
+      "average_pace": 7.752123142250531,
+      "average_speed": 7.739815131804177
+    },
+    {
+      "date": "2025-11-09 09:52:53",
+      "distance": 9.03,
+      "total_time": 4169,
+      "calories": 698,
+      "average_heartrate": 140,
+      "average_pace": 7.694721299372462,
+      "average_speed": 7.797553370112736
+    },
+    {
+      "date": "2025-11-06 09:10:49",
+      "distance": 8.0,
+      "total_time": 3699,
+      "calories": 679,
+      "average_heartrate": 164,
+      "average_pace": 7.70625,
+      "average_speed": 7.785888077858881
+    },
+    {
+      "date": "2025-11-04 07:13:30",
+      "distance": 6.21,
+      "total_time": 2942,
+      "calories": 479,
+      "average_heartrate": 134,
+      "average_pace": 7.895866881374128,
+      "average_speed": 7.598912304554725
+    },
+    {
+      "date": "2025-11-02 08:11:34",
+      "distance": 10.21,
+      "total_time": 3687,
+      "calories": 868,
+      "average_heartrate": 182,
+      "average_pace": 6.018609206660137,
+      "average_speed": 9.969080553295363
+    }
+  ],
+  "last_updated": "2025-11-19T17:52:13.449415",
+  "source": "Garmin Connect Export"
+}

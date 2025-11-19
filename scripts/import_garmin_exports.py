@@ -16,7 +16,7 @@ from pathlib import Path
 
 # Pasta onde colocas os exports do Garmin
 GARMIN_EXPORTS_DIR = "data/garmin_exports"
-OUTPUT_FILE = "public/data/strava_summary.json"
+OUTPUT_FILE = "public/data/garmin_summary.json"
 
 
 def parse_fit_file(file_path):
