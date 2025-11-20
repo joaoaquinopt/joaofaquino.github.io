@@ -9,18 +9,39 @@ export default function HomePage() {
 
       <Reveal delay={0.2}>
         <p className="text-lg md:text-xl text-gray-300 leading-relaxed">
-          Sou João Aquino, QA Engineer e corredor amador.
+          Sou João Aquino, QA Engineer, pai de uma criança linda, o Davi, e corredor amador.
         </p>
       </Reveal>
 
       <Reveal delay={0.4}>
         <p className="text-base md:text-lg text-gray-400 leading-relaxed max-w-2xl mx-auto">
-          Este espaço documenta o meu caminho até à maratona de 2026 —
-          com dados reais, desafios, noites sem sono e muita persistência.
+          Comecei a correr porque o meu corpo pediu ajuda.
+          A insónia estava a piorar, o cigarro a aumentar e a energia a desaparecer.
+          Senti que precisava de um rumo — algo que me puxasse para fora do buraco.
+          A corrida virou isso.
+          Este é o diário da minha tentativa de me transformar.
         </p>
       </Reveal>
 
       <Reveal delay={0.6}>
+        <p className="text-base md:text-lg text-gray-400 leading-relaxed max-w-2xl mx-auto">
+          Esta jornada não é sobre performance perfeita.
+          É sobre disciplina imperfeita.
+          É sobre tentar todos os dias, falhar alguns, mas continuar.
+          A minha meta: cruzar a linha de chegada da minha primeira maratona em 2026.
+        </p>
+      </Reveal>
+
+      <Reveal delay={0.8}>
+        <p className="text-base md:text-lg text-gray-400 leading-relaxed max-w-2xl mx-auto">
+          Luto com a insónia há anos.
+          Já fiquei quase 30 dias sem fumar — mas voltei.
+          Trabalho, sou pai, falho nos horários, acordo cansado.
+          Mas cada treino é um passo contra tudo isso.
+        </p>
+      </Reveal>
+
+      <Reveal delay={1.0}>
         <p className="italic text-base md:text-lg text-gray-500 mt-8">
           "Nem sempre perfeito, mas sempre em frente."
         </p>

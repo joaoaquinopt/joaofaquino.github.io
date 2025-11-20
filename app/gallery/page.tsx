@@ -1,135 +1,238 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PageWrapper from "../../components/PageWrapper";
-import MotionCard from "../../components/MotionCard";
 import Reveal from "../../components/Reveal";
+import styles from "./gallery.module.css";
 
 export default function GalleryPage() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<string>("all");
 
-  // Galeria de fotos (adicionar URLs reais depois)
-  const photos = [
+  // Galeria organizada por eventos/corridas
+  const galleryEvents = [
     {
-      id: 1,
-      url: "/assets/gallery/run1.jpg",
-      title: "Primeira Corrida - 5km",
-      date: "07/11/2024",
-      location: "Parque da Cidade",
-      description: "Início da jornada rumo à maratona"
+      id: "training-nov-2024",
+      name: "Treinos Novembro 2024",
+      date: "Novembro 2024",
+      photos: [
+        {
+          id: 1,
+          url: "/assets/gallery/training-nov/run1.jpg",
+          title: "Primeira Corrida - 5km",
+          date: "07/11/2024",
+          location: "Parque da Cidade",
+          description: "Início da jornada rumo à maratona"
+        },
+        {
+          id: 2,
+          url: "/assets/gallery/training-nov/run2.jpg",
+          title: "Treino de Resistência",
+          date: "09/11/2024",
+          location: "Marginal",
+          description: "8.75km com pace controlado"
+        }
+      ]
     },
     {
-      id: 2,
-      url: "/assets/gallery/run2.jpg",
-      title: "Treino de Resistência",
-      date: "09/11/2024",
-      location: "Marginal",
-      description: "8.75km com pace controlado"
+      id: "race-dec-2024",
+      name: "Corrida de São Silvestre",
+      date: "31/12/2024",
+      photos: [
+        {
+          id: 3,
+          url: "/assets/gallery/sao-silvestre/start.jpg",
+          title: "Linha de Partida",
+          date: "31/12/2024",
+          location: "Centro da Cidade",
+          description: "Preparado para os 10km"
+        },
+        {
+          id: 4,
+          url: "/assets/gallery/sao-silvestre/finish.jpg",
+          title: "Meta Alcançada",
+          date: "31/12/2024",
+          location: "Centro da Cidade",
+          description: "10km concluídos com sucesso!"
+        }
+      ]
     },
     {
-      id: 3,
-      url: "/assets/gallery/placeholder.jpg",
-      title: "Em breve...",
-      date: "TBD",
-      location: "---",
-      description: "Mais fotos virão com os treinos!"
+      id: "training-jan-2025",
+      name: "Treinos Janeiro 2025",
+      date: "Janeiro 2025",
+      photos: [
+        {
+          id: 5,
+          url: "/assets/gallery/training-jan/long-run.jpg",
+          title: "Long Run 15km",
+          date: "15/01/2025",
+          location: "Percurso Marginal",
+          description: "Maior distância até agora"
+        }
+      ]
     }
   ];
 
+  // Filtrar fotos por evento
+  const allPhotos = galleryEvents.flatMap(event =>
+    event.photos.map(photo => ({ ...photo, eventName: event.name }))
+  );
+
+  const filteredPhotos = selectedEvent === "all"
+    ? allPhotos
+    : galleryEvents.find(e => e.id === selectedEvent)?.photos.map(p => ({ ...p, eventName: galleryEvents.find(e => e.id === selectedEvent)?.name })) || [];
+
+  // ESC key handler for modal
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && selectedImage) {
+        setSelectedImage(null);
+      }
+    };
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [selectedImage]);
+
   return (
     <PageWrapper>
-      <section className="max-w-6xl mx-auto mt-12 px-4 min-h-screen pb-20">
+      <div className={styles.galleryPage}>
         {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-blue-400 mb-4">
-            📸 Galeria
-          </h1>
-          <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+        <div className={styles.header}>
+          <h1 className={styles.title}>📸 Galeria</h1>
+          <p className={styles.subtitle}>
             Momentos registados ao longo da preparação para a maratona de 2026.
             Cada foto conta uma história, cada treino é uma conquista.
           </p>
         </div>
 
-        {/* Photo Grid */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {photos.map((photo, index) => (
-            <Reveal key={photo.id} delay={index * 0.1}>
-              <MotionCard>
-                <div 
-                  className="cursor-pointer"
-                  onClick={() => setSelectedImage(photo.url)}
+        {/* Main Content: Sidebar + Photos */}
+        <div className={styles.content}>
+          {/* Sidebar with Event Filters */}
+          <aside className={styles.sidebar}>
+            <div className={styles.sidebarSticky}>
+              <h2 className={styles.sidebarTitle}>Eventos</h2>
+              <div className={styles.eventList}>
+                <button
+                  onClick={() => setSelectedEvent("all")}
+                  className={`${styles.eventButton} ${selectedEvent === "all" ? styles.active : ""}`}
+                  type="button"
+                  aria-label="Mostrar todas as fotos"
                 >
-                  {/* Image Placeholder */}
-                  <div className="h-64 bg-gradient-to-br from-blue-900 to-blue-950 rounded-t-xl flex items-center justify-center overflow-hidden">
-                    {/* TODO: Substituir por imagens reais */}
-                    <div className="text-center text-gray-400">
-                      <div className="text-6xl mb-2">📷</div>
-                      <p className="text-sm">Foto em breve</p>
+                  <span className={styles.eventName}>Todas as Fotos</span>
+                  <span className={styles.eventCount}>{allPhotos.length}</span>
+                </button>
+                {galleryEvents.map(event => (
+                  <button
+                    key={event.id}
+                    onClick={() => setSelectedEvent(event.id)}
+                    className={`${styles.eventButton} ${selectedEvent === event.id ? styles.active : ""}`}
+                    type="button"
+                    aria-label={`Filtrar por ${event.name}`}
+                  >
+                    <div>
+                      <span className={styles.eventName}>{event.name}</span>
+                      <span className={styles.eventDate}>{event.date}</span>
                     </div>
-                  </div>
+                    <span className={styles.eventCount}>{event.photos.length}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </aside>
 
-                  {/* Photo Info */}
-                  <div className="p-4">
-                    <h3 className="text-xl font-bold text-white mb-2">
-                      {photo.title}
-                    </h3>
-                    <div className="flex items-center gap-2 text-sm text-gray-400 mb-2">
-                      <span>📅 {photo.date}</span>
-                      <span>•</span>
-                      <span>📍 {photo.location}</span>
-                    </div>
-                    <p className="text-gray-300 text-sm">
-                      {photo.description}
-                    </p>
-                  </div>
-                </div>
-              </MotionCard>
-            </Reveal>
-          ))}
+          {/* Photo Grid */}
+          <main className={styles.mainContent}>
+            {filteredPhotos.length > 0 ? (
+              <div className={styles.photoGrid}>
+                {filteredPhotos.map((photo, index) => (
+                  <Reveal key={photo.id} delay={index * 0.05}>
+                    <button
+                      className={styles.photoCard}
+                      onClick={() => setSelectedImage(photo.url)}
+                      type="button"
+                      aria-label={`Ver foto: ${photo.title}`}
+                    >
+                      {/* Image Placeholder */}
+                      <div className={styles.photoImagePlaceholder}>
+                        <div className={styles.photoPlaceholderContent}>
+                          <div className={styles.photoIcon}>📷</div>
+                          <p className={styles.photoPlaceholderText}>Foto em breve</p>
+                        </div>
+                      </div>
+
+                      {/* Photo Info */}
+                      <div className={styles.photoInfo}>
+                        <h3 className={styles.photoTitle}>{photo.title}</h3>
+                        <div className={styles.photoMeta}>
+                          <span>📅 {photo.date}</span>
+                          <span>•</span>
+                          <span>📍 {photo.location}</span>
+                        </div>
+                        {'eventName' in photo && selectedEvent === "all" && (
+                          <div className={styles.photoEventBadge}>
+                            🏃 {photo.eventName}
+                          </div>
+                        )}
+                        <p className={styles.photoDescription}>{photo.description}</p>
+                      </div>
+                    </button>
+                  </Reveal>
+                ))}
+              </div>
+            ) : (
+              <div className={styles.emptyState}>
+                <div className={styles.emptyIcon}>🏃‍♂️</div>
+                <h3 className={styles.emptyTitle}>Nenhuma foto neste evento</h3>
+                <p className={styles.emptyText}>
+                  Seleciona outro evento na sidebar ou vê todas as fotos.
+                </p>
+              </div>
+            )}
+
+            {/* Social Links */}
+            <div className={styles.socialLinks}>
+              <a
+                href="https://instagram.com/joaofaquino"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.socialButton}
+                style={{ background: 'linear-gradient(135deg, #833AB4 0%, #E1306C 100%)' }}
+              >
+                📸 Instagram
+              </a>
+              <a
+                href="https://www.strava.com/athletes/joaoaquino"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.socialButton}
+                style={{ background: 'linear-gradient(135deg, #FC4C02 0%, #E34402 100%)' }}
+              >
+                🏃 Strava
+              </a>
+            </div>
+          </main>
         </div>
+      </div>
 
-        {/* Empty State Message */}
-        <div className="mt-16 bg-blue-900/30 border border-blue-500/30 rounded-xl p-8 text-center">
-          <div className="text-5xl mb-4">🏃‍♂️</div>
-          <h3 className="text-2xl font-bold text-white mb-3">
-            A Galeria Está a Crescer!
-          </h3>
-          <p className="text-gray-300 max-w-2xl mx-auto">
-            À medida que os treinos avançam, vou adicionar mais fotos e momentos especiais.
-            Acompanha o Instagram <a href="https://instagram.com/joaofaquino" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">@joaofaquino</a> para 
-            ver as atualizações em tempo real!
-          </p>
-        </div>
-
-        {/* Social Links */}
-        <div className="mt-8 flex justify-center gap-4">
-          <a
-            href="https://instagram.com/joaofaquino"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-lg font-semibold hover:scale-105 transition-all"
-          >
-            📸 Instagram
-          </a>
-          <a
-            href="https://www.strava.com/athletes/joaoaquino"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-gradient-to-r from-orange-600 to-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:scale-105 transition-all"
-          >
-            🏃 Strava
-          </a>
-        </div>
-      </section>
-
-      {/* Modal for full image (future implementation) */}
+      {/* Modal for full image */}
       {selectedImage && (
-        <div 
-          className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4"
+        <div
+          className={styles.modal}
           onClick={() => setSelectedImage(null)}
+          role="dialog"
+          aria-modal="true"
         >
-          <div className="max-w-4xl w-full">
-            <p className="text-white text-center">
+          <button
+            className={styles.closeButton}
+            onClick={() => setSelectedImage(null)}
+            type="button"
+            aria-label="Fechar visualização"
+          >
+            ✕
+          </button>
+          <div className={styles.modalContent}>
+            <p className={styles.modalPlaceholder}>
               🖼️ Visualização de imagem (em desenvolvimento)
             </p>
           </div>

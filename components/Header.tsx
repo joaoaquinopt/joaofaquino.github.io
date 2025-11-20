@@ -17,7 +17,6 @@ export default function Header() {
     { href: "/", label: t("nav.journey"), icon: Home },
     { href: "/progress", label: t("nav.progress"), icon: TrendingUp },
     { href: "/equipment", label: t("nav.equipment"), icon: Watch },
-    { href: "/affiliates", label: t("nav.affiliates"), icon: Store },
     { href: "/gallery", label: t("nav.gallery"), icon: Image },
     { href: "/contact", label: t("nav.contact"), icon: Mail },
   ];
