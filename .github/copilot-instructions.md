@@ -13,15 +13,26 @@ O projeto busca unir **autenticidade, performance e design clean**, destacando d
 
 ### 🗂️ Stack principal
 
-| Camada             | Tecnologia                                  | Descrição                                                            |
-| ------------------ | ------------------------------------------- | -------------------------------------------------------------------- |
-| Frontend           | **Next.js 14 (App Router)**                 | Estrutura principal da aplicação, SPA com SSR/ISR habilitado.        |
-| Linguagem          | **TypeScript**                              | Tipagem segura e manutenção escalável.                               |
-| Estilos            | **TailwindCSS** + `globals.css` customizado | Design minimalista em tons azul escuro e cinza neutro.               |
-| Animações          | **Framer Motion**                           | Transições suaves entre páginas, efeitos de scroll e hover.          |
-| Hospedagem         | **Vercel**                                  | Deploy contínuo, HTTPS automático, domínio custom `joaofaquino.run`. |
-| API de Dados       | **Python + Strava API (v3)**                | Script para fetch e geração de `data/strava_summary.json`.           |
-| Controle de versão | **GitHub**                                  | CI/CD automático via Vercel.                                         |
+| Camada             | Tecnologia                                        | Descrição                                                                           |
+| ------------------ | ------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Frontend           | **Next.js 14 (App Router)**                       | Estrutura principal da aplicação, SPA com SSR/ISR habilitado.                       |
+| Linguagem          | **TypeScript**                                    | Tipagem segura e manutenção escalável.                                              |
+| Estilos            | **TailwindCSS** + **CSS Modules** + `globals.css` | Design minimalista. CSS Modules para isolamento de componentes (Header, Equipment). |
+| Animações          | **Framer Motion**                                 | Transições suaves entre páginas, efeitos de scroll e hover.                         |
+| Hospedagem         | **Vercel**                                        | Deploy contínuo, HTTPS automático, domínio custom `joaofaquino.run`.                |
+| API de Dados       | **Python + Strava API (v3)**                      | Script para fetch e geração de `data/strava_summary.json`.                          |
+| Controle de versão | **GitHub**                                        | CI/CD automático via Vercel.                                                        |
+
+### 🎨 Estratégia de Estilos
+
+**CSS Modules** são usados para **isolar estilos de páginas/componentes específicos**:
+
+- `Header.module.css` - Media queries para responsividade mobile (hamburguer menu < 768px)
+- `equipment.module.css` - Layout Nike-style com sidebar e grid de produtos
+- `dashboard.module.css` - Estilos específicos da página de progresso
+
+**TailwindCSS** é usado para estilos globais e utilities classes.
+**globals.css** define variáveis de tema e gradientes de fundo.
 
 ---
 
@@ -41,10 +52,13 @@ joaofaquino.run/
 │
 ├── components/
 │ ├── Header.tsx # Navegação principal do site
+│ ├── Header.module.css # Estilos responsivos do Header (media queries)
 │ ├── Footer.tsx # Rodapé com links sociais
 │ ├── PageWrapper.tsx # Controla transições entre rotas
 │ ├── Reveal.tsx # Fade/slide ao entrar na viewport
 │ ├── MotionCard.tsx # Interatividade (hover/click)
+│ ├── LanguageToggle.tsx # Alternador PT/EN
+│ ├── TranslationProvider.tsx # Context para traduções
 │
 ├── public/
 │ ├── assets/ # Logos, imagens futuras
@@ -135,7 +149,18 @@ light:     #ECECEC
 
 - [x] Scroll animations (`Reveal`)
 - [x] Microinterações (`MotionCard`)
+- [x] Header responsivo com CSS Module (hamburguer < 768px, desktop navigation ≥ 768px)
+- [x] Equipment page Nike-style com CSS Module isolation
 - [ ] Dark/Light Mode com persistência (via `next-themes`)
+
+### ✅ Fase 3.5 — Responsividade Mobile (RECÉM CONCLUÍDA)
+
+- [x] Criado `Header.module.css` com media queries para controle preciso
+- [x] Desktop (≥768px): Navegação horizontal sempre visível, sem hamburguer
+- [x] Mobile (<768px): Botão hamburguer visível, navegação escondida
+- [x] Overlay mobile com backdrop blur e links touch-friendly
+- [x] Isolamento de estilos via CSS Modules para evitar conflitos com Tailwind
+- [x] Media queries testadas em resolução 1920x1080
 
 ### 🏃 Fase 4 — Integração e Automação
 
@@ -182,6 +207,21 @@ Python faz autenticação OAuth2 e salva o resumo em `data/strava_summary.json`.
 - Elementos interativos: `<Reveal>` + `<MotionCard>`
 - Imports absolutos via alias `@/` (opcional, configurado em `tsconfig.json`)
 - Responsividade padrão: `max-w-5xl mx-auto px-4`
+
+### CSS Modules vs Tailwind
+
+**IMPORTANTE**: Para componentes que precisam de responsividade complexa com media queries, usar **CSS Modules**:
+
+- ✅ `Header.module.css` - Controla hamburguer mobile vs desktop navigation
+- ✅ `equipment.module.css` - Layout Nike-style com sidebar responsiva
+- ✅ `dashboard.module.css` - Grid layouts com breakpoints customizados
+
+**Razão**: Classes Tailwind como `md:hidden` podem não compilar corretamente em hot-reload. CSS Modules garantem comportamento previsível.
+
+**Breakpoints padrão**:
+
+- Mobile: `< 768px` (hamburguer menu)
+- Tablet/Desktop: `≥ 768px` (navegação normal)
 
 ### Scripts de build
 

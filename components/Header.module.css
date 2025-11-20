@@ -1,0 +1,100 @@
+/* Header Styles com Media Queries */
+
+.header {
+  background: linear-gradient(135deg, #0A2540 0%, #1E4D8B 100%);
+  border-bottom: 1px solid rgba(88, 166, 255, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.container {
+  max-width: 98%;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Desktop Navigation - SEMPRE VISÍVEL */
+.desktopNav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding-bottom: 0.75rem;
+}
+
+/* Hamburguer - SEMPRE ESCONDIDO no desktop */
+.hamburgerBtn {
+  display: none;
+  padding: 0.5rem;
+  color: white;
+  transition: color 0.3s;
+}
+
+.hamburgerBtn:hover {
+  color: #58A6FF;
+}
+
+/* Mobile Overlay - SEMPRE ESCONDIDO no desktop */
+.mobileOverlay {
+  display: none;
+}
+
+/* MOBILE STYLES - só ativa em telas < 768px */
+@media (max-width: 767px) {
+  /* Esconder navegação desktop em mobile */
+  .desktopNav {
+    display: none;
+  }
+  
+  /* Mostrar botão hamburguer em mobile */
+  .hamburgerBtn {
+    display: block;
+  }
+  
+  /* Mostrar overlay mobile quando ativo */
+  .mobileOverlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    top: 4rem;
+    background: rgba(10, 37, 64, 0.95);
+    backdrop-filter: blur(8px);
+    z-index: 50;
+  }
+  
+  .mobileNav {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    gap: 0.25rem;
+  }
+  
+  .mobileNavLink {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s;
+    font-size: 1.125rem;
+    font-weight: 500;
+  }
+  
+  .mobileNavLink:not(.active) {
+    color: #D1D5DB;
+  }
+  
+  .mobileNavLink:not(.active):hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+  }
+  
+  .mobileNavLink.active {
+    background: rgba(88, 166, 255, 0.2);
+    color: #58A6FF;
+    border: 1px solid rgba(88, 166, 255, 0.3);
+  }
+}
