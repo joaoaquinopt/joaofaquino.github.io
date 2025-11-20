@@ -28,6 +28,7 @@ export default function ProgressoPage() {
   });
 
   const formatPace = (paceMinPerKm: number) => {
+    if (!paceMinPerKm || !Number.isFinite(paceMinPerKm)) return "0:00/km";
     const minutes = Math.floor(paceMinPerKm);
     const seconds = Math.round((paceMinPerKm - minutes) * 60);
     return `${minutes}:${seconds.toString().padStart(2, '0')}/km`;
@@ -50,6 +51,20 @@ export default function ProgressoPage() {
     });
   };
 
+  const parseTimeStringToSeconds = (value?: string) => {
+    if (!value || typeof value !== "string") return 0;
+    const parts = value.split(":").map(Number);
+    if (parts.length === 3) {
+      const [hours, minutes, seconds] = parts;
+      return hours * 3600 + minutes * 60 + seconds;
+    }
+    if (parts.length === 2) {
+      const [minutes, seconds] = parts;
+      return minutes * 60 + seconds;
+    }
+    return Number(value) || 0;
+  };
+
   useEffect(() => {
     console.log('🔄 Carregando dados do Garmin...');
 
@@ -63,25 +78,80 @@ export default function ProgressoPage() {
         console.log('📊 Dados carregados:', data);
 
         // O ficheiro pode ser um array direto ou um objeto com 'activities'
-        const activitiesData = Array.isArray(data) ? data : (data.activities || []);
+        const activitiesData = Array.isArray(data)
+          ? data
+          : (data.activities || data.recent_runs || []);
         console.log('📋 Activities encontradas:', activitiesData.length);
 
         // Converter formato do Garmin para o formato esperado
-        const formattedActivities = activitiesData.map((act: any) => ({
-          date: act.date,
-          distance: act.distance,
-          moving_time: act.total_time || act.moving_time,
-          pace: act.pace || formatPace(act.average_pace || 0),
-          elevation_gain: act.elevation_gain,
-          avg_heart_rate: act.average_heartrate || act.avg_heart_rate,
-          max_heart_rate: act.max_heartrate || act.max_heart_rate,
-          calories: act.calories
-        }));
+        const formattedActivities = activitiesData.map((act: any) => {
+          const distance = Number(act.distance ?? act.distance_km ?? 0);
+          const seconds = Number(
+            act.time_seconds ??
+            act.total_time_seconds ??
+            act.moving_time ??
+            parseTimeStringToSeconds(act.total_time)
+          );
+
+          const parsedPace = (() => {
+            if (act.pace && typeof act.pace === "string") {
+              return act.pace.includes("/") ? act.pace : `${act.pace}/km`;
+            }
+            if (act.avg_pace && typeof act.avg_pace === "string") {
+              return act.avg_pace.includes("/") ? act.avg_pace : `${act.avg_pace}/km`;
+            }
+            if (act.average_pace) {
+              return formatPace(Number(act.average_pace));
+            }
+            return "0:00/km";
+          })();
+
+          const avgHr = act.avg_heart_rate ?? act.average_heartrate ?? act.avg_hr ?? act.avg_hr_value;
+          const maxHr = act.max_heart_rate ?? act.max_heartrate ?? act.max_hr;
+
+          return {
+            date: act.date || act.iso_date,
+            distance,
+            moving_time: seconds,
+            pace: parsedPace,
+            elevation_gain: act.elevation_gain,
+            avg_heart_rate: avgHr ? Number(avgHr) : undefined,
+            max_heart_rate: maxHr ? Number(maxHr) : undefined,
+            calories: act.calories ? Number(act.calories) : undefined,
+          } as ActivityData;
+        });
 
         console.log('✅ Activities formatadas:', formattedActivities);
 
         setActivities(formattedActivities);
-        calculateStats(formattedActivities);
+        if (data.stats) {
+          const totalDistance = Number(data.stats.total_distance ?? 0);
+          const totalRuns = Number(data.stats.total_runs ?? formattedActivities.length);
+
+          const totalTimeMinutes = (() => {
+            if (data.stats.total_time_seconds) {
+              return Math.round(Number(data.stats.total_time_seconds) / 60);
+            }
+            if (data.stats.total_time && typeof data.stats.total_time === "string") {
+              return Math.round(parseTimeStringToSeconds(data.stats.total_time) / 60);
+            }
+            return 0;
+          })();
+
+          const avgPaceRaw = data.stats.avg_pace ?? data.stats.average_pace;
+          const avgPace = typeof avgPaceRaw === "string"
+            ? (avgPaceRaw.includes("/") ? avgPaceRaw : `${avgPaceRaw}/km`)
+            : formatPace(Number(avgPaceRaw));
+
+          setStats({
+            totalDistance: Math.round(totalDistance * 100) / 100,
+            totalTime: totalTimeMinutes,
+            avgPace,
+            totalRuns,
+          });
+        } else {
+          calculateStats(formattedActivities);
+        }
         setLoading(false);
       })
       .catch(err => {
@@ -212,7 +282,7 @@ export default function ProgressoPage() {
                     const targetDate = new Date('2026-11-01').getTime();
                     const now = Date.now();
                     const daysRemaining = Math.ceil((targetDate - now) / (1000 * 60 * 60 * 24));
-                    
+
                     return (
                       <div className="text-center">
                         <div className="text-7xl font-bold text-white mb-3">

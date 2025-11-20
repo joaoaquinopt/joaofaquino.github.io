@@ -1,0 +1,242 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.heroCard {
+  position: relative;
+  padding: clamp(2rem, 4vw, 3rem);
+  border-radius: 32px;
+  background: linear-gradient(140deg, rgba(10, 35, 66, 0.82), rgba(17, 37, 66, 0.92)) border-box;
+  border: 1px solid rgba(88, 166, 255, 0.25);
+  box-shadow: 0 45px 90px rgba(2, 8, 23, 0.55);
+  overflow: hidden;
+}
+
+.heroCard::after {
+  content: "";
+  position: absolute;
+  inset: -30% 35% 20% -20%;
+  background: radial-gradient(circle at top left, rgba(88, 166, 255, 0.55), rgba(10, 35, 66, 0));
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.heroBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  background: rgba(88, 166, 255, 0.15);
+  border: 1px solid rgba(88, 166, 255, 0.35);
+  color: rgba(226, 232, 240, 0.9);
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  backdrop-filter: blur(12px);
+}
+
+.heroTitle {
+  margin-top: 1.5rem;
+  font-size: clamp(1.9rem, 2.8vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: #f8fafc;
+  max-width: 50ch;
+}
+
+.heroText {
+  margin-top: 1rem;
+  color: rgba(226, 232, 240, 0.75);
+  font-size: clamp(1rem, 1.2vw, 1.15rem);
+  max-width: 63ch;
+}
+
+.highlightsGrid {
+  display: grid;
+  gap: 1.1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.highlightCard {
+  position: relative;
+  padding: 1.6rem;
+  border-radius: 24px;
+  background: rgba(9, 20, 40, 0.72);
+  border: 1px solid rgba(88, 166, 255, 0.2);
+  box-shadow: 0 25px 60px rgba(2, 8, 23, 0.45);
+  backdrop-filter: blur(18px);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  overflow: hidden;
+}
+
+.highlightCard::after {
+  content: "";
+  position: absolute;
+  inset: 15% -20% -40% 35%;
+  background: radial-gradient(circle at top, rgba(88, 166, 255, 0.45), rgba(88, 166, 255, 0));
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.highlightContent {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.highlightIcon {
+  width: 54px;
+  height: 54px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, rgba(88, 166, 255, 0.45), rgba(37, 99, 235, 0.5));
+  color: #e0f2fe;
+  box-shadow: 0 12px 30px rgba(88, 166, 255, 0.35);
+}
+
+.highlightTitle {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #f8fafc;
+  margin-bottom: 0.35rem;
+}
+
+.highlightText {
+  color: rgba(203, 213, 225, 0.78);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.highlightCard:hover {
+  transform: translateY(-6px);
+  border-color: rgba(88, 166, 255, 0.45);
+  box-shadow: 0 32px 70px rgba(2, 8, 23, 0.55);
+}
+
+.timelineCard {
+  position: relative;
+  padding: clamp(1.75rem, 3vw, 2.5rem);
+  border-radius: 30px;
+  background: rgba(4, 13, 29, 0.78);
+  border: 1px solid rgba(88, 166, 255, 0.25);
+  box-shadow: 0 40px 80px rgba(2, 8, 23, 0.5);
+  backdrop-filter: blur(20px);
+  overflow: hidden;
+}
+
+.timelineCard::before {
+  content: "";
+  position: absolute;
+  inset: -20% 60% -30% -10%;
+  background: radial-gradient(circle at top left, rgba(94, 234, 212, 0.25), rgba(94, 234, 212, 0));
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.timelineHeader {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #e0f2fe;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.85rem;
+}
+
+.timelineList {
+  position: relative;
+  margin-top: 2rem;
+  padding-left: 1.8rem;
+}
+
+.timelineList::before {
+  content: "";
+  position: absolute;
+  top: 0.4rem;
+  bottom: 0.4rem;
+  left: 0.55rem;
+  width: 2px;
+  background: linear-gradient(180deg, rgba(88, 166, 255, 0.4), transparent);
+}
+
+.timelineItem {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(70px, auto) 1fr;
+  gap: 1rem;
+  padding-bottom: 1.8rem;
+}
+
+.timelineItem:last-child {
+  padding-bottom: 0;
+}
+
+.timelineDot {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  left: -1.08rem;
+  top: 0.45rem;
+  background: linear-gradient(135deg, rgba(94, 234, 212, 0.85), rgba(59, 130, 246, 0.85));
+  box-shadow: 0 0 18px rgba(94, 234, 212, 0.55);
+}
+
+.timelineYear {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #bae6fd;
+}
+
+.timelineHeading {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #f8fafc;
+  margin-bottom: 0.35rem;
+}
+
+.timelineText {
+  color: rgba(203, 213, 225, 0.75);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.quote {
+  margin-top: 1rem;
+  text-align: center;
+  font-style: italic;
+  color: rgba(148, 163, 184, 0.8);
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    gap: 2rem;
+  }
+
+  .heroCard {
+    border-radius: 24px;
+  }
+
+  .timelineCard {
+    border-radius: 24px;
+    padding: 1.75rem;
+  }
+
+  .timelineItem {
+    grid-template-columns: 1fr;
+    padding-left: 0.75rem;
+  }
+
+  .timelineDot {
+    left: -0.85rem;
+  }
+}

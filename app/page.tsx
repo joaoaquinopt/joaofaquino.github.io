@@ -1,51 +1,49 @@
-import Reveal from "../components/Reveal";
+"use client";
+
+import { useEffect, useState } from "react";
+import LatestRunCard from "../components/LatestRunCard";
+import StatsOverview from "../components/StatsOverview";
+import CTASection from "../components/CTASection";
+import JourneySection from "../components/JourneySection";
 
 export default function HomePage() {
+  const [garminData, setGarminData] = useState<any>(null);
+
+  useEffect(() => {
+    // Load Garmin data
+    fetch("/data/garmin_summary.json")
+      .then((res) => res.json())
+      .then((data) => setGarminData(data))
+      .catch((err) => console.error("Error loading Garmin data:", err));
+  }, []);
+
   return (
-    <section className="max-w-3xl mx-auto text-center mt-12 md:mt-20 px-4 md:px-6 space-y-6 md:space-y-8 min-h-[70vh] flex flex-col justify-center">
-      <Reveal>
-        <h1 className="text-4xl md:text-5xl font-bold text-blue-400 mb-2">A Jornada</h1>
-      </Reveal>
+    <div className="max-w-7xl mx-auto px-4 md:px-6 mt-8 md:mt-12 pb-20 space-y-12">
+      {/* Stats Overview - Full Width */}
+      {garminData && (
+        <StatsOverview
+          stats={garminData.stats}
+          thisWeek={garminData.this_week}
+        />
+      )}
 
-      <Reveal delay={0.2}>
-        <p className="text-lg md:text-xl text-gray-300 leading-relaxed">
-          Sou João Aquino, QA Engineer, pai de uma criança linda, o Davi, e corredor amador.
-        </p>
-      </Reveal>
+      {/* Main Content Grid */}
+      <div className="grid lg:grid-cols-3 gap-8">
+        {/* Left Column: Latest Run Card - Sticky */}
+        <div className="lg:col-span-1">
+          <div className="lg:sticky lg:top-24">
+            <LatestRunCard data={garminData?.latest_run} />
+          </div>
+        </div>
 
-      <Reveal delay={0.4}>
-        <p className="text-base md:text-lg text-gray-400 leading-relaxed max-w-2xl mx-auto">
-          Comecei a correr porque o meu corpo pediu ajuda.
-          A insónia estava a piorar, o cigarro a aumentar e a energia a desaparecer.
-          Senti que precisava de um rumo — algo que me puxasse para fora do buraco.
-          A corrida virou isso.
-          Este é o diário da minha tentativa de me transformar.
-        </p>
-      </Reveal>
+        {/* Right Column: Journey Section */}
+        <section className="lg:col-span-2">
+          <JourneySection />
+        </section>
+      </div>
 
-      <Reveal delay={0.6}>
-        <p className="text-base md:text-lg text-gray-400 leading-relaxed max-w-2xl mx-auto">
-          Esta jornada não é sobre performance perfeita.
-          É sobre disciplina imperfeita.
-          É sobre tentar todos os dias, falhar alguns, mas continuar.
-          A minha meta: cruzar a linha de chegada da minha primeira maratona em 2026.
-        </p>
-      </Reveal>
-
-      <Reveal delay={0.8}>
-        <p className="text-base md:text-lg text-gray-400 leading-relaxed max-w-2xl mx-auto">
-          Luto com a insónia há anos.
-          Já fiquei quase 30 dias sem fumar — mas voltei.
-          Trabalho, sou pai, falho nos horários, acordo cansado.
-          Mas cada treino é um passo contra tudo isso.
-        </p>
-      </Reveal>
-
-      <Reveal delay={1.0}>
-        <p className="italic text-base md:text-lg text-gray-500 mt-8">
-          "Nem sempre perfeito, mas sempre em frente."
-        </p>
-      </Reveal>
-    </section>
+      {/* CTA Section */}
+      <CTASection />
+    </div>
   );
 }

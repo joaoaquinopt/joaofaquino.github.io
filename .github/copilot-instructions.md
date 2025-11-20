@@ -153,7 +153,7 @@ light:     #ECECEC
 - [x] Equipment page Nike-style com CSS Module isolation
 - [ ] Dark/Light Mode com persistência (via `next-themes`)
 
-### ✅ Fase 3.5 — Responsividade Mobile (RECÉM CONCLUÍDA)
+### ✅ Fase 3.5 — Responsividade Mobile (CONCLUÍDA)
 
 - [x] Criado `Header.module.css` com media queries para controle preciso
 - [x] Desktop (≥768px): Navegação horizontal sempre visível, sem hamburguer
@@ -162,11 +162,145 @@ light:     #ECECEC
 - [x] Isolamento de estilos via CSS Modules para evitar conflitos com Tailwind
 - [x] Media queries testadas em resolução 1920x1080
 
-### 🏃 Fase 4 — Integração e Automação
+### ✅ Fase 4 — Integração Garmin + Dashboard Homepage (CONCLUÍDA 20/11/2025)
 
-- [ ] Conectar `fetch_strava_data.py` com o site via GitHub Actions
-- [ ] Gerar SVGs dinâmicos com estatísticas Strava
-- [ ] Migrar integração para **Garmin Connect API** (após aprovação)
+**🎯 Objetivo:** Migrar de Strava para Garmin CSV, criar dashboard visual na homepage com dados reais de treino.
+
+#### Implementações:
+
+**1. Processamento de Dados Garmin**
+
+- [x] Criado `scripts/process_garmin_data.py` - Parser de CSV do Garmin Connect
+- [x] Lê `data/garmin_exports/Todas_As_Corridas.csv` (13 corridas exportadas)
+- [x] Gera `public/data/garmin_summary.json` com estatísticas processadas
+- [x] Calcula: distância total (90.44km), pace médio (7:35/km), progresso maratona (214%)
+- [x] Estatísticas semanais: última semana (3 corridas, 24.42km)
+- [x] Última corrida: 20/11/2025 - "Porto - 3x (400m @Z5 + 400m @Z1)" - 5.49km
+
+**2. Componentes Dashboard (Design Moderno)**
+
+- [x] `StatsOverview.tsx` - Cards hero com gradientes vibrantes
+  - 2 cards grandes: Distância Total (azul→roxo) + Esta Semana (verde→teal)
+  - Progress bar animada para meta maratona (42.195km)
+  - 4 cards secundários compactos com glassmorphism
+  - Números gigantes (text-6xl) para métricas principais
+- [x] `LatestRunCard.tsx` - Card premium da última corrida
+
+  - Gradiente rosa→roxo com decoração de círculos
+  - Distância em destaque (text-5xl)
+  - Grid com tempo, pace, FC médio, calorias
+  - Efeito glassmorphism nos sub-cards
+
+- [x] `CTASection.tsx` - Call-to-action impactante
+  - Gradiente laranja→rosa→roxo
+  - Padrão de bolinhas no background
+  - Botões grandes com hover scale
+  - Links para Instagram (@joaofaquino) e Strava
+
+**3. Homepage Redesign**
+
+- [x] Layout grid responsivo (lg:grid-cols-3)
+- [x] Sidebar sticky com LatestRunCard (fixa ao scroll em desktop)
+- [x] Stats overview no topo (full width)
+- [x] Texto da jornada com animações Reveal
+- [x] CTA section no final (full width)
+- [x] Max-width aumentado para 7xl (melhor uso do espaço)
+
+**4. Características Visuais**
+
+- [x] Gradientes vibrantes em todos os cards
+- [x] Glassmorphism (backdrop-blur + transparências)
+- [x] Números gigantes para métricas principais
+- [x] Hover effects (scale, translate)
+- [x] Progress bars animadas com cores chamativas
+- [x] Ícones coloridos e contextualizados (Lucide React)
+- [x] Sombras profundas (shadow-2xl)
+
+**5. Dados Garmin vs Strava**
+
+- ✅ **Migração completa:** CSV Garmin substituiu Strava API
+- ✅ **Formato:** `Todas_As_Corridas.csv` (Activity Type, Date, Distance, Time, Pace, HR, etc.)
+- ✅ **Processamento:** Python script executa parsing e gera JSON
+- ✅ **Frontend:** Fetch de `/data/garmin_summary.json` via useEffect
+- ✅ **Automação:** Script Python pode ser executado manualmente: `python scripts/process_garmin_data.py`
+
+**Ficheiros Criados/Modificados:**
+
+```
+scripts/process_garmin_data.py          # Parser CSV → JSON
+public/data/garmin_summary.json         # Dados processados
+components/StatsOverview.tsx            # Cards hero com gradientes
+components/LatestRunCard.tsx            # Card última corrida
+components/CTASection.tsx               # Call-to-action
+app/page.tsx                            # Homepage redesenhada
+```
+
+**Estatísticas Atuais (20/11/2025):**
+
+- 📊 Total: 13 corridas
+- 🏃 Distância: 90.44 km
+- ⏱️ Tempo total: 11h 26min
+- 📈 Pace médio: 7:35/km
+- 📅 Esta semana: 3 corridas, 24.42km
+- 🎯 Progresso maratona: 214% (já ultrapassou!)
+
+---
+
+### 🏃 Fase 5 — Integração e Automação (PRÓXIMO)
+
+- [ ] Conectar `process_garmin_data.py` com GitHub Actions (execução automática)
+- [ ] Automatizar upload de novos CSVs do Garmin Connect
+- [ ] Gerar SVGs dinâmicos com estatísticas semanais
+
+### 🚀 Fase 6 — Página Jornada Melhorada (PLANEADO)
+
+**🎯 Objetivo:** Transformar página da jornada em timeline visual com fotos, ícones e milestones.
+
+- [ ] Adicionar timeline vertical com marcos importantes
+- [ ] Inserir fotos/placeholders para momentos chave
+- [ ] Quebrar texto denso com cards visuais
+- [ ] Adicionar ícones para cada fase da jornada
+- [ ] Implementar "prova social" (badges de conquistas)
+- [ ] Seção "Porque correr?" com cards ilustrados
+
+### 🚀 Fase 7 — Página Progresso com Gráficos (PLANEADO)
+
+- [ ] Criar gráficos de evolução (distância/semana, pace/mês)
+- [ ] Implementar histórico de corridas com filtros
+- [ ] Visualização de zonas de frequência cardíaca
+- [ ] Comparação mês a mês
+- [ ] Integração com D3.js ou Chart.js
+
+### 🚀 Fase 8 — Features Adicionais (FUTURO)
+
+- [ ] Dark/Light Mode com persistência (via `next-themes`)
+- [ ] Newsletter signup (Mailchimp/ConvertKit)
+- [ ] Monetização: produtos/serviços
+- [ ] Blog de corrida (opcional)
+
+---
+
+## 🔒 Configuração do Garmin (atual)
+
+**Fonte de dados:** CSV exportado do Garmin Connect  
+**Localização:** `data/garmin_exports/Todas_As_Corridas.csv`  
+**Processamento:** Script Python `scripts/process_garmin_data.py`  
+**Output:** `public/data/garmin_summary.json`
+
+**Comando manual:**
+
+```bash
+python scripts/process_garmin_data.py
+```
+
+**Campos CSV utilizados:**
+
+- Activity Type, Date, Title
+- Distance, Time, Avg Pace, Best Pace
+- Avg HR, Max HR, Calories
+- Total Ascent, Total Descent
+
+**Nota:** Strava API foi descontinuada. Migração para Garmin CSV concluída com sucesso.
 
 ### 🚀 Fase 5 — Dashboards e Expansão
 
@@ -245,17 +379,19 @@ npm run start   # Servir build localmente
 
 ## 🧭 TL;DR
 
-| Categoria                | Estado          |
-| ------------------------ | --------------- |
-| Base Next.js             | ✅ Completa     |
-| Estilo visual            | ✅ Restaurado   |
-| SPA + Transições         | ✅ Funcional    |
-| Animações (Scroll/Hover) | ✅ Ativas       |
-| Dark/Light mode          | ⏳ Próximo      |
-| Integração Strava        | ⚙️ Em progresso |
-| Integração Garmin        | 🧩 Planeado     |
-| Automação GitHub Actions | 🧩 Planeado     |
-| Dashboards e SVGs        | 🧩 Planeado     |
+| Categoria                | Estado             |
+| ------------------------ | ------------------ |
+| Base Next.js             | ✅ Completa        |
+| Estilo visual            | ✅ Dashboard Ready |
+| SPA + Transições         | ✅ Funcional       |
+| Animações (Scroll/Hover) | ✅ Ativas          |
+| Homepage Dashboard       | ✅ Implementado    |
+| Integração Garmin CSV    | ✅ Funcional       |
+| Sidebar Gallery Layout   | ✅ Implementado    |
+| Dark/Light mode          | ⏳ Futuro          |
+| Automação GitHub Actions | 🧩 Próximo         |
+| Página Jornada Timeline  | 🧩 Planeado        |
+| Gráficos Progresso       | 🧩 Planeado        |
 
 ---
 
