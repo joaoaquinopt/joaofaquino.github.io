@@ -8,22 +8,26 @@ const highlights = [
   {
     icon: MoonStar,
     title: "Nova energia",
-    description: "A corrida substituiu a insónia e o stress por foco. Dormir voltou a ser opção real.",
+    description:
+      "A corrida começou como resposta à insónia e ao stress. Hoje é um dos pilares da rotina.",
   },
   {
     icon: HeartPulse,
     title: "Disciplina imperfeita",
-    description: "Falho, recomeço e sigo. Consistência acima da perfeição, todos os dias.",
+    description:
+      "Falho, recomeço e sigo. O foco não é ser perfeito, é aparecer vezes suficientes para mudar.",
   },
   {
     icon: Target,
     title: "Meta 2026",
-    description: "Cruzar a primeira maratona com o Davi na meta a celebrar o percurso inteiro.",
+    description:
+      "Cruzar a primeira maratona com o Davi na meta, a lembrar o caminho desde o zero.",
   },
   {
     icon: Flame,
-    title: "Transformação",
-    description: "Cada treino queima vícios antigos e acende versões novas de mim mesmo.",
+    title: "Transformação real",
+    description:
+      "Cada quilómetro queimo vícios antigos e construo uma versão mais leve e mais presente de mim.",
   },
 ];
 
@@ -31,7 +35,7 @@ const milestones = [
   {
     year: "Jun 2024",
     heading: "Primeiro passo",
-    copy: "Treinos começam como remédio para noites em claro e excesso de cigarros.",
+    copy: "Começo a correr para lidar com noites em claro, cigarro e falta de energia.",
   },
   {
     year: "Set 2024",
@@ -41,12 +45,12 @@ const milestones = [
   {
     year: "Nov 2024",
     heading: "Treinos estruturados",
-    copy: "Blocos Z2/Z3, trabalhos de velocidade e data fixada: Maratona 2026.",
+    copy: "Blocos em Z2/Z3, velocidade e a decisão: Maratona em 2026.",
   },
   {
     year: "2025",
-    heading: "Expansão",
-    copy: "Dashboard, dados Garmin e partilha pública para criar responsabilidade.",
+    heading: "Partilha pública",
+    copy: "Dashboard, dados Garmin e a jornada aberta nas redes — para criar responsabilidade.",
   },
 ];
 
@@ -54,22 +58,27 @@ export default function JourneySection() {
   return (
     <div className={styles.wrapper}>
       <Reveal>
-        <div className={styles.heroCard}>
+        <section className={styles.heroCard}>
           <div className={styles.heroBadge}>
             <Award className="w-4 h-4" />
-            <span>A Jornada</span>
+            <span>A jornada</span>
           </div>
-          <h1 className={styles.heroTitle}>
-            Sou João Aquino, QA Engineer, pai do Davi, ex-fumador em reabilitação e corredor amador rumo à maratona de 2026.
-          </h1>
+
+          <h2 className={styles.heroTitle}>
+            Sou João Aquino, QA Engineer, pai do Davi, a tentar ser um ex-fumador e corredor amador
+            rumo à maratona de 2026.
+          </h2>
+
           <p className={styles.heroText}>
-            Comecei a correr porque o corpo pediu ajuda: insónia crónica, stress, cigarro e falta de energia. A corrida virou tratamento e promessa. Cada quilómetro é um voto de confiança no futuro que construo.
+            Comecei a correr porque o corpo pediu ajuda: insónia crónica, stress, cigarro e falta
+            de energia. A corrida virou tratamento e promessa. Cada quilómetro é um voto de
+            confiança no futuro que estou a construir.
           </p>
-        </div>
+        </section>
       </Reveal>
 
       <Reveal delay={0.15}>
-        <div className={styles.highlightsGrid}>
+        <section className={styles.highlightsGrid}>
           {highlights.map(({ icon: Icon, title, description }) => (
             <article key={title} className={styles.highlightCard}>
               <div className={styles.highlightContent}>
@@ -83,15 +92,16 @@ export default function JourneySection() {
               </div>
             </article>
           ))}
-        </div>
+        </section>
       </Reveal>
 
       <Reveal delay={0.25}>
-        <div className={styles.timelineCard}>
+        <section className={styles.timelineCard}>
           <div className={styles.timelineHeader}>
             <Target className="w-5 h-5" />
             <span>Linha do tempo</span>
           </div>
+
           <div className={styles.timelineList}>
             {milestones.map(({ year, heading, copy }) => (
               <div key={year} className={styles.timelineItem}>
@@ -106,13 +116,11 @@ export default function JourneySection() {
               </div>
             ))}
           </div>
-        </div>
+        </section>
       </Reveal>
 
       <Reveal delay={0.35}>
-        <p className={styles.quote}>
-          "Nem sempre perfeito, mas sempre em frente."
-        </p>
+        <p className={styles.quote}>"Nem sempre perfeito, mas sempre em frente."</p>
       </Reveal>
     </div>
   );

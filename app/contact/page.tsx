@@ -26,7 +26,7 @@ export default function ContactPage() {
       name: "Facebook",
       icon: "👥",
       handle: "João Aquino",
-      url: "https://facebook.com/joaofaquino",
+      url: "https://www.facebook.com/joaomiguel.aquino.9/",
       description: "Atualizações e posts",
       color: "from-blue-600 to-blue-800"
     },
@@ -34,7 +34,7 @@ export default function ContactPage() {
       name: "LinkedIn",
       icon: "💼",
       handle: "João Aquino",
-      url: "https://linkedin.com/in/joaoaquino",
+      url: "https://www.linkedin.com/in/jmfaquino/",
       description: "Perfil profissional",
       color: "from-blue-700 to-blue-900"
     },

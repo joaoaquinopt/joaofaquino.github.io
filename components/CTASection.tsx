@@ -6,7 +6,7 @@ import Reveal from "./Reveal";
 export default function CTASection() {
   return (
     <Reveal delay={0.5}>
-      <div className="relative overflow-hidden bg-gradient-to-r from-orange-600 via-pink-600 to-purple-700 rounded-3xl p-8 md:p-12 shadow-2xl">
+      <div className="relative overflow-hidden bg-gradient-to-r from-sky-500 via-blue-600 to-slate-900 rounded-3xl p-8 md:p-12 shadow-2xl">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-full h-full" style={{

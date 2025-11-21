@@ -1,0 +1,55 @@
+/* Espaçamento entre header sticky e HeroSection */
+.heroSpacing {
+  padding-top: 0.8rem;
+  margin-top: 1rem;
+}
+/* HeroSection.module.css - estilos isolados para o HeroSection */
+
+.heroWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 4xl;
+  border-radius: 2rem;
+  padding: 2rem 2.5rem;
+  background: rgba(15,23,42,0.60);
+  box-shadow: 0 12px 40px rgba(15,23,42,0.85);
+  overflow: hidden;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.heroGradient {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+}
+
+.heroTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #F8FAFC;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.heroSubtitle {
+  max-width: 32rem;
+  margin: 0 auto 1.5rem auto;
+  font-size: 1rem;
+  color: #e0e7ef;
+}
+
+.heroMeta {
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  margin-top: 0.5rem;
+}
+
+.heroCtas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}

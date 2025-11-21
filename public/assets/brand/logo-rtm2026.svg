@@ -1,0 +1,15 @@
+<svg width="220" height="40" viewBox="0 0 220 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="220" height="40" rx="8" fill="#0B4A8F"></rect>
+  <!-- Ícone corredor -->
+  <g transform="translate(8,6)" fill="#FFFFFF">
+    <circle cx="8" cy="6" r="4"></circle>
+    <path d="M6 12L10 10L13 14L16 16L15 18L12 17L10 20L8 19L9 16L6 15L6 12Z"></path>
+  </g>
+  <!-- Texto -->
+  <text x="52" y="17" fill="white" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="600" letter-spacing="0.08em">
+    ROAD TO MARATHON
+  </text>
+  <text x="52" y="30" fill="#FFD15C" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="700" letter-spacing="0.12em">
+    2026
+  </text>
+</svg>

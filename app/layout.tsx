@@ -22,7 +22,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <TranslationProvider>
             <Header />
             
-            <main key={pathname} className="w-full">
+            <main key={pathname} className="w-full pt-10 md:pt-16">
               {children}
             </main>
 

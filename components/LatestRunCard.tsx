@@ -28,36 +28,46 @@ export default function LatestRunCard({ data }: LatestRunCardProps) {
   return (
     <Reveal delay={0.1}>
       <article className={styles.card}>
-        <div className={styles.ribbon}>
-          <Zap className="w-4 h-4" />
-          Última corrida
-        </div>
+        {/* Top row: ribbon + date */}
+        <header className={styles.headerRow}>
+          <div className={styles.ribbon}>
+            <Zap className="w-4 h-4" />
+            <span>Última corrida</span>
+          </div>
 
-        <div className={styles.headerTitle}>
-          <h3>{data.title}</h3>
-          <span>Treino registado no Garmin</span>
-        </div>
+          <div className={styles.dateTag}>
+            <Calendar className="w-4 h-4" />
+            <span>{data.date}</span>
+          </div>
+        </header>
 
-        <div className={styles.statsGrid}>
-          <div className={styles.distanceCard}>
-            <span className={styles.distanceLabel}>Distância</span>
-            <div className={styles.distanceValue}>
-              <span>{data.distance.toFixed(2)}</span>
-              <span>km</span>
+        {/* Main content: left (info + distância) / right (mini-métricas) */}
+        <div className={styles.mainRow}>
+          {/* LEFT */}
+          <div className={styles.leftBlock}>
+            <h3 className={styles.title}>{data.title}</h3>
+            <p className={styles.subtitle}>Treino registado no Garmin</p>
+
+            <div className={styles.distanceWrapper}>
+              <span className={styles.distanceValue}>{data.distance.toFixed(2)}</span>
+              <span className={styles.distanceUnit}>km</span>
             </div>
           </div>
 
-          <div className={styles.metricsRow}>
+          {/* RIGHT */}
+          <div className={styles.metricsGrid}>
             <div className={styles.metricTile}>
               <div className={styles.metricLabel}>
-                <Clock className="w-4 h-4" /> Tempo
+                <Clock className="w-4 h-4" />
+                <span>Tempo</span>
               </div>
               <div className={styles.metricValue}>{data.time}</div>
             </div>
 
             <div className={styles.metricTile}>
               <div className={styles.metricLabel}>
-                <Zap className="w-4 h-4" /> Pace
+                <Zap className="w-4 h-4" />
+                <span>Pace</span>
               </div>
               <div className={styles.metricValue}>{data.pace}</div>
             </div>
@@ -65,7 +75,8 @@ export default function LatestRunCard({ data }: LatestRunCardProps) {
             {data.avg_hr && (
               <div className={styles.metricTile}>
                 <div className={styles.metricLabel}>
-                  <Heart className="w-4 h-4" /> FC Média
+                  <Heart className="w-4 h-4" />
+                  <span>FC média</span>
                 </div>
                 <div className={styles.metricValue}>
                   {data.avg_hr}
@@ -77,7 +88,8 @@ export default function LatestRunCard({ data }: LatestRunCardProps) {
             {data.calories && (
               <div className={styles.metricTile}>
                 <div className={styles.metricLabel}>
-                  <Flame className="w-4 h-4" /> Calorias
+                  <Flame className="w-4 h-4" />
+                  <span>Calorias</span>
                 </div>
                 <div className={styles.metricValue}>
                   {data.calories}
@@ -86,11 +98,6 @@ export default function LatestRunCard({ data }: LatestRunCardProps) {
               </div>
             )}
           </div>
-        </div>
-
-        <div className={styles.footer}>
-          <Calendar className="w-4 h-4" />
-          <span>{data.date}</span>
         </div>
       </article>
     </Reveal>

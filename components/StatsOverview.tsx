@@ -3,7 +3,6 @@
 import {
   Activity,
   Calendar,
-  Target,
   Timer,
   TrendingUp,
   Zap,
@@ -18,7 +17,6 @@ interface StatsOverviewProps {
     avg_pace: string;
     total_time?: string;
     avg_distance?: number;
-    marathon_progress?: number;
   };
   thisWeek?: {
     runs: number;
@@ -27,7 +25,6 @@ interface StatsOverviewProps {
 }
 
 const WEEKLY_GOAL_KM = 25;
-const MARATHON_DISTANCE_KM = 42.195;
 
 const formatTotalTime = (time?: string) => {
   if (!time) return "0h";
@@ -42,13 +39,10 @@ export default function StatsOverview({ stats, thisWeek }: StatsOverviewProps) {
 
   const weeklyRuns = thisWeek?.runs ?? 0;
   const weeklyDistance = thisWeek?.distance ?? 0;
-
-  const marathonProgressRaw =
-    stats.marathon_progress ?? (stats.total_distance / MARATHON_DISTANCE_KM) * 100;
-  const marathonProgress = Math.min(100, Math.round(marathonProgressRaw));
-  const distanceRemaining = Math.max(0, MARATHON_DISTANCE_KM - stats.total_distance);
-
-  const weeklyGoalProgress = Math.min(100, Math.round((weeklyDistance / WEEKLY_GOAL_KM) * 100));
+  const weeklyGoalProgress = Math.min(
+    100,
+    Math.round((weeklyDistance / WEEKLY_GOAL_KM) * 100)
+  );
   const weeklyGoalDiff = Math.max(0, WEEKLY_GOAL_KM - weeklyDistance);
 
   return (
@@ -61,7 +55,7 @@ export default function StatsOverview({ stats, thisWeek }: StatsOverviewProps) {
             </div>
             <div className={styles.heroHeaderText}>
               <span>Distância total</span>
-              <span>Rumo aos {MARATHON_DISTANCE_KM.toFixed(3)} km</span>
+              <span>Todos os quilómetros já corridos nesta jornada</span>
             </div>
           </div>
 
@@ -70,26 +64,16 @@ export default function StatsOverview({ stats, thisWeek }: StatsOverviewProps) {
             <span>km</span>
           </div>
 
-          <div className={styles.progressSection}>
-            <div className={styles.progressHeader}>
-              <p>Progresso para a maratona</p>
-              <strong>{marathonProgress}%</strong>
-            </div>
-            <div className={styles.progressTrack}>
-              <div
-                className={styles.progressBar}
-                style={{ width: `${marathonProgress}%` }}
-              />
-            </div>
-          </div>
-
           <div className={styles.heroFooter}>
             <p>
-              Falta{distanceRemaining === 0 ? "" : ` ${distanceRemaining.toFixed(1)} km`}{" "}
-              para cruzar a meta. Se o progresso continuar, o objetivo chega antes de 2026.
+              Acumulado em {stats.total_runs} treino
+              {stats.total_runs === 1 ? "" : "s"} registado
+              {stats.total_runs === 1 ? "" : "s"}.
             </p>
             <p>
-              Média por treino: {stats.avg_distance ? stats.avg_distance.toFixed(1) : "-"} km · Pace médio {stats.avg_pace} min/km.
+              Média por treino:{" "}
+              {stats.avg_distance ? stats.avg_distance.toFixed(1) : "-"} km · Pace médio{" "}
+              {stats.avg_pace} min/km.
             </p>
           </div>
         </article>
@@ -108,8 +92,12 @@ export default function StatsOverview({ stats, thisWeek }: StatsOverviewProps) {
                   <span>Plano em andamento</span>
                 </div>
               </div>
-              <div className={styles.metricValue}>{weeklyDistance.toFixed(1)} km</div>
-              <div className={styles.metricSub}>{weeklyRuns} corrida{weeklyRuns === 1 ? "" : "s"}</div>
+              <div className={styles.metricValue}>
+                {weeklyDistance.toFixed(1)} km
+              </div>
+              <div className={styles.metricSub}>
+                {weeklyRuns} corrida{weeklyRuns === 1 ? "" : "s"}
+              </div>
               <div className={styles.weekGoal}>
                 <div className={styles.weekGoalTrack}>
                   <div
@@ -156,8 +144,12 @@ export default function StatsOverview({ stats, thisWeek }: StatsOverviewProps) {
                   <span>Horas investidas</span>
                 </div>
               </div>
-              <div className={styles.metricValue}>{formatTotalTime(stats.total_time)}</div>
-              <div className={styles.metricSub}>de treino acumulado até agora</div>
+              <div className={styles.metricValue}>
+                {formatTotalTime(stats.total_time)}
+              </div>
+              <div className={styles.metricSub}>
+                de treino acumulado até agora
+              </div>
             </div>
           </article>
 
@@ -173,7 +165,9 @@ export default function StatsOverview({ stats, thisWeek }: StatsOverviewProps) {
                 </div>
               </div>
               <div className={styles.metricValue}>{stats.avg_pace}</div>
-              <div className={styles.metricSub}>min/km, mantendo consistência</div>
+              <div className={styles.metricSub}>
+                min/km, mantendo consistência
+              </div>
             </div>
           </article>
         </div>

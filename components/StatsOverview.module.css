@@ -1,54 +1,48 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: 1.75rem;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2.5rem;
 }
 
+/* Card principal */
 .heroCard {
   position: relative;
-  padding: clamp(2.25rem, 3vw, 3rem);
-  border-radius: 30px;
-  background: radial-gradient(circle at top left, rgba(88, 166, 255, 0.42), rgba(23, 37, 84, 0.92)) border-box;
-  border: 1px solid rgba(88, 166, 255, 0.2);
-  box-shadow: 0 45px 90px rgba(2, 8, 23, 0.6);
+  padding: 1.8rem 2rem; /* menos padding */
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at top left, rgba(56, 189, 248, 0.22), transparent 60%),
+    radial-gradient(circle at bottom right, rgba(37, 99, 235, 0.22), transparent 60%),
+    rgba(15, 23, 42, 0.96);
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  box-shadow: 0 24px 55px rgba(15, 23, 42, 0.85);
   overflow: hidden;
-  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
-}
-
-.heroCard::after {
-  content: "";
-  position: absolute;
-  inset: -25% 10% 15% auto;
-  width: 60%;
-  background: radial-gradient(circle at top, rgba(88, 166, 255, 0.4), rgba(15, 23, 42, 0));
-  opacity: 0.8;
-  pointer-events: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .heroCard:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 50px 100px rgba(2, 8, 23, 0.68);
-  border-color: rgba(88, 166, 255, 0.35);
+  transform: translateY(-4px);
+  border-color: rgba(56, 189, 248, 0.7);
+  box-shadow: 0 32px 70px rgba(15, 23, 42, 0.9);
 }
 
 .heroHeader {
-  position: relative;
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.6rem;
 }
 
 .heroIcon {
-  width: 58px;
-  height: 58px;
+  width: 54px;
+  height: 54px;
   border-radius: 18px;
   display: grid;
   place-items: center;
-  background: rgba(12, 74, 161, 0.55);
-  border: 1px solid rgba(148, 197, 255, 0.4);
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(56, 189, 248, 0.7);
   color: #e0f2fe;
-  box-shadow: 0 20px 45px rgba(59, 130, 246, 0.35);
 }
 
 .heroHeaderText {
@@ -61,12 +55,12 @@
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: rgba(226, 232, 240, 0.8);
+  color: rgba(148, 163, 184, 0.9);
 }
 
 .heroHeaderText span:last-child {
   font-size: 0.9rem;
-  color: rgba(226, 232, 240, 0.6);
+  color: rgba(148, 163, 184, 0.8);
 }
 
 .heroValue {
@@ -76,19 +70,19 @@
 }
 
 .heroValue span:first-child {
-  font-size: clamp(3.5rem, 6vw, 5rem);
+  font-size: clamp(2.6rem, 4.2vw, 3.4rem); /* era maior */
   font-weight: 800;
-  color: #f8fafc;
+  color: #f9fafb;
 }
 
 .heroValue span:last-child {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  color: rgba(191, 219, 254, 0.85);
+  color: rgba(191, 219, 254, 0.9);
 }
 
 .progressSection {
-  margin-top: 1.75rem;
+  margin-top: 1.6rem;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -98,36 +92,40 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: rgba(226, 232, 240, 0.8);
+  color: rgba(148, 163, 184, 0.9);
   font-size: 0.9rem;
 }
 
 .progressHeader strong {
-  font-size: 1.1rem;
-  color: #f8fafc;
+  font-size: 1.05rem;
+  color: #e5e7eb;
 }
 
 .progressTrack {
   width: 100%;
-  height: 10px;
+  height: 8px;
   border-radius: 999px;
-  background: rgba(148, 197, 255, 0.15);
+  background: rgba(30, 64, 175, 0.6);
   overflow: hidden;
 }
 
 .progressBar {
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, rgba(250, 204, 21, 0.95), rgba(249, 115, 22, 0.95));
+  background: linear-gradient(
+    90deg,
+    rgba(234, 179, 8, 0.95),
+    rgba(56, 189, 248, 0.95)
+  );
   transition: width 0.6s ease;
 }
 
 .heroFooter {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
-  margin-top: 1.5rem;
-  color: rgba(226, 232, 240, 0.75);
+  gap: 0.8rem;
+  margin-top: 1.1rem;
+  color: rgba(148, 163, 184, 0.92);
   font-size: 0.9rem;
 }
 
@@ -135,41 +133,33 @@
   margin: 0;
 }
 
+/* Cards secundários */
+
 .secondaryGrid {
   display: grid;
   gap: 1.25rem;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-bottom: 1.5rem;
 }
 
 .metricCard {
   position: relative;
-  padding: 1.75rem;
-  border-radius: 24px;
-  background: rgba(8, 20, 41, 0.8);
-  border: 1px solid rgba(88, 166, 255, 0.2);
-  box-shadow: 0 30px 65px rgba(2, 8, 23, 0.5);
-  backdrop-filter: blur(18px);
-  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-  overflow: hidden;
-}
-
-.metricCard::after {
-  content: "";
-  position: absolute;
-  inset: -40% 20% 30% -25%;
-  background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.4), rgba(15, 23, 42, 0));
-  opacity: 0.7;
-  pointer-events: none;
+  padding: 1.5rem;
+  border-radius: 20px;
+  background: rgba(15, 23, 42, 0.94);
+  border: 1px solid rgba(30, 64, 175, 0.7);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(16px);
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
 }
 
 .metricCard:hover {
-  transform: translateY(-6px);
-  border-color: rgba(88, 166, 255, 0.4);
-  box-shadow: 0 36px 75px rgba(2, 8, 23, 0.58);
+  transform: translateY(-3px);
+  border-color: rgba(56, 189, 248, 0.7);
+  box-shadow: 0 24px 50px rgba(15, 23, 42, 0.9);
 }
 
 .metricContent {
-  position: relative;
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
@@ -182,14 +172,14 @@
 }
 
 .metricIcon {
-  width: 46px;
-  height: 46px;
+  width: 44px;
+  height: 44px;
   border-radius: 16px;
   display: grid;
   place-items: center;
-  background: rgba(30, 64, 175, 0.6);
-  border: 1px solid rgba(148, 197, 255, 0.35);
-  color: #c7d2fe;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(56, 189, 248, 0.6);
+  color: #bfdbfe;
 }
 
 .metricTitle {
@@ -199,48 +189,52 @@
 }
 
 .metricTitle span:first-child {
-  font-size: 0.75rem;
+  font-size: 0.76rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: rgba(226, 232, 240, 0.7);
+  color: rgba(148, 163, 184, 0.9);
 }
 
 .metricTitle span:last-child {
-  font-size: 0.85rem;
-  color: rgba(226, 232, 240, 0.55);
+  font-size: 0.86rem;
+  color: rgba(148, 163, 184, 0.8);
 }
 
 .metricValue {
-  font-size: 2.5rem;
+  font-size: 2.1rem;
   font-weight: 700;
-  color: #f8fafc;
+  color: #f9fafb;
   line-height: 1.1;
 }
 
 .metricSub {
   font-size: 0.85rem;
-  color: rgba(203, 213, 225, 0.75);
+  color: rgba(148, 163, 184, 0.92);
 }
 
 .weekGoal {
-  margin-top: 0.75rem;
+  margin-top: 0.6rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .weekGoalTrack {
   width: 100%;
   height: 6px;
   border-radius: 999px;
-  background: rgba(59, 130, 246, 0.25);
+  background: rgba(30, 64, 175, 0.75);
   overflow: hidden;
 }
 
 .weekGoalBar {
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, rgba(74, 222, 128, 0.95), rgba(6, 182, 212, 0.95));
+  background: linear-gradient(
+    90deg,
+    rgba(34, 197, 94, 0.95),
+    rgba(56, 189, 248, 0.95)
+  );
   transition: width 0.6s ease;
 }
 
@@ -249,12 +243,12 @@
   justify-content: space-between;
   align-items: center;
   font-size: 0.78rem;
-  color: rgba(148, 163, 184, 0.75);
+  color: rgba(148, 163, 184, 0.9);
 }
 
 @media (max-width: 768px) {
   .heroCard {
-    border-radius: 26px;
+    border-radius: 20px;
   }
 
   .secondaryGrid {

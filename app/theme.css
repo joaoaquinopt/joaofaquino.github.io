@@ -12,7 +12,9 @@
 
 /* Gradiente do topo (header) */
 .bg-header {
-  background: linear-gradient(90deg, var(--color-secondary), var(--color-primary));
+  background: linear-gradient(135deg,
+    rgba(30, 58, 138, 0.9),
+    rgba(15, 23, 42, 0.9));
 }
 
 /* Gradiente geral (background) */
