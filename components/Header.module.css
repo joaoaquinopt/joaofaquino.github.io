@@ -64,13 +64,16 @@
   .mobileOverlay {
     display: block;
     position: fixed;
-    inset: 0;
-    top: 4rem;
-    background: rgba(10, 37, 64, 0.95);
-    backdrop-filter: blur(8px);
-    z-index: 50;
-    border-radius: 1.5rem 1.5rem 0 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(10, 37, 64, 0.97);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+    border-radius: 0 0 1.5rem 1.5rem;
     box-shadow: 0 10px 35px rgba(15,23,42,0.85);
+    pointer-events: auto;
   }
   
   .mobileNav {
