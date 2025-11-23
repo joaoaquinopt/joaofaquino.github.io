@@ -1,186 +1,206 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import PageWrapper from "../../components/PageWrapper";
 import Reveal from "../../components/Reveal";
 import styles from "./gallery.module.css";
 
+interface RawPhoto {
+  id?: string | number;
+  filename?: string;
+  src?: string;
+  url?: string;
+  title?: string;
+  date?: string;
+  location?: string;
+  description?: string;
+}
+
+interface RawEvent {
+  id: string;
+  name?: string;
+  date?: string;
+  photos?: RawPhoto[];
+}
+
+interface GalleryPhoto {
+  id: string;
+  src: string;
+  title: string;
+  date?: string;
+  location?: string;
+  description?: string;
+  eventId: string;
+  eventName: string;
+}
+
+interface GalleryEvent {
+  id: string;
+  name: string;
+  date?: string;
+  photoCount: number;
+}
+
 export default function GalleryPage() {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [events, setEvents] = useState<GalleryEvent[]>([]);
+  const [photos, setPhotos] = useState<GalleryPhoto[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<string>("all");
+  const [selectedImage, setSelectedImage] = useState<GalleryPhoto | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
-  // Galeria organizada por eventos/corridas
-  const galleryEvents = [
-    {
-      id: "training-nov-2024",
-      name: "Treinos Novembro 2024",
-      date: "Novembro 2024",
-      photos: [
-        {
-          id: 1,
-          url: "/assets/gallery/training-nov/run1.jpg",
-          title: "Primeira Corrida - 5km",
-          date: "07/11/2024",
-          location: "Parque da Cidade",
-          description: "Início da jornada rumo à maratona"
-        },
-        {
-          id: 2,
-          url: "/assets/gallery/training-nov/run2.jpg",
-          title: "Treino de Resistência",
-          date: "09/11/2024",
-          location: "Marginal",
-          description: "8.75km com pace controlado"
-        }
-      ]
-    },
-    {
-      id: "race-dec-2024",
-      name: "Corrida de São Silvestre",
-      date: "31/12/2024",
-      photos: [
-        {
-          id: 3,
-          url: "/assets/gallery/sao-silvestre/start.jpg",
-          title: "Linha de Partida",
-          date: "31/12/2024",
-          location: "Centro da Cidade",
-          description: "Preparado para os 10km"
-        },
-        {
-          id: 4,
-          url: "/assets/gallery/sao-silvestre/finish.jpg",
-          title: "Meta Alcançada",
-          date: "31/12/2024",
-          location: "Centro da Cidade",
-          description: "10km concluídos com sucesso!"
-        }
-      ]
-    },
-    {
-      id: "training-jan-2025",
-      name: "Treinos Janeiro 2025",
-      date: "Janeiro 2025",
-      photos: [
-        {
-          id: 5,
-          url: "/assets/gallery/training-jan/long-run.jpg",
-          title: "Long Run 15km",
-          date: "15/01/2025",
-          location: "Percurso Marginal",
-          description: "Maior distância até agora"
-        }
-      ]
-    }
-  ];
-
-  // Filtrar fotos por evento
-  const allPhotos = galleryEvents.flatMap(event =>
-    event.photos.map(photo => ({ ...photo, eventName: event.name }))
-  );
-
-  const filteredPhotos = selectedEvent === "all"
-    ? allPhotos
-    : galleryEvents.find(e => e.id === selectedEvent)?.photos.map(p => ({ ...p, eventName: galleryEvents.find(e => e.id === selectedEvent)?.name })) || [];
-
-  // ESC key handler for modal
   useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && selectedImage) {
-        setSelectedImage(null);
+    const loadGallery = async () => {
+      try {
+        setIsLoading(true);
+        setHasError(false);
+
+        // ⚠️ IMPORTANTE: caminho estático correto para o JSON
+        const res = await fetch("../../data/gallery_index.json");
+
+        if (!res.ok) {
+          console.error("Falha ao carregar gallery_index.json", res.status);
+          setHasError(true);
+          return;
+        }
+
+        const data = await res.json();
+        const rawEvents: RawEvent[] = Array.isArray(data.events) ? data.events : [];
+
+        const mappedEvents: GalleryEvent[] = rawEvents.map((ev) => ({
+          id: ev.id,
+          name: ev.name ?? ev.id,
+          date: ev.date,
+          photoCount: ev.photos?.length ?? 0,
+        }));
+
+        const mappedPhotos: GalleryPhoto[] = rawEvents.flatMap((ev) => {
+          const evName = ev.name ?? ev.id;
+          return (ev.photos ?? []).map((photo, index) => {
+            const id =
+              String(photo.id ?? `${ev.id}-${photo.filename ?? index}`);
+            const src =
+              photo.src ??
+              photo.url ??
+              `public/assets/gallery/${ev.id}/${photo.filename}`;
+
+            return {
+              id,
+              src,
+              title: photo.title ?? photo.filename ?? "Foto",
+              date: photo.date,
+              location: photo.location,
+              description:
+                photo.description ??
+                "Momento registado durante a preparação para a maratona.",
+              eventId: ev.id,
+              eventName: evName,
+            };
+          });
+        });
+
+        // Ordenar eventos: mais recentes em cima (se tiverem data)
+        mappedEvents.sort((a, b) => {
+          if (!a.date || !b.date) return 0;
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        });
+
+        setEvents(mappedEvents);
+        setPhotos(mappedPhotos);
+      } catch (err) {
+        console.error("Erro ao carregar galeria:", err);
+        setHasError(true);
+      } finally {
+        setIsLoading(false);
       }
     };
-    window.addEventListener("keydown", handleEscape);
-    return () => window.removeEventListener("keydown", handleEscape);
-  }, [selectedImage]);
+
+    loadGallery();
+  }, []);
+
+  const allPhotos = photos;
+  const filteredPhotos =
+    selectedEvent === "all"
+      ? allPhotos
+      : allPhotos.filter((p) => p.eventId === selectedEvent);
 
   return (
     <PageWrapper>
       <div className={styles.galleryPage}>
         {/* Header */}
-        <div className={styles.header}>
-          <h1 className={styles.title}>📸 Galeria</h1>
+        <header className={styles.header}>
+          <h1 className={styles.title}>Galeria</h1>
           <p className={styles.subtitle}>
             Momentos registados ao longo da preparação para a maratona de 2026.
             Cada foto conta uma história, cada treino é uma conquista.
           </p>
-        </div>
+        </header>
 
-        {/* Main Content: Sidebar + Photos */}
         <div className={styles.content}>
-          {/* Sidebar with Event Filters */}
+          {/* SIDEBAR – Eventos */}
           <aside className={styles.sidebar}>
             <div className={styles.sidebarSticky}>
               <h2 className={styles.sidebarTitle}>Eventos</h2>
-              <div className={styles.eventList}>
-                <button
-                  onClick={() => setSelectedEvent("all")}
-                  className={`${styles.eventButton} ${selectedEvent === "all" ? styles.active : ""}`}
-                  type="button"
-                  aria-label="Mostrar todas as fotos"
-                >
-                  <span className={styles.eventName}>Todas as Fotos</span>
-                  <span className={styles.eventCount}>{allPhotos.length}</span>
-                </button>
-                {galleryEvents.map(event => (
+
+              {isLoading ? (
+                <p className={styles.loadingText}>A carregar eventos…</p>
+              ) : hasError ? (
+                <p className={styles.errorText}>
+                  Não foi possível carregar a galeria. Verifica se o ficheiro{" "}
+                  <code>public/assets/gallery/gallery_index.json</code> existe.
+                </p>
+              ) : (
+                <div className={styles.eventList}>
                   <button
-                    key={event.id}
-                    onClick={() => setSelectedEvent(event.id)}
-                    className={`${styles.eventButton} ${selectedEvent === event.id ? styles.active : ""}`}
                     type="button"
-                    aria-label={`Filtrar por ${event.name}`}
+                    onClick={() => setSelectedEvent("all")}
+                    className={`${styles.eventButton} ${
+                      selectedEvent === "all" ? styles.active : ""
+                    }`}
                   >
                     <div>
-                      <span className={styles.eventName}>{event.name}</span>
-                      <span className={styles.eventDate}>{event.date}</span>
+                      <span className={styles.eventName}>Todas as fotos</span>
+                      <span className={styles.eventDate}>Desde 2025</span>
                     </div>
-                    <span className={styles.eventCount}>{event.photos.length}</span>
+                    <span className={styles.eventCount}>{allPhotos.length}</span>
                   </button>
-                ))}
-              </div>
+
+                  {events.map((event) => (
+                    <button
+                      key={event.id}
+                      type="button"
+                      onClick={() => setSelectedEvent(event.id)}
+                      className={`${styles.eventButton} ${
+                        selectedEvent === event.id ? styles.active : ""
+                      }`}
+                    >
+                      <div>
+                        <span className={styles.eventName}>{event.name}</span>
+                        {event.date && (
+                          <span className={styles.eventDate}>
+                            {event.date}
+                          </span>
+                        )}
+                      </div>
+                      <span className={styles.eventCount}>
+                        {event.photoCount}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </aside>
 
-          {/* Photo Grid */}
+          {/* GRID – Fotos */}
           <main className={styles.mainContent}>
-            {filteredPhotos.length > 0 ? (
-              <div className={styles.photoGrid}>
-                {filteredPhotos.map((photo, index) => (
-                  <Reveal key={photo.id} delay={index * 0.05}>
-                    <button
-                      className={styles.photoCard}
-                      onClick={() => setSelectedImage(photo.url)}
-                      type="button"
-                      aria-label={`Ver foto: ${photo.title}`}
-                    >
-                      {/* Image Placeholder */}
-                      <div className={styles.photoImagePlaceholder}>
-                        <div className={styles.photoPlaceholderContent}>
-                          <div className={styles.photoIcon}>📷</div>
-                          <p className={styles.photoPlaceholderText}>Foto em breve</p>
-                        </div>
-                      </div>
-
-                      {/* Photo Info */}
-                      <div className={styles.photoInfo}>
-                        <h3 className={styles.photoTitle}>{photo.title}</h3>
-                        <div className={styles.photoMeta}>
-                          <span>📅 {photo.date}</span>
-                          <span>•</span>
-                          <span>📍 {photo.location}</span>
-                        </div>
-                        {'eventName' in photo && selectedEvent === "all" && (
-                          <div className={styles.photoEventBadge}>
-                            🏃 {photo.eventName}
-                          </div>
-                        )}
-                        <p className={styles.photoDescription}>{photo.description}</p>
-                      </div>
-                    </button>
-                  </Reveal>
-                ))}
+            {isLoading && (
+              <div className={styles.loadingBox}>
+                A carregar fotos…
               </div>
-            ) : (
+            )}
+
+            {!isLoading && !hasError && filteredPhotos.length === 0 && (
               <div className={styles.emptyState}>
                 <div className={styles.emptyIcon}>🏃‍♂️</div>
                 <h3 className={styles.emptyTitle}>Nenhuma foto neste evento</h3>
@@ -190,51 +210,101 @@ export default function GalleryPage() {
               </div>
             )}
 
-            {/* Social Links */}
+            {!isLoading && !hasError && filteredPhotos.length > 0 && (
+              <div className={styles.photoGrid}>
+                {filteredPhotos.map((photo, index) => (
+                  <Reveal key={photo.id} delay={index * 0.04}>
+                    <button
+                      type="button"
+                      className={styles.photoCard}
+                      onClick={() => setSelectedImage(photo)}
+                    >
+                      <div className={styles.photoImage}>
+                        {/* Agora usa MESMO a imagem do disco */}
+                        <img
+                          src={photo.src}
+                          alt={photo.title}
+                          loading="lazy"
+                        />
+                      </div>
+
+                      <div className={styles.photoInfo}>
+                        <h3 className={styles.photoTitle}>{photo.title}</h3>
+                        <div className={styles.photoMeta}>
+                          {photo.date && <span>📅 {photo.date}</span>}
+                          {photo.location && (
+                            <>
+                              <span>•</span>
+                              <span>📍 {photo.location}</span>
+                            </>
+                          )}
+                        </div>
+                        {selectedEvent === "all" && (
+                          <div className={styles.photoEventBadge}>
+                            🏃 {photo.eventName}
+                          </div>
+                        )}
+                        {photo.description && (
+                          <p className={styles.photoDescription}>
+                            {photo.description}
+                          </p>
+                        )}
+                      </div>
+                    </button>
+                  </Reveal>
+                ))}
+              </div>
+            )}
+
+            {/* Links sociais */}
             <div className={styles.socialLinks}>
               <a
                 href="https://instagram.com/joaofaquino"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={styles.socialButton}
-                style={{ background: 'linear-gradient(135deg, #833AB4 0%, #E1306C 100%)' }}
+                className={`${styles.socialButton} ${styles.socialButtonInstagram}`}
               >
                 📸 Instagram
               </a>
+
               <a
-                href="https://www.strava.com/athletes/joaoaquino"
+                href="https://connect.garmin.com/modern/profile/cde13d26-25ea-450f-b96d-7018d1abf598"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={styles.socialButton}
-                style={{ background: 'linear-gradient(135deg, #FC4C02 0%, #E34402 100%)' }}
+                className={`${styles.socialButton} ${styles.socialButtonGarmin}`}
               >
-                🏃 Strava
+                <span>🏃 Ver treinos no Garmin</span>
               </a>
             </div>
           </main>
         </div>
       </div>
 
-      {/* Modal for full image */}
+      {/* MODAL – imagem cheia (por enquanto placeholder) */}
       {selectedImage && (
         <div
           className={styles.modal}
-          onClick={() => setSelectedImage(null)}
           role="dialog"
           aria-modal="true"
+          onClick={() => setSelectedImage(null)}
         >
-          <button
-            className={styles.closeButton}
-            onClick={() => setSelectedImage(null)}
-            type="button"
-            aria-label="Fechar visualização"
+          <div
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()}
           >
-            ✕
-          </button>
-          <div className={styles.modalContent}>
-            <p className={styles.modalPlaceholder}>
-              🖼️ Visualização de imagem (em desenvolvimento)
-            </p>
+            <img
+              src={selectedImage.src}
+              alt={selectedImage.title}
+              className={styles.modalImage}
+            />
+            <p className={styles.modalCaption}>{selectedImage.title}</p>
+            <button
+              type="button"
+              className={styles.closeButton}
+              onClick={() => setSelectedImage(null)}
+            >
+              Fechar
+            </button>
           </div>
         </div>
       )}

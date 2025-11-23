@@ -1,162 +1,92 @@
 {
-  "generated_at": "2025-11-20T18:32:30.218224",
-  "stats": {
-    "total_runs": 13,
-    "total_distance": 90.44,
-    "total_time": "11:26:36",
-    "total_time_seconds": 41196.0,
-    "avg_pace": "7:35",
-    "avg_distance": 6.96,
-    "marathon_progress": 214.3
-  },
-  "latest_run": {
-    "date": "20/11/2025",
-    "iso_date": "2025-11-20",
-    "title": "Porto - 3x (400m @Z5 + 400m @Z1)",
-    "distance": 5.49,
-    "time": "00:42:35",
-    "time_seconds": 2555.0,
-    "pace": "7:45",
-    "avg_hr": "148",
-    "max_hr": "165",
-    "calories": 427,
-    "elevation_gain": 33
-  },
-  "this_week": {
-    "runs": 3,
-    "distance": 24.42,
-    "time": "03:11:50"
-  },
-  "recent_runs": [
+  "total_distance": 72.25,
+  "total_time": 32754,
+  "total_runs": 9,
+  "avg_distance": 8.03,
+  "avg_pace": 7.56,
+  "activities": [
     {
-      "date": "20/11/2025",
-      "iso_date": "2025-11-20",
-      "title": "Porto - 3x (400m @Z5 + 400m @Z1)",
+      "date": "2025-11-23 08:17:58",
+      "distance": 8.1,
+      "total_time": 3826,
+      "calories": 613,
+      "average_heartrate": 129,
+      "average_pace": 7.872427983539096,
+      "average_speed": 7.621536853110298
+    },
+    {
+      "date": "2025-11-20 08:16:47",
       "distance": 5.49,
-      "time": "00:42:35",
-      "time_seconds": 2555.0,
-      "pace": "7:45",
-      "avg_hr": "148",
-      "max_hr": "165",
+      "total_time": 2555,
       "calories": 427,
-      "elevation_gain": 33
+      "average_heartrate": 148,
+      "average_pace": 7.7565270188221005,
+      "average_speed": 7.7354207436399225
     },
     {
-      "date": "16/11/2025",
-      "iso_date": "2025-11-16",
-      "title": "Porto - Waves Z2-Z3",
+      "date": "2025-11-16 17:50:34",
       "distance": 11.12,
-      "time": "01:29:06",
-      "time_seconds": 5346.0,
-      "pace": "8:00",
-      "avg_hr": "158",
-      "max_hr": "182",
+      "total_time": 5346,
       "calories": 891,
-      "elevation_gain": 67
+      "average_heartrate": 158,
+      "average_pace": 8.012589928057555,
+      "average_speed": 7.488215488215488
     },
     {
-      "date": "13/11/2025",
-      "iso_date": "2025-11-13",
-      "title": "Porto - 3x (800m @Z5 + 800m @Z1)",
+      "date": "2025-11-13 07:08:59",
       "distance": 7.81,
-      "time": "01:00:09",
-      "time_seconds": 3609.0,
-      "pace": "7:42",
-      "avg_hr": "135",
-      "max_hr": "150",
+      "total_time": 3609,
       "calories": 587,
-      "elevation_gain": 37
+      "average_heartrate": 135,
+      "average_pace": 7.701664532650449,
+      "average_speed": 7.790523690773067
     },
     {
-      "date": "11/11/2025",
-      "iso_date": "2025-11-11",
-      "title": "Porto - 5km @Z2 + Strides",
+      "date": "2025-11-11 13:34:36",
       "distance": 6.28,
-      "time": "00:48:41",
-      "time_seconds": 2921.0,
-      "pace": "7:45",
-      "avg_hr": "156",
-      "max_hr": "184",
+      "total_time": 2921,
       "calories": 505,
-      "elevation_gain": 46
+      "average_heartrate": 156,
+      "average_pace": 7.752123142250531,
+      "average_speed": 7.739815131804177
     },
     {
-      "date": "09/11/2025",
-      "iso_date": "2025-11-09",
-      "title": "Porto - Waves Z2-Z3",
+      "date": "2025-11-09 09:52:53",
       "distance": 9.03,
-      "time": "01:09:29",
-      "time_seconds": 4169.0,
-      "pace": "7:41",
-      "avg_hr": "140",
-      "max_hr": "155",
+      "total_time": 4169,
       "calories": 698,
-      "elevation_gain": 60
+      "average_heartrate": 140,
+      "average_pace": 7.694721299372462,
+      "average_speed": 7.797553370112736
     },
     {
-      "date": "06/11/2025",
-      "iso_date": "2025-11-06",
-      "title": "Porto - 4x (600m @Z5 + 600m @Z1)",
+      "date": "2025-11-06 09:10:49",
       "distance": 8.0,
-      "time": "01:01:39",
-      "time_seconds": 3699.0,
-      "pace": "7:42",
-      "avg_hr": "164",
-      "max_hr": "191",
+      "total_time": 3699,
       "calories": 679,
-      "elevation_gain": 82
+      "average_heartrate": 164,
+      "average_pace": 7.70625,
+      "average_speed": 7.785888077858881
     },
     {
-      "date": "04/11/2025",
-      "iso_date": "2025-11-04",
-      "title": "Porto - 5km @Z2 + Strides",
+      "date": "2025-11-04 07:13:30",
       "distance": 6.21,
-      "time": "00:49:02",
-      "time_seconds": 2942.0,
-      "pace": "7:53",
-      "avg_hr": "134",
-      "max_hr": "147",
+      "total_time": 2942,
       "calories": 479,
-      "elevation_gain": 39
+      "average_heartrate": 134,
+      "average_pace": 7.895866881374128,
+      "average_speed": 7.598912304554725
     },
     {
-      "date": "02/11/2025",
-      "iso_date": "2025-11-02",
-      "title": "Porto - 2km @Z2+ 8km @Z3",
+      "date": "2025-11-02 08:11:34",
       "distance": 10.21,
-      "time": "01:01:27",
-      "time_seconds": 3687.0,
-      "pace": "6:01",
-      "avg_hr": "182",
-      "max_hr": "192",
+      "total_time": 3687,
       "calories": 868,
-      "elevation_gain": 38
-    },
-    {
-      "date": "30/10/2025",
-      "iso_date": "2025-10-30",
-      "title": "Porto - 5x (400m @Z5 + 400m @Z1)",
-      "distance": 7.09,
-      "time": "00:55:00",
-      "time_seconds": 3300.0,
-      "pace": "7:45",
-      "avg_hr": "160",
-      "max_hr": "179",
-      "calories": 606,
-      "elevation_gain": 23
-    },
-    {
-      "date": "28/10/2025",
-      "iso_date": "2025-10-28",
-      "title": "Porto - 5km @Z2",
-      "distance": 5.01,
-      "time": "00:39:24",
-      "time_seconds": 2364.0,
-      "pace": "7:51",
-      "avg_hr": "143",
-      "max_hr": "166",
-      "calories": 396,
-      "elevation_gain": 23
+      "average_heartrate": 182,
+      "average_pace": 6.018609206660137,
+      "average_speed": 9.969080553295363
     }
-  ]
+  ],
+  "last_updated": "2025-11-23T19:53:35.532125",
+  "source": "Garmin Connect Export"
 }

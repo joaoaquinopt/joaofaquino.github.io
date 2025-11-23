@@ -26,12 +26,25 @@ interface StatsOverviewProps {
 
 const WEEKLY_GOAL_KM = 25;
 
-const formatTotalTime = (time?: string) => {
-  if (!time) return "0h";
-  const [hours, minutes] = time.split(":");
-  const h = Number(hours || 0);
-  const m = Number(minutes || 0);
-  return `${h}h ${m}m`;
+const formatTotalTime = (time?: string | number) => {
+  if (time === undefined || time === null) return "0h 0m";
+
+  // Caso venha string "HH:MM"
+  if (typeof time === "string" && time.includes(":")) {
+    const [hours, minutes] = time.split(":");
+    const h = Number(hours || 0);
+    const m = Number(minutes || 0);
+    return `${h}h ${m}m`;
+  }
+
+  // Caso venha número (segundos)
+  if (typeof time === "number") {
+    const h = Math.floor(time / 3600);
+    const m = Math.floor((time % 3600) / 60);
+    return `${h}h ${m}m`;
+  }
+
+  return "0h 0m";
 };
 
 export default function StatsOverview({ stats, thisWeek }: StatsOverviewProps) {

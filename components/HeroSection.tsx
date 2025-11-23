@@ -28,8 +28,7 @@ export default function HeroSection() {
                     {/* Subtexto */}
                     <p className={styles.heroSubtitle}>
                         Estou a documentar a jornada real até à minha primeira maratona —
-                        treinos, insónias, falhas e vitórias. Tudo registado em dados, vídeos
-                        e histórias que qualquer pessoa ocupada consegue reconhecer.
+                        treinos, insónias, falhas e vitórias. 
                     </p>
 
                     {/* CTAs */}

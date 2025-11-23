@@ -1,7 +1,7 @@
 /* Espaçamento entre header sticky e HeroSection */
 .heroSpacing {
   padding-top: 0.8rem;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 /* HeroSection.module.css - estilos isolados para o HeroSection */
 
@@ -9,13 +9,16 @@
   position: relative;
   width: 100%;
   max-width: 4xl;
-  border-radius: 2rem;
+  border-radius: 24px;
   padding: 2rem 2.5rem;
-  background: rgba(15,23,42,0.60);
-  box-shadow: 0 12px 40px rgba(15,23,42,0.85);
+  background:
+    radial-gradient(circle at top left, rgba(56, 189, 248, 0.22), transparent 60%),
+    radial-gradient(circle at bottom right, rgba(37, 99, 235, 0.22), transparent 60%),
+    rgba(15, 23, 42, 0.96);
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  box-shadow: 0 24px 55px rgba(15, 23, 42, 0.85);
   overflow: hidden;
   text-align: center;
-  margin-bottom: 0.5rem;
 }
 
 .heroGradient {
@@ -25,8 +28,8 @@
 }
 
 .heroTitle {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 1.5rem;
+  font-weight: 500;
   color: #F8FAFC;
   line-height: 1.2;
   margin-bottom: 1rem;
@@ -53,3 +56,8 @@
   gap: 0.75rem;
   padding-top: 0.5rem;
 }
+
+.heroCtas a {
+  color: #fff !important;
+}
+

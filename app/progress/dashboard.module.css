@@ -3,27 +3,30 @@
 .metricsGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
 }
 
 .metricCard {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
+  position: relative;
+  background: rgba(15, 23, 42, 0.92);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  border-radius: 1.75rem;
   padding: 1.5rem;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.9);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .metricCard:hover {
-  border-color: rgba(59, 130, 246, 0.3);
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  border-color: rgba(129, 140, 248, 0.8);
+  box-shadow: 0 32px 80px rgba(15, 23, 42, 1);
 }
 
 .metricCardBlue {
-  background: rgba(59, 130, 246, 0.1);
-  border-color: rgba(59, 130, 246, 0.3);
+  background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.25), rgba(15, 23, 42, 0.95));
+  border-color: rgba(59, 130, 246, 0.6);
   border-radius: 1.5rem;
   padding: 1.5rem;
   backdrop-filter: blur(10px);
@@ -36,8 +39,8 @@
 }
 
 .metricCardCyan {
-  background: rgba(6, 182, 212, 0.1);
-  border-color: rgba(6, 182, 212, 0.3);
+  background: radial-gradient(circle at top left, rgba(6, 182, 212, 0.25), rgba(15, 23, 42, 0.95));
+  border-color: rgba(6, 182, 212, 0.6);
   border-radius: 1.5rem;
   padding: 1.5rem;
   backdrop-filter: blur(10px);
@@ -50,8 +53,8 @@
 }
 
 .metricCardPurple {
-  background: rgba(168, 85, 247, 0.1);
-  border-color: rgba(168, 85, 247, 0.3);
+  background: radial-gradient(circle at top left, rgba(168, 85, 247, 0.25), rgba(15, 23, 42, 0.95));
+  border-color: rgba(168, 85, 247, 0.6);
   border-radius: 1.5rem;
   padding: 1.5rem;
   backdrop-filter: blur(10px);
@@ -64,8 +67,8 @@
 }
 
 .metricCardOrange {
-  background: rgba(249, 115, 22, 0.1);
-  border-color: rgba(249, 115, 22, 0.3);
+  background: radial-gradient(circle at top left, rgba(249, 115, 22, 0.25), rgba(15, 23, 42, 0.95));
+  border-color: rgba(249, 115, 22, 0.7);
   border-radius: 1.5rem;
   padding: 1.5rem;
   backdrop-filter: blur(10px);
@@ -117,36 +120,36 @@
 
 /* Card container styles */
 .card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
-  padding: 1.5rem;
-  transition: all 0.3s ease;
+  background: rgba(15, 23, 42, 0.94);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  border-radius: 1.75rem;
+  padding: 1.75rem;
+  box-shadow: 0 28px 80px rgba(15, 23, 42, 1);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .card:hover {
-  border-color: rgba(59, 130, 246, 0.3);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transform: translateY(-3px);
+  border-color: rgba(96, 165, 250, 0.8);
+  box-shadow: 0 34px 90px rgba(15, 23, 42, 1);
 }
 
 /* Activity card styles */
 .activityCard {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(15, 23, 42, 0.96);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(148, 163, 184, 0.4);
   border-radius: 1.5rem;
   padding: 1.5rem;
-  transition: all 0.3s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
   cursor: pointer;
 }
 
 .activityCard:hover {
-  border-color: rgba(59, 130, 246, 0.4);
-  background: rgba(59, 130, 246, 0.08);
   transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.8);
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.95);
 }
 
 .activityCardHeader {
@@ -184,24 +187,23 @@
 
 /* Chart card specific */
 .chartCard {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
-  padding: 1.5rem;
+  background: rgba(15, 23, 42, 0.94);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  border-radius: 1.75rem;
+  padding: 1.75rem;
   position: relative;
-  overflow: visible;
-  min-height: 400px;
+  min-height: 380px;
+  box-shadow: 0 28px 80px rgba(15, 23, 42, 1);
 }
 
 /* Progress ring card specific */
 .progressCard {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(59, 130, 246, 0.3);
-  border-radius: 1rem;
-  padding: 1.5rem;
-  overflow: visible;
+  background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.35), rgba(15, 23, 42, 0.96));
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(59, 130, 246, 0.7);
+  border-radius: 1.75rem;
+  padding: 1.75rem;
   display: flex;
   flex-direction: column;
 }
