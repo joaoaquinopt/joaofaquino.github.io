@@ -1,8 +1,6 @@
 /* Gap customizado para menus do header */
 .menuGap {
-  display: flex;
-  align-items: center;
-  gap: 1.0rem;
+  gap: 1rem;
 }
 /* Header Styles com Media Queries */
 

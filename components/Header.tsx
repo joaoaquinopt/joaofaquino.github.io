@@ -46,27 +46,30 @@ export default function Header() {
               </p>
             </div>
             {/* Menus + Toggle alinhados à direita */}
-            <div className={`${styles.menuGap} justify-end`}>
-              {navLinks.map(({ href, label, icon: Icon }) => {
-                const isActive = pathname === href;
-                return (
-                  <Link
-                    key={href}
-                    href={href}
-                    className={`flex items-center gap-1.5 transition-colors whitespace-nowrap text-white hover:text-blue-300 ${isActive ? styles.active : ""}`}
-                    style={{ color: isActive ? '#58A6FF' : '#fff' }}
-                  >
-                    <Icon className="h-4 w-4" />
-                    <span>{label}</span>
-                  </Link>
-                );
-              })}
-              <div className="flex items-center gap-3 min-w-fit ml-4">
+            <div className="flex items-center justify-end gap-4">
+              <nav className={`${styles.desktopNav} ${styles.menuGap}`} aria-label="Navegação principal">
+                {navLinks.map(({ href, label, icon: Icon }) => {
+                  const isActive = pathname === href;
+                  return (
+                    <Link
+                      key={href}
+                      href={href}
+                      className={`flex items-center gap-1.5 transition-colors whitespace-nowrap text-white hover:text-blue-300 ${isActive ? styles.active : ""}`}
+                      style={{ color: isActive ? '#58A6FF' : '#fff' }}
+                    >
+                      <Icon className="h-4 w-4" />
+                      <span>{label}</span>
+                    </Link>
+                  );
+                })}
+              </nav>
+              <div className="flex items-center gap-3 min-w-fit">
                 <LanguageToggle />
                 <button
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                   className={styles.hamburgerBtn}
                   aria-label="Menu"
+                  aria-expanded={mobileMenuOpen}
                 >
                   {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                 </button>
