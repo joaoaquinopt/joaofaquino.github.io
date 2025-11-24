@@ -62,7 +62,7 @@ export default function CTASection() {
 
           {/* Subtitle */}
           <p className="text-white/80 text-sm italic">
-            "Nem sempre perfeito, mas sempre em frente." 🏃‍♂️
+            &ldquo;Nem sempre perfeito, mas sempre em frente.&rdquo; 🏃‍♂️
           </p>
         </div>
       </div>

@@ -13,6 +13,7 @@ interface NormalizedGarminData {
     total_distance: number;
     total_time: string;
     avg_pace: string;
+    avg_distance?: number;
     marathon_progress?: number;
   };
   this_week?: {
@@ -57,41 +58,78 @@ export default function HomePage() {
     fetch("/data/garmin_summary.json")
       .then((res) => res.json())
       .then((data) => {
+        const statsSource = data.stats ?? {};
+        const latest =
+          data.latest_run ??
+          data.recent_runs?.[0] ??
+          data.activities?.[0] ??
+          null;
 
-        const latest = data.activities?.[0] ?? null;
+        const rawTotalTime =
+          data.total_time_seconds ??
+          data.total_time ??
+          statsSource.total_time_seconds ??
+          statsSource.total_time ??
+          0;
 
-        const totalTimeSeconds = Number(data.total_time ?? data.stats?.total_time ?? 0);
+        const normalizePace = (value: unknown) => {
+          if (typeof value === "string") {
+            return value.includes("/") ? value : `${value}/km`;
+          }
+          return formatPace(Number(value ?? 0));
+        };
+
+        const thisWeekRaw = data.this_week ?? statsSource.this_week ?? null;
 
         setGarminData({
           stats: {
-            total_runs: data.total_runs ?? data.stats?.total_runs ?? 0,
-            total_distance: data.total_distance ?? data.stats?.total_distance ?? 0,
-
-            // ANTES: total_time: formatTimeHours(Number(data.total_time ?? data.stats?.total_time ?? 0)),
-            // AGORA:
-            total_time: formatTotalTimeForStats(
-              Number(
-                data.total_time ??
-                data.stats?.total_time_seconds ??
-                data.stats?.total_time ??
-                0
-              )
+            total_runs: Number(data.total_runs ?? statsSource.total_runs ?? 0),
+            total_distance: Number(data.total_distance ?? statsSource.total_distance ?? 0),
+            total_time: formatTotalTimeForStats(Number(rawTotalTime ?? 0)),
+            avg_pace: normalizePace(data.avg_pace ?? statsSource.avg_pace ?? 0),
+            avg_distance: Number(data.avg_distance ?? statsSource.avg_distance ?? 0) || undefined,
+            marathon_progress: Number(
+              data.marathon_progress ?? statsSource.marathon_progress ?? 0
             ),
-
-            avg_pace: formatPace(Number(data.avg_pace ?? data.stats?.avg_pace ?? 0)),
           },
-
+          this_week: thisWeekRaw
+            ? {
+              runs: Number(thisWeekRaw.runs ?? 0),
+              distance: Number(thisWeekRaw.distance ?? 0),
+              time: typeof thisWeekRaw.time === "string"
+                ? thisWeekRaw.time
+                : formatTimeHours(Number(thisWeekRaw.time ?? 0)),
+            }
+            : undefined,
           latest_run: latest
             ? {
-              date: latest.date,
-              distance: latest.distance,
-
-              // <-- continua formatado, aqui está correcto
-              time: formatTimeHours(latest.total_time),
-
-              pace: formatPace(latest.average_pace),
-              calories: latest.calories,
-              avg_hr: latest.average_heartrate,
+              date: latest.date ?? latest.iso_date ?? latest.start_time,
+              distance: Number(latest.distance ?? latest.distance_km ?? 0),
+              time: formatTimeHours(
+                Number(
+                  latest.time_seconds ??
+                  latest.total_time ??
+                  latest.total_time_seconds ??
+                  latest.moving_time ??
+                  latest.elapsed_time ??
+                  0
+                )
+              ),
+              pace: normalizePace(
+                latest.pace ??
+                latest.avg_pace ??
+                latest.average_pace ??
+                latest.average_pace_min_per_km ??
+                0
+              ),
+              calories: Number(latest.calories ?? latest.total_calories ?? 0) || undefined,
+              avg_hr: Number(
+                latest.avg_hr ??
+                latest.average_heartrate ??
+                latest.average_heart_rate ??
+                latest.avg_heart_rate ??
+                0
+              ) || undefined,
             }
             : null,
         });

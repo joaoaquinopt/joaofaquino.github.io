@@ -362,7 +362,7 @@ export default function ProgressoPage() {
                 <div className="flex-1 flex flex-col items-center justify-center py-8">
                   {(() => {
                     const targetDate = new Date("2026-11-01").getTime();
-                    const now = Date.now();
+                    const now = new Date().getTime();
                     const daysRemaining = Math.ceil(
                       (targetDate - now) / (1000 * 60 * 60 * 24)
                     );

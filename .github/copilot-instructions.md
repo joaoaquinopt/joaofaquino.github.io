@@ -1,407 +1,201 @@
-```markdown
 # 🏃‍♂️ Projeto: joaofaquino.run
 
-## 🎯 Objetivo Geral
+## 🎯 Visão Geral
 
-**joaofaquino.run** é um site pessoal dinâmico e minimalista que documenta a jornada real de **João Aquino rumo à Maratona de 2026**, integrando dados de treino, progresso semanal e automação com APIs de fitness (Strava e futuramente Garmin Connect).
+**joaofaquino.run** documenta a jornada autêntica de **João Aquino rumo à Maratona de 2026**, combinando narrativa pessoal, dashboards dinâmicos e integração com dados de treino do Garmin Connect. O objetivo é evidenciar consistência, disciplina e evolução com design cuidado e animações suaves.
 
-O projeto busca unir **autenticidade, performance e design clean**, destacando disciplina, esforço e evolução de forma transparente e automatizada.
-
----
-
-## 🧱 Arquitetura Técnica
-
-### 🗂️ Stack principal
-
-| Camada             | Tecnologia                                        | Descrição                                                                           |
-| ------------------ | ------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| Frontend           | **Next.js 14 (App Router)**                       | Estrutura principal da aplicação, SPA com SSR/ISR habilitado.                       |
-| Linguagem          | **TypeScript**                                    | Tipagem segura e manutenção escalável.                                              |
-| Estilos            | **TailwindCSS** + **CSS Modules** + `globals.css` | Design minimalista. CSS Modules para isolamento de componentes (Header, Equipment). |
-| Animações          | **Framer Motion**                                 | Transições suaves entre páginas, efeitos de scroll e hover.                         |
-| Hospedagem         | **Vercel**                                        | Deploy contínuo, HTTPS automático, domínio custom `joaofaquino.run`.                |
-| API de Dados       | **Python + Strava API (v3)**                      | Script para fetch e geração de `data/strava_summary.json`.                          |
-| Controle de versão | **GitHub**                                        | CI/CD automático via Vercel.                                                        |
-
-### 🎨 Estratégia de Estilos
-
-**CSS Modules** são usados para **isolar estilos de páginas/componentes específicos**:
-
-- `Header.module.css` - Media queries para responsividade mobile (hamburguer menu < 768px)
-- `equipment.module.css` - Layout Nike-style com sidebar e grid de produtos
-- `dashboard.module.css` - Estilos específicos da página de progresso
-
-**TailwindCSS** é usado para estilos globais e utilities classes.
-**globals.css** define variáveis de tema e gradientes de fundo.
+**Snapshot — 24/11/2025**
+- Homepage com hero narrativo, estatísticas quase em tempo real, card da última corrida, secção de jornada e CTA social.
+- Dashboard `/progress` com cards de métricas, gráfico interativo (corrida vs mês), countdown para a maratona e tabela de histórico detalhada.
+- Galeria filtrável por eventos com modal fullscreen e assets mapeados automaticamente a partir de `public/assets/gallery`.
+- Páginas adicionais: equipamentos, contactos, link-in-bio, privacidade.
+- Scripts Python e Node para importar CSV/FIT, gerar JSONs, criar backups e manter dados consistentes.
 
 ---
 
-## ⚙️ Estrutura de Pastas
+## 🧱 Stack & Arquitetura
+
+| Camada | Tecnologia | Destaques |
+| ------ | ---------- | --------- |
+| Framework | **Next.js 14 (App Router)** | Rotas em `app/`, SSR/ISR, API routes para dados locais. |
+| Linguagem | **TypeScript** | Tipagem em componentes, hooks e scripts. |
+| UI & Estilos | **TailwindCSS**, **CSS Modules**, `app/globals.css`, `app/theme.css` | Tailwind para utilidades; CSS Modules para responsividade controlada (Header, dashboard, gallery, hero, journey). |
+| Animações | **Framer Motion** (`PageWrapper`, `Reveal`, `MotionCard`) | Transições entre rotas via `AnimatePresence`, animações on-scroll e hover. |
+| Dados | **Garmin CSV → JSON** (`public/data/garmin_summary.json`) | Processado com scripts Python; consumido por homepage e `/progress`. |
+| Galeria | `public/data/gallery_index.json` + assets estáticos | Build script Node e rota API de fallback que lê o filesystem. |
+| Hospedagem | **Vercel** | Deploy contínuo, domínio `joaofaquino.run`, `@vercel/speed-insights/next` ligado. |
+| Theming | `next-themes` (`ThemeProvider`) | Tema dark por omissão, pronto para toggle persistente. |
+| Localização | `TranslationProvider`, `LanguageToggle` | Contexto PT/EN, PT ativo por defeito. |
+
+---
+
+## ⚙️ Estrutura Principal
+
 ```
-
-joaofaquino.run/
-│
-├── app/
-│ ├── layout.tsx # Estrutura global (Header, Footer, AnimatePresence)
-│ ├── page.tsx # Página principal (Jornada)
-│ ├── equipamentos/page.tsx # Página de parceiros e equipamentos
-│ ├── progresso/page.tsx # Página de progresso e dados Strava
-│ ├── privacy/page.tsx # Política de privacidade (necessária p/ Garmin API)
-│ └── hooks/
-│ └── useReveal.ts # Hook que ativa animação on-scroll
-│
-├── components/
-│ ├── Header.tsx # Navegação principal do site
-│ ├── Header.module.css # Estilos responsivos do Header (media queries)
-│ ├── Footer.tsx # Rodapé com links sociais
-│ ├── PageWrapper.tsx # Controla transições entre rotas
-│ ├── Reveal.tsx # Fade/slide ao entrar na viewport
-│ ├── MotionCard.tsx # Interatividade (hover/click)
-│ ├── LanguageToggle.tsx # Alternador PT/EN
-│ ├── TranslationProvider.tsx # Context para traduções
-│
-├── public/
-│ ├── assets/ # Logos, imagens futuras
-│
-├── data/
-│ └── strava_summary.json # Dados dinâmicos gerados por Python
-│
-├── scripts/
-│ ├── fetch_strava_data.py # Faz OAuth e coleta atividades do Strava
-│
-├── styles/
-│ └── globals.css # Tema base + ajustes de Tailwind
-│
-├── tailwind.config.js # Configuração Tailwind
-├── postcss.config.js # Configuração de build CSS
-├── tsconfig.json # BaseUrl e paths para @/ alias
-├── package.json # Dependências e scripts
-└── copilot-instructions.md # Documento de contexto do projeto (este)
-
-````
-
----
-
-## 🎨 Identidade Visual
-
-**Tema:** Minimalista com tons neutros e azul escuro (referência ao Cruzeiro e ao céu).
-
-**Paleta principal:**
-```js
-primary:   #0A2342
-secondary: #1E4D8B
-accent:    #58A6FF
-light:     #ECECEC
-````
-
-**Tipografia:**
-
-- `Montserrat` para títulos
-- `Inter` e `Open Sans` para corpo
-
-**Estilo UI:**
-
-- Bordas arredondadas (`radius: 16px`)
-- Sombra suave
-- Cards translúcidos em vidro (glassmorphism)
-- Hierarquia centralizada
-
----
-
-## ⚡️ Comportamento de Animações (Blueprint Atual)
-
-### Camadas de Motion e suas funções:
-
-| Componente                 | Função                                                           | Observação                  |
-| -------------------------- | ---------------------------------------------------------------- | --------------------------- |
-| `PageWrapper`              | Controla a entrada/saída de cada página (fade/slide entre rotas) | Substitui `motion.section`  |
-| `Reveal`                   | Faz fade + slide ao elemento entrar no viewport                  | Ideal para textos e blocos  |
-| `MotionCard`               | Dá hover/press com brilho e movimento 3D leve                    | Usado em cards clicáveis    |
-| `AnimatePresence` (layout) | Garante transições de página fluidas                             | Configurado no `layout.tsx` |
-
-✅ **Combinação recomendada:**
-
-```tsx
-<Reveal delay={0.1}>
-  <MotionCard delay={0.2}>
-    <Conteúdo />
-  </MotionCard>
-</Reveal>
+app/
+	layout.tsx            # Shell global (Header, Footer, Providers, SpeedInsights)
+	page.tsx              # Homepage (Hero + stats + journey + CTA)
+	progress/page.tsx     # Dashboard detalhado com gráfico e histórico
+	equipment/page.tsx    # Equipamentos e parceiros (layout Nike-style)
+	gallery/page.tsx      # Galeria filtrável com modal fullscreen
+	contact/page.tsx      # CTA para contacto (PT)
+	links/page.tsx        # Link-in-bio estilizado
+	privacy/page.tsx      # Política de privacidade
+	api/garmin/route.ts   # Exposição do JSON de treino
+	api/gallery/route.ts  # Lista eventos com base nos assets
+components/
+	Header.tsx + .module  # Navbar responsiva (desktop vs hamburguer mobile)
+	Footer.tsx            # Links sociais + copy
+	HeroSection, JourneySection, StatsOverview, LatestRunCard, CTASection
+	HorizontalProgressChart.tsx   # Barchart custom com modos treino/mês
+	Motion primitives (`PageWrapper`, `Reveal`, `MotionCard`)
+	ThemeProvider.tsx
+	TranslationProvider.tsx / LanguageToggle.tsx
+scripts/
+	process_garmin_data.py         # CSV → JSON normalizado (produção)
+	import_garmin_exports.py       # Parser FIT/CSV completo
+	import_garmin_incremental.py   # Merge incremental sem perder histórico
+	update_training_data.py        # Workflow completo (backup + import + commit)
+	backup_data.py                 # Backups com timestamp
+	build_gallery_data.js          # Gera `public/data/gallery_index.json`
+public/data/
+	garmin_summary.json            # Fonte principal de dados
+	gallery_index.json             # Metadados da galeria
 ```
 
 ---
 
-## 🚧 Próximas Fases (Roadmap Técnico)
+## 🧩 Destaques por Página
 
-### ✅ Fase 1 — Migração Next.js
-
-- [x] Migração de HTML/CSS estático → Next.js + TypeScript
-- [x] Setup TailwindCSS, PostCSS, estrutura App Router
-- [x] Deploy na Vercel com domínio custom
-
-### ✅ Fase 2 — SPA e Transições
-
-- [x] Implementar `AnimatePresence` no layout
-- [x] Criar `PageWrapper` e remover motion.section redundantes
-- [x] Rotas dinâmicas para Home / Progresso / Equipamentos / Contato
-
-### ✅ Fase 3 — Interações Avançadas
-
-- [x] Scroll animations (`Reveal`)
-- [x] Microinterações (`MotionCard`)
-- [x] Header responsivo com CSS Module (hamburguer < 768px, desktop navigation ≥ 768px)
-- [x] Equipment page Nike-style com CSS Module isolation
-- [ ] Dark/Light Mode com persistência (via `next-themes`)
-
-### ✅ Fase 3.5 — Responsividade Mobile (CONCLUÍDA)
-
-- [x] Criado `Header.module.css` com media queries para controle preciso
-- [x] Desktop (≥768px): Navegação horizontal sempre visível, sem hamburguer
-- [x] Mobile (<768px): Botão hamburguer visível, navegação escondida
-- [x] Overlay mobile com backdrop blur e links touch-friendly
-- [x] Isolamento de estilos via CSS Modules para evitar conflitos com Tailwind
-- [x] Media queries testadas em resolução 1920x1080
-
-### ✅ Fase 4 — Integração Garmin + Dashboard Homepage (CONCLUÍDA 20/11/2025)
-
-**🎯 Objetivo:** Migrar de Strava para Garmin CSV, criar dashboard visual na homepage com dados reais de treino.
-
-#### Implementações:
-
-**1. Processamento de Dados Garmin**
-
-- [x] Criado `scripts/process_garmin_data.py` - Parser de CSV do Garmin Connect
-- [x] Lê `data/garmin_exports/Todas_As_Corridas.csv` (13 corridas exportadas)
-- [x] Gera `public/data/garmin_summary.json` com estatísticas processadas
-- [x] Calcula: distância total (90.44km), pace médio (7:35/km), progresso maratona (214%)
-- [x] Estatísticas semanais: última semana (3 corridas, 24.42km)
-- [x] Última corrida: 20/11/2025 - "Porto - 3x (400m @Z5 + 400m @Z1)" - 5.49km
-
-**2. Componentes Dashboard (Design Moderno)**
-
-- [x] `StatsOverview.tsx` - Cards hero com gradientes vibrantes
-  - 2 cards grandes: Distância Total (azul→roxo) + Esta Semana (verde→teal)
-  - Progress bar animada para meta maratona (42.195km)
-  - 4 cards secundários compactos com glassmorphism
-  - Números gigantes (text-6xl) para métricas principais
-- [x] `LatestRunCard.tsx` - Card premium da última corrida
-
-  - Gradiente rosa→roxo com decoração de círculos
-  - Distância em destaque (text-5xl)
-  - Grid com tempo, pace, FC médio, calorias
-  - Efeito glassmorphism nos sub-cards
-
-- [x] `CTASection.tsx` - Call-to-action impactante
-  - Gradiente laranja→rosa→roxo
-  - Padrão de bolinhas no background
-  - Botões grandes com hover scale
-  - Links para Instagram (@joaofaquino) e Strava
-
-**3. Homepage Redesign**
-
-- [x] Layout grid responsivo (lg:grid-cols-3)
-- [x] Sidebar sticky com LatestRunCard (fixa ao scroll em desktop)
-- [x] Stats overview no topo (full width)
-- [x] Texto da jornada com animações Reveal
-- [x] CTA section no final (full width)
-- [x] Max-width aumentado para 7xl (melhor uso do espaço)
-
-**4. Características Visuais**
-
-- [x] Gradientes vibrantes em todos os cards
-- [x] Glassmorphism (backdrop-blur + transparências)
-- [x] Números gigantes para métricas principais
-- [x] Hover effects (scale, translate)
-- [x] Progress bars animadas com cores chamativas
-- [x] Ícones coloridos e contextualizados (Lucide React)
-- [x] Sombras profundas (shadow-2xl)
-
-**5. Dados Garmin vs Strava**
-
-- ✅ **Migração completa:** CSV Garmin substituiu Strava API
-- ✅ **Formato:** `Todas_As_Corridas.csv` (Activity Type, Date, Distance, Time, Pace, HR, etc.)
-- ✅ **Processamento:** Python script executa parsing e gera JSON
-- ✅ **Frontend:** Fetch de `/data/garmin_summary.json` via useEffect
-- ✅ **Automação:** Script Python pode ser executado manualmente: `python scripts/process_garmin_data.py`
-
-**Ficheiros Criados/Modificados:**
-
-```
-scripts/process_garmin_data.py          # Parser CSV → JSON
-public/data/garmin_summary.json         # Dados processados
-components/StatsOverview.tsx            # Cards hero com gradientes
-components/LatestRunCard.tsx            # Card última corrida
-components/CTASection.tsx               # Call-to-action
-app/page.tsx                            # Homepage redesenhada
-```
-
-**Estatísticas Atuais (20/11/2025):**
-
-- 📊 Total: 13 corridas
-- 🏃 Distância: 90.44 km
-- ⏱️ Tempo total: 11h 26min
-- 📈 Pace médio: 7:35/km
-- 📅 Esta semana: 3 corridas, 24.42km
-- 🎯 Progresso maratona: 214% (já ultrapassou!)
+- **Home (`app/page.tsx`)**: `HeroSection`, `StatsOverview`, `LatestRunCard`, `JourneySection`, `CTASection`. Fetch de `garmin_summary.json` com normalização defensiva.
+- **Progress (`/progress`)**: cards métricos, `HorizontalProgressChart` (modos Treino/Mês), card “Meta 2026” com countdown, tabela de histórico.
+- **Gallery (`/gallery`)**: sidebar de eventos, grid animado (`Reveal`), modal fullscreen, botões sociais.
+- **Equipment (`/equipment`)**: layout Nike-style com `MotionCard` para parceiros.
+- **Contact / Links / Privacy**: conteúdo estático em PT (links sociais, política de privacidade).
 
 ---
 
-### 🏃 Fase 5 — Integração e Automação (PRÓXIMO)
+## 🏃‍♂️ Pipeline Garmin
 
-- [ ] Conectar `process_garmin_data.py` com GitHub Actions (execução automática)
-- [ ] Automatizar upload de novos CSVs do Garmin Connect
-- [ ] Gerar SVGs dinâmicos com estatísticas semanais
+1. Exportar atividades do Garmin Connect para `data/garmin_exports/`.
+2. Executar `python scripts/process_garmin_data.py` (ou `update_training_data.py` para o fluxo completo).
+	 - Filtra apenas `Running`.
+	 - Normaliza datas (`iso_date`, `dd/mm/yyyy`).
+	 - Calcula totais, pace médio, progresso maratona, estatísticas semanais.
+	 - Escreve `public/data/garmin_summary.json` com `ensure_ascii=False`.
+3. Homepage e `/progress` consomem o JSON estático via `/data/...` ou `/api/garmin`.
+4. `LatestRunCard` e `StatsOverview` tratam campos opcionais de forma defensiva.
+5. `backup_data.py` cria snapshots em `data/backups/garmin_backup_*.json`.
+6. `update_training_data.py` orquestra backup → import incremental → `git add/commit/push` → limpeza opcional dos CSVs.
 
-### 🚀 Fase 6 — Página Jornada Melhorada (PLANEADO)
-
-**🎯 Objetivo:** Transformar página da jornada em timeline visual com fotos, ícones e milestones.
-
-- [ ] Adicionar timeline vertical com marcos importantes
-- [ ] Inserir fotos/placeholders para momentos chave
-- [ ] Quebrar texto denso com cards visuais
-- [ ] Adicionar ícones para cada fase da jornada
-- [ ] Implementar "prova social" (badges de conquistas)
-- [ ] Seção "Porque correr?" com cards ilustrados
-
-### 🚀 Fase 7 — Página Progresso com Gráficos (PLANEADO)
-
-- [ ] Criar gráficos de evolução (distância/semana, pace/mês)
-- [ ] Implementar histórico de corridas com filtros
-- [ ] Visualização de zonas de frequência cardíaca
-- [ ] Comparação mês a mês
-- [ ] Integração com D3.js ou Chart.js
-
-### 🚀 Fase 8 — Features Adicionais (FUTURO)
-
-- [ ] Dark/Light Mode com persistência (via `next-themes`)
-- [ ] Newsletter signup (Mailchimp/ConvertKit)
-- [ ] Monetização: produtos/serviços
-- [ ] Blog de corrida (opcional)
+**Campos principais do JSON**
+- `stats`: totais (corridas, km, tempo, pace, média por treino, progresso maratona).
+- `latest_run`: data, título, distância, tempo, pace, HR, calorias.
+- `this_week`: corridas, distância e tempo da última semana.
+- `recent_runs`: últimas corridas (usadas em `/progress`).
 
 ---
 
-## 🔒 Configuração do Garmin (atual)
+## 🖼️ Pipeline da Galeria
 
-**Fonte de dados:** CSV exportado do Garmin Connect  
-**Localização:** `data/garmin_exports/Todas_As_Corridas.csv`  
-**Processamento:** Script Python `scripts/process_garmin_data.py`  
-**Output:** `public/data/garmin_summary.json`
+- Assets em `public/assets/gallery/<evento>/<imagem>`.
+- `scripts/build_gallery_data.js` gera `public/data/gallery_index.json`.
+- `/gallery` faz `fetch` do JSON; rota `/api/gallery` atua como fallback via filesystem.
+- Modal fullscreen com `Reveal` e botões sociais (Instagram, Garmin Connect).
 
-**Comando manual:**
+---
+
+## 🎨 Sistema Visual & Motion
+
+- Paleta: `#0A2342`, `#1E4D8B`, `#58A6FF`, `#ECECEC` sobre fundo radial escuro.
+- CSS Modules dedicados (`Header`, `HeroSection`, `StatsOverview`, `LatestRunCard`, `CTASection`, `JourneySection`, `dashboard`, `gallery`).
+- `PageWrapper` fornece `AnimatePresence` para transições; `Reveal` aplica fade/slide on-scroll; `MotionCard` entrega hover 3D leve.
+- Glassmorphism, gradientes e tipografia bold compõem a identidade visual.
+
+---
+
+## 🌗 Tema & Localização
+
+- `ThemeProvider` (`next-themes`) configurado em `layout.tsx` com `defaultTheme="dark"` e `enableSystem`.
+- Estrutura pronta para toggle de tema (UI pendente).
+- `TranslationProvider` oferece contexto PT/EN; `LanguageToggle` no Header ativa a alternância.
+
+---
+
+## 💡 Convenções
+
+- Páginas principais envolvem conteúdo em `<PageWrapper>` para animações de rota.
+- Usar `Reveal` apenas quando o efeito on-scroll agrega valor; `MotionCard` reservado para elementos interativos.
+- Preferir CSS Modules em layouts com breakpoints complexos.
+- Manter gradientes/glassmorphism característicos e limites `max-w-5xl/7xl` conforme secções existentes.
+- Imports absolutos via alias `@/` disponíveis (`tsconfig.json`).
+
+---
+
+## 🛠️ Comandos Úteis
 
 ```bash
-python scripts/process_garmin_data.py
+npm run dev        # Desenvolvimento local
+npm run build      # Build produção
+npm run start      # Servir build
+
+python scripts/process_garmin_data.py      # Pipeline principal Garmin
+python scripts/update_training_data.py     # Backup + import + git
+python scripts/backup_data.py              # Apenas backup
+node scripts/build_gallery_data.js         # Regerar gallery_index.json
 ```
 
-**Campos CSV utilizados:**
-
-- Activity Type, Date, Title
-- Distance, Time, Avg Pace, Best Pace
-- Avg HR, Max HR, Calories
-- Total Ascent, Total Descent
-
-**Nota:** Strava API foi descontinuada. Migração para Garmin CSV concluída com sucesso.
-
-### 🚀 Fase 5 — Dashboards e Expansão
-
-- [ ] Criar páginas com gráficos e progresso histórico (D3.js / Chart.js)
-- [ ] Implementar área de “Galeria de Corridas”
-- [ ] Integrar afiliados e parceiros com links dinâmicos
+`scripts/requirements.txt` lista dependências Python (pandas, fitparse, etc.).
 
 ---
 
-## 🔒 Configuração do Strava (atual)
+## 🚀 Roadmap Atual
 
-Variáveis de ambiente (em `.env.local`):
-
-```env
-STRAVA_CLIENT_ID=184688
-STRAVA_CLIENT_SECRET=xxxxxxxxxxxxxxxx
-STRAVA_REFRESH_TOKEN=xxxxxxxxxxxxxxxx
-STRAVA_REDIRECT_URI=http://localhost
-```
-
-Python faz autenticação OAuth2 e salva o resumo em `data/strava_summary.json`.
-
----
-
-## 🌍 Privacidade e Conformidade
-
-- Política de privacidade servida em `/privacy` (requisito para Garmin API)
-- Dados de treino são pessoais e só são publicados com consentimento do atleta
-- Cookies e analytics ainda **não implementados**
-
----
-
-## 🤖 Convenções de Desenvolvimento
-
-### Diretivas
-
-- Todas as páginas principais usam `<PageWrapper>`
-- Elementos interativos: `<Reveal>` + `<MotionCard>`
-- Imports absolutos via alias `@/` (opcional, configurado em `tsconfig.json`)
-- Responsividade padrão: `max-w-5xl mx-auto px-4`
-
-### CSS Modules vs Tailwind
-
-**IMPORTANTE**: Para componentes que precisam de responsividade complexa com media queries, usar **CSS Modules**:
-
-- ✅ `Header.module.css` - Controla hamburguer mobile vs desktop navigation
-- ✅ `equipment.module.css` - Layout Nike-style com sidebar responsiva
-- ✅ `dashboard.module.css` - Grid layouts com breakpoints customizados
-
-**Razão**: Classes Tailwind como `md:hidden` podem não compilar corretamente em hot-reload. CSS Modules garantem comportamento previsível.
-
-**Breakpoints padrão**:
-
-- Mobile: `< 768px` (hamburguer menu)
-- Tablet/Desktop: `≥ 768px` (navegação normal)
-
-### Scripts de build
-
-```bash
-npm run dev     # Desenvolvimento local
-npm run build   # Compilação para produção
-npm run start   # Servir build localmente
-```
-
----
-
-## 🔮 Visão de Futuro
-
-- **Meta 2026:** transformar o site numa plataforma viva de performance e consistência.
-- Automatizar geração de SVGs semanais do progresso de treino.
-- Criar uma camada de API própria (`/api/strava`) para cache e segurança.
-- Implementar _progress cards_ dinâmicos com base nos dados JSON.
-- Fazer integração completa com Garmin Connect, eliminando dependência do Strava.
+- **Fases 1-4** ✅ concluídas (migração Next.js, animações SPA, responsividade, dashboard Garmin v1).
+- **Fase 5 — Integrações & Automação**
+	- [ ] GitHub Action para `process_garmin_data.py` e `build_gallery_data.js`.
+	- [ ] Automação de ingestão CSV/FIT (upload → script) e limpeza pós-import.
+	- [ ] Geração de SVGs semanais partilháveis.
+- **Fase 6 — Jornada**
+	- [ ] Timeline vertical com milestones, fotos e badges.
+	- [ ] Secção “Porque correr?” com cards ilustrados.
+- **Fase 7 — Progresso Avançado**
+	- [ ] Gráficos adicionais (distância/semana, pace/mês, zonas FC) com D3/Chart.js.
+	- [ ] Filtros de histórico por período/zonas.
+- **Fase 8 — Extras**
+	- [ ] Toggle dark/light com ajustes visuais.
+	- [ ] Newsletter (Mailchimp/ConvertKit) e parcerias comerciais.
+	- [ ] Blog/diário curto com etiquetas por fase.
 
 ---
 
 ## 🧭 TL;DR
 
-| Categoria                | Estado             |
-| ------------------------ | ------------------ |
-| Base Next.js             | ✅ Completa        |
-| Estilo visual            | ✅ Dashboard Ready |
-| SPA + Transições         | ✅ Funcional       |
-| Animações (Scroll/Hover) | ✅ Ativas          |
-| Homepage Dashboard       | ✅ Implementado    |
-| Integração Garmin CSV    | ✅ Funcional       |
-| Sidebar Gallery Layout   | ✅ Implementado    |
-| Dark/Light mode          | ⏳ Futuro          |
-| Automação GitHub Actions | 🧩 Próximo         |
-| Página Jornada Timeline  | 🧩 Planeado        |
-| Gráficos Progresso       | 🧩 Planeado        |
+| Área | Estado |
+| ---- | ------ |
+| Base Next.js + App Router | ✅ Estável |
+| Homepage dashboard | ✅ Live |
+| Integração Garmin CSV | ✅ Produção |
+| Dashboard `/progress` | ✅ Interativo |
+| Galeria de eventos | ✅ Filtrável + modal |
+| Automação (scripts CLI) | ✅ Manual |
+| Automação CI/CD dados | ⏳ Planeado |
+| Timeline jornada | ⏳ Planeado |
+| Gráficos avançados | ⏳ Planeado |
+| Dark/Light Mode | ⏳ Futuro |
 
 ---
 
 ## 👨‍💻 Autor
 
-**João Aquino**
-QA Engineer & Marathon Runner
-📍 joaofaquino.run
-📸 Instagram: [@joaofaquino](https://instagram.com/joaofaquino)
-💼 GitHub: [joaoaquinopt](https://github.com/joaoaquinopt)
+**João Aquino** • QA Engineer & Marathon Runner  
+📍 joaofaquino.run • 📸 Instagram: [@joaofaquino](https://instagram.com/joaofaquino) • 💼 GitHub: [joaoaquinopt](https://github.com/joaoaquinopt)
+
+> “Nem sempre perfeito, mas sempre em frente.” 🏁
+
+> 📍 joaofaquino.run
+> 📸 Instagram: [@joaofaquino](https://instagram.com/joaofaquino)
+> 💼 GitHub: [joaoaquinopt](https://github.com/joaoaquinopt)
 
 ---
 

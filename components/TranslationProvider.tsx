@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useMemo, useState, useCallback } from "react";
 
 type Language = "pt" | "en";
 
@@ -142,27 +142,44 @@ const translations = {
 const TranslationContext = createContext<TranslationContextType | undefined>(undefined);
 
 export function TranslationProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguageState] = useState<Language>("pt");
+  const [language, setLanguageState] = useState<Language>(() => {
+    if (!("window" in globalThis) || !globalThis.window) {
+      return "pt";
+    }
 
-  useEffect(() => {
-    // Load saved language from localStorage
-    const savedLang = localStorage.getItem("language") as Language;
+    const savedLang = globalThis.window.localStorage.getItem("language") as Language | null;
     if (savedLang && (savedLang === "pt" || savedLang === "en")) {
-      setLanguageState(savedLang);
+      return savedLang;
+    }
+
+    return "pt";
+  });
+
+  const setLanguage = useCallback((lang: Language) => {
+    setLanguageState(lang);
+    if ("window" in globalThis && globalThis.window) {
+      globalThis.window.localStorage.setItem("language", lang);
     }
   }, []);
 
-  const setLanguage = (lang: Language) => {
-    setLanguageState(lang);
-    localStorage.setItem("language", lang);
-  };
+  const t = useCallback(
+    (key: string): string => {
+      return translations[language][key as keyof typeof translations.pt] || key;
+    },
+    [language]
+  );
 
-  const t = (key: string): string => {
-    return translations[language][key as keyof typeof translations.pt] || key;
-  };
+  const contextValue = useMemo(
+    () => ({
+      language,
+      setLanguage,
+      t,
+    }),
+    [language, setLanguage, t]
+  );
 
   return (
-    <TranslationContext.Provider value={{ language, setLanguage, t }}>
+    <TranslationContext.Provider value={contextValue}>
       {children}
     </TranslationContext.Provider>
   );

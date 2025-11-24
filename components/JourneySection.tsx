@@ -120,7 +120,9 @@ export default function JourneySection() {
       </Reveal>
 
       <Reveal delay={0.35}>
-        <p className={styles.quote}>"Nem sempre perfeito, mas sempre em frente."</p>
+        <p className={styles.quote}>
+          &ldquo;Nem sempre perfeito, mas sempre em frente.&rdquo;
+        </p>
       </Reveal>
     </div>
   );

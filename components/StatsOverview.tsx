@@ -15,7 +15,7 @@ interface StatsOverviewProps {
     total_runs: number;
     total_distance: number;
     avg_pace: string;
-    total_time?: string;
+    total_time?: string | number;
     avg_distance?: number;
   };
   thisWeek?: {

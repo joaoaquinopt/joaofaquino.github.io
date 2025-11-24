@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import PageWrapper from "../../components/PageWrapper";
 import Reveal from "../../components/Reveal";
 import styles from "./gallery.module.css";
@@ -56,7 +57,7 @@ export default function GalleryPage() {
         setHasError(false);
 
         // ⚠️ IMPORTANTE: caminho estático correto para o JSON
-        const res = await fetch("../../data/gallery_index.json");
+        const res = await fetch("/data/gallery_index.json");
 
         if (!res.ok) {
           console.error("Falha ao carregar gallery_index.json", res.status);
@@ -77,17 +78,16 @@ export default function GalleryPage() {
         const mappedPhotos: GalleryPhoto[] = rawEvents.flatMap((ev) => {
           const evName = ev.name ?? ev.id;
           return (ev.photos ?? []).map((photo, index) => {
-            const id =
-              String(photo.id ?? `${ev.id}-${photo.filename ?? index}`);
+            const id = String(photo.id ?? `${ev.id}-${photo.filename ?? index}`);
             const src =
               photo.src ??
               photo.url ??
-              `public/assets/gallery/${ev.id}/${photo.filename}`;
+              `/assets/gallery/${ev.id}/${photo.filename ?? `${id}.jpg`}`;
 
             return {
               id,
               src,
-              title: photo.title ?? photo.filename ?? "Foto",
+              title: photo.title ?? photo.filename?.toString() ?? id,
               date: photo.date,
               location: photo.location,
               description:
@@ -146,8 +146,8 @@ export default function GalleryPage() {
                 <p className={styles.loadingText}>A carregar eventos…</p>
               ) : hasError ? (
                 <p className={styles.errorText}>
-                  Não foi possível carregar a galeria. Verifica se o ficheiro{" "}
-                  <code>public/assets/gallery/gallery_index.json</code> existe.
+                          Não foi possível carregar a galeria. Verifica se o ficheiro{" "}
+                          <code>public/data/gallery_index.json</code> existe.
                 </p>
               ) : (
                 <div className={styles.eventList}>
@@ -220,11 +220,12 @@ export default function GalleryPage() {
                       onClick={() => setSelectedImage(photo)}
                     >
                       <div className={styles.photoImage}>
-                        {/* Agora usa MESMO a imagem do disco */}
-                        <img
+                        <Image
                           src={photo.src}
                           alt={photo.title}
-                          loading="lazy"
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                          className={styles.photoImg}
                         />
                       </div>
 
@@ -282,21 +283,22 @@ export default function GalleryPage() {
 
       {/* MODAL – imagem cheia (por enquanto placeholder) */}
       {selectedImage && (
-        <div
+        <dialog
           className={styles.modal}
-          role="dialog"
-          aria-modal="true"
-          onClick={() => setSelectedImage(null)}
+          open
+          onCancel={() => setSelectedImage(null)}
+          onClose={() => setSelectedImage(null)}
         >
-          <div
-            className={styles.modalContent}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <img
-              src={selectedImage.src}
-              alt={selectedImage.title}
-              className={styles.modalImage}
-            />
+          <div className={styles.modalContent}>
+            <div className={styles.modalImageWrapper}>
+              <Image
+                src={selectedImage.src}
+                alt={selectedImage.title}
+                fill
+                sizes="(max-width: 1024px) 100vw, 70vw"
+                className={styles.modalImage}
+              />
+            </div>
             <p className={styles.modalCaption}>{selectedImage.title}</p>
             <button
               type="button"
@@ -306,7 +308,7 @@ export default function GalleryPage() {
               Fechar
             </button>
           </div>
-        </div>
+        </dialog>
       )}
     </PageWrapper>
   );

@@ -16,7 +16,7 @@ interface LatestRunCardProps {
   };
 }
 
-export default function LatestRunCard({ data }: LatestRunCardProps) {
+export default function LatestRunCard({ data }: Readonly<LatestRunCardProps>) {
   if (!data) {
     return (
       <div className="bg-slate-900/60 border border-slate-700/40 rounded-2xl p-6 text-center text-gray-400">
@@ -72,7 +72,7 @@ export default function LatestRunCard({ data }: LatestRunCardProps) {
               <div className={styles.metricValue}>{data.pace}</div>
             </div>
 
-            {data.avg_hr && (
+            {data.avg_hr !== undefined && data.avg_hr !== null && (
               <div className={styles.metricTile}>
                 <div className={styles.metricLabel}>
                   <Heart className="w-4 h-4" />
@@ -85,7 +85,7 @@ export default function LatestRunCard({ data }: LatestRunCardProps) {
               </div>
             )}
 
-            {data.calories && (
+            {data.calories !== undefined && data.calories !== null && (
               <div className={styles.metricTile}>
                 <div className={styles.metricLabel}>
                   <Flame className="w-4 h-4" />

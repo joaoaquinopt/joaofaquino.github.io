@@ -23,6 +23,7 @@ export default function Footer() {
             href="https://instagram.com/joaofaquino"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="Instagram"
             className="hover:text-blue-300 transition"
           >
             {/* Instagram SVG from simpleicons.org */}
@@ -35,6 +36,7 @@ export default function Footer() {
             href="https://github.com/joaoaquinopt"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="GitHub"
             className="hover:text-blue-300 transition"
           >
             {/* GitHub SVG from simpleicons.org */}
@@ -45,6 +47,7 @@ export default function Footer() {
 
           <a
             href="mailto:joaofaquino@gmail.com"
+            aria-label="Email"
             className="hover:text-blue-300 transition"
           >
             <Mail className="w-5 h-5" />
