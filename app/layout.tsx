@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 import { ThemeProvider } from "../components/ThemeProvider";
 import { TranslationProvider } from "../components/TranslationProvider";
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Analytics } from '@vercel/analytics/next';
 import "./globals.css";
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <main key={pathname} className="w-full pt-10 md:pt-16">
               {children}
               <SpeedInsights />
+              <Analytics />
             </main>
 
             <Footer />
