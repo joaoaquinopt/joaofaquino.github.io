@@ -189,16 +189,21 @@
   gap: 0.15rem;
 }
 
-.metricTitle span:first-child {
+.metricTitle span:nth-child(1) {
   font-size: 0.76rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: rgba(148, 163, 184, 0.9);
 }
 
-.metricTitle span:last-child {
+.metricTitle span:nth-child(2) {
   font-size: 0.86rem;
   color: rgba(148, 163, 184, 0.8);
+}
+
+.metricTitle span:nth-child(3) {
+  font-size: 0.78rem;
+  color: rgba(148, 163, 184, 0.75);
 }
 
 .metricValue {

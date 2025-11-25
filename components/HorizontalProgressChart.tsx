@@ -45,6 +45,7 @@ export default function HorizontalProgressChart({
 }: Readonly<HorizontalProgressChartProps>) {
   const scrollAreaRef = useRef<HTMLDivElement | null>(null);
   const [scrollState, setScrollState] = useState({ atStart: true, atEnd: false });
+  const [scrollIndicator, setScrollIndicator] = useState({ width: 100, left: 0 });
   const barGapPx = 24;
   const minBarWidthPx = 56;
 
@@ -119,6 +120,19 @@ export default function HorizontalProgressChart({
     const atStart = el.scrollLeft <= 8;
     const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 8;
     setScrollState({ atStart, atEnd });
+
+    // Update scroll indicator position
+    const scrollWidth = el.scrollWidth;
+    const clientWidth = el.clientWidth;
+    const scrollLeft = el.scrollLeft;
+
+    if (scrollWidth > clientWidth) {
+      const thumbWidth = (clientWidth / scrollWidth) * 100;
+      const thumbLeft = (scrollLeft / scrollWidth) * 100;
+      setScrollIndicator({ width: thumbWidth, left: thumbLeft });
+    } else {
+      setScrollIndicator({ width: 100, left: 0 });
+    }
   }, []);
 
   useEffect(() => {
@@ -139,6 +153,18 @@ export default function HorizontalProgressChart({
     };
   }, [chartData.length, updateScrollState]);
 
+  useEffect(() => {
+    const el = scrollAreaRef.current;
+    if (!el || chartData.length === 0) {
+      return;
+    }
+
+    requestAnimationFrame(() => {
+      el.scrollTo({ left: el.scrollWidth, behavior: "smooth" });
+      updateScrollState();
+    });
+  }, [chartData.length, mode, updateScrollState]);
+
   const handleWheel = useCallback((event: WheelEvent<HTMLDivElement>) => {
     const el = scrollAreaRef.current;
     if (!el) {
@@ -155,12 +181,13 @@ export default function HorizontalProgressChart({
 
   return (
     <div
-      className="w-full min-w-0"
+      className="w-full min-w-0 flex flex-col"
       style={{
-        height: "320px",
+        height: "clamp(280px, 52vw, 340px)",
         background: "rgba(15,23,42,0.96)",
         borderRadius: "2rem",
         boxShadow: "0 24px 55px rgba(15,23,42,0.85)",
+        padding: "1rem 0",
       }}
     >
       {!hasData ? (
@@ -168,24 +195,23 @@ export default function HorizontalProgressChart({
           Sem dados para exibir
         </div>
       ) : (
-        <div className="relative w-full h-full flex items-end pb-8">
-          <div className="absolute left-0 right-0 top-0 bottom-8 flex flex-col justify-between pointer-events-none">
-            <div className="h-px bg-white/5" />
-            <div className="h-px bg-white/5" />
-            <div className="h-px bg-white/5" />
-            <div className="h-px bg-white/5" />
-            <div className="h-px bg-white/10" />
-          </div>
+        <>
+          {/* Chart area */}
+          <div className="relative flex-1 min-h-0">
+            <div className="absolute left-0 right-0 top-0 bottom-0 flex flex-col justify-between pointer-events-none px-4">
+              <div className="h-px bg-white/5" />
+              <div className="h-px bg-white/5" />
+              <div className="h-px bg-white/5" />
+              <div className="h-px bg-white/5" />
+              <div className="h-px bg-white/10" />
+            </div>
 
-          <div className="flex-1 h-full pb-6 min-w-0">
             <div
               ref={scrollAreaRef}
-              className="h-full w-full overflow-x-auto overflow-y-hidden"
+              className="h-full w-full overflow-x-auto overflow-y-hidden custom-scrollbar"
               onWheel={handleWheel}
               style={{
                 paddingInline: "0.5rem",
-                scrollbarWidth: "thin",
-                WebkitOverflowScrolling: "touch",
               }}
             >
               <div
@@ -194,6 +220,7 @@ export default function HorizontalProgressChart({
                   gap: `${barGapPx}px`,
                   paddingInline: "0.75rem",
                   minWidth: "100%",
+                  boxSizing: "border-box",
                 }}
               >
                 {chartData.map((data, index) => {
@@ -248,17 +275,29 @@ export default function HorizontalProgressChart({
                 })}
               </div>
             </div>
+
+            {/* Fade indicators */}
             {!scrollState.atStart && (
               <div className="pointer-events-none absolute left-0 top-0 h-full w-12 bg-gradient-to-r from-[#0f172ae6] to-transparent" />
             )}
             {!scrollState.atEnd && (
               <div className="pointer-events-none absolute right-0 top-0 h-full w-12 bg-gradient-to-l from-[#0f172ae6] to-transparent" />
             )}
-            <div className="mt-2 px-6 text-right text-[11px] uppercase tracking-wide text-gray-500">
-              Arraste para ver mais distâncias →
+          </div>
+
+          {/* Scrollbar area - separate from chart */}
+          <div className="h-4 mt-2 px-4">
+            <div className="h-full w-full bg-slate-800/50 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full transition-all duration-200"
+                style={{
+                  width: `${scrollIndicator.width}%`,
+                  marginLeft: `${scrollIndicator.left}%`,
+                }}
+              />
             </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );

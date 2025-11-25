@@ -191,10 +191,11 @@
   backdrop-filter: blur(18px);
   border: 1px solid rgba(148, 163, 184, 0.45);
   border-radius: 1.75rem;
-  padding: 1.75rem;
+  padding: clamp(1.1rem, 4vw, 1.75rem);
   position: relative;
-  min-height: 380px;
+  min-height: clamp(300px, 65vw, 380px);
   box-shadow: 0 28px 80px rgba(15, 23, 42, 1);
+  overflow: hidden;
 }
 
 /* Progress ring card specific */

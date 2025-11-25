@@ -181,7 +181,7 @@ export default function ProgressoPage() {
 
   return (
     <PageWrapper>
-      <section className="max-w-[1400px] mx-auto mt-8 px-6 min-h-screen pb-20">
+      <section className="max-w-7xl mx-auto mt-8 px-6 min-h-screen pb-20">
         {/* Header do dashboard */}
         <div className="flex items-center justify-between mb-8">
           <div>

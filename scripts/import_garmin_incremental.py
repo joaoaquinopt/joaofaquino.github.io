@@ -13,11 +13,12 @@ import json
 import os
 import glob
 import csv
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 
 GARMIN_EXPORTS_DIR = "data/garmin_exports"
 OUTPUT_FILE = "public/data/garmin_summary.json"
+WEEKLY_GOAL_KM = float(os.getenv("WEEKLY_GOAL_KM", "25"))
 
 
 def load_existing_data():
@@ -43,6 +44,26 @@ def _to_float(value):
         return float(str(value).replace(",", "."))
     except (TypeError, ValueError):
         return 0.0
+
+
+def _parse_date(value: str | None) -> datetime | None:
+    if not value:
+        return None
+
+    value = value.strip()
+    formats = [
+        "%Y-%m-%d %H:%M:%S",
+        "%Y-%m-%dT%H:%M:%S",
+        "%Y-%m-%d",
+    ]
+
+    for fmt in formats:
+        try:
+            return datetime.strptime(value, fmt)
+        except ValueError:
+            continue
+
+    return None
 
 
 def parse_csv_file(file_path):
@@ -99,6 +120,14 @@ def parse_csv_file(file_path):
     return activities
 
 
+def format_time_hours(seconds: float) -> str:
+    total = int(round(seconds))
+    hours = total // 3600
+    minutes = (total % 3600) // 60
+    secs = total % 60
+    return f"{hours:02d}:{minutes:02d}:{secs:02d}"
+
+
 def import_garmin_incremental():
     """Importa novos dados SEM apagar os antigos"""
     
@@ -128,13 +157,16 @@ def import_garmin_incremental():
             else:
                 print(f"   ⏭️  Duplicada: {act['date']} - ignorada")
     
+    initial_count = len(existing_activities)
+    added_count = len(new_activities)
+
     if not new_activities:
-        print(f"\n⚠️  Nenhuma atividade nova encontrada!")
-        print(f"💡 Exporta novas corridas do Garmin e coloca em '{GARMIN_EXPORTS_DIR}'")
-        return
+        print(f"\nℹ️  Nenhuma atividade nova encontrada, mantendo dados existentes.")
+        all_activities = existing_activities
+    else:
+        all_activities = existing_activities + new_activities
     
     # 4. Combina atividades antigas + novas
-    all_activities = existing_activities + new_activities
     all_activities.sort(key=lambda x: x.get('date', ''), reverse=True)
     
     # 5. Recalcula estatísticas
@@ -155,15 +187,43 @@ def import_garmin_incremental():
         "last_updated": datetime.now().isoformat(),
         "source": "Garmin Connect Export (Incremental)"
     }
+
+    if all_activities:
+        now = datetime.now()
+        week_start = now - timedelta(days=now.weekday())
+        week_start = week_start.replace(hour=0, minute=0, second=0, microsecond=0)
+        week_end = week_start + timedelta(days=7)
+
+        weekly_runs = []
+        weekly_distance = 0.0
+        weekly_time = 0.0
+
+        for activity in all_activities:
+            activity_dt = _parse_date(activity.get("date"))
+            if activity_dt and week_start <= activity_dt < week_end:
+                weekly_runs.append(activity)
+                weekly_distance += activity.get("distance", 0.0)
+                weekly_time += activity.get("total_time", 0.0)
+
+        summary["this_week"] = {
+            "runs": len(weekly_runs),
+            "distance": round(weekly_distance, 2),
+            "time": format_time_hours(weekly_time),
+            "start_date": week_start.strftime("%Y-%m-%d"),
+            "end_date": (week_end - timedelta(days=1)).strftime("%Y-%m-%d"),
+            "goal": WEEKLY_GOAL_KM,
+        }
+        summary["latest_run"] = all_activities[0]
+        summary["recent_runs"] = all_activities[:10]
     
     # 6. Guarda JSON atualizado
     Path(OUTPUT_FILE).parent.mkdir(parents=True, exist_ok=True)
     with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
         json.dump(summary, f, indent=2, ensure_ascii=False)
     
-    print(f"\n✅ Dados atualizados com sucesso!")
-    print(f"📊 Antes: {len(existing_activities)} corridas")
-    print(f"📊 Novas: {len(new_activities)} corridas")
+    print("\n✅ Dados consolidados com sucesso!")
+    print(f"📊 Antes: {initial_count} corridas")
+    print(f"📊 Novas: {added_count} corridas")
     print(f"📊 Total: {total_runs} corridas | {total_distance:.2f}km")
     print(f"💾 Ficheiro: {OUTPUT_FILE}")
 

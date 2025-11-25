@@ -21,20 +21,46 @@ interface StatsOverviewProps {
   thisWeek?: {
     runs: number;
     distance: number;
+    time?: string | number;
+    goal?: number;
+    start_date?: string;
+    end_date?: string;
   };
 }
 
-const WEEKLY_GOAL_KM = 25;
+const DEFAULT_WEEKLY_GOAL_KM = 25;
+
+const formatWeekRange = (start?: string, end?: string) => {
+  if (!start || !end) return null;
+
+  const startDate = new Date(`${start}T00:00:00`);
+  const endDate = new Date(`${end}T00:00:00`);
+
+  if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) {
+    return null;
+  }
+
+  const formatter = new Intl.DateTimeFormat("pt-PT", {
+    day: "2-digit",
+    month: "short",
+  });
+
+  return `${formatter.format(startDate)} – ${formatter.format(endDate)}`;
+};
 
 const formatTotalTime = (time?: string | number) => {
   if (time === undefined || time === null) return "0h 0m";
 
   // Caso venha string "HH:MM"
   if (typeof time === "string" && time.includes(":")) {
-    const [hours, minutes] = time.split(":");
-    const h = Number(hours || 0);
-    const m = Number(minutes || 0);
-    return `${h}h ${m}m`;
+    const parts = time.split(":").map((value) => Number(value || 0));
+    const [hours, minutes, seconds] =
+      parts.length === 3
+        ? [parts[0], parts[1], parts[2]]
+        : [parts[0] ?? 0, parts[1] ?? 0, 0];
+
+    const totalMinutes = minutes + Math.floor(seconds / 60);
+    return `${hours}h ${totalMinutes}m`;
   }
 
   // Caso venha número (segundos)
@@ -52,11 +78,14 @@ export default function StatsOverview({ stats, thisWeek }: StatsOverviewProps) {
 
   const weeklyRuns = thisWeek?.runs ?? 0;
   const weeklyDistance = thisWeek?.distance ?? 0;
-  const weeklyGoalProgress = Math.min(
-    100,
-    Math.round((weeklyDistance / WEEKLY_GOAL_KM) * 100)
-  );
-  const weeklyGoalDiff = Math.max(0, WEEKLY_GOAL_KM - weeklyDistance);
+  const rawGoal = Number(thisWeek?.goal ?? DEFAULT_WEEKLY_GOAL_KM);
+  const weeklyGoal = Number.isFinite(rawGoal) && rawGoal > 0 ? rawGoal : DEFAULT_WEEKLY_GOAL_KM;
+  const weeklyGoalProgress = weeklyGoal > 0
+    ? Math.min(100, Math.round((weeklyDistance / weeklyGoal) * 100))
+    : 0;
+  const weeklyGoalDiff = Math.max(0, weeklyGoal - weeklyDistance);
+  const weeklyRange = formatWeekRange(thisWeek?.start_date, thisWeek?.end_date);
+  const weeklyTime = thisWeek?.time ? formatTotalTime(thisWeek.time) : null;
 
   return (
     <div className={styles.wrapper}>
@@ -103,6 +132,7 @@ export default function StatsOverview({ stats, thisWeek }: StatsOverviewProps) {
                 <div className={styles.metricTitle}>
                   <span>Esta semana</span>
                   <span>Plano em andamento</span>
+                  {weeklyRange && <span>{weeklyRange}</span>}
                 </div>
               </div>
               <div className={styles.metricValue}>
@@ -110,6 +140,7 @@ export default function StatsOverview({ stats, thisWeek }: StatsOverviewProps) {
               </div>
               <div className={styles.metricSub}>
                 {weeklyRuns} corrida{weeklyRuns === 1 ? "" : "s"}
+                {weeklyTime ? ` · ${weeklyTime}` : ""}
               </div>
               <div className={styles.weekGoal}>
                 <div className={styles.weekGoalTrack}>
@@ -119,7 +150,7 @@ export default function StatsOverview({ stats, thisWeek }: StatsOverviewProps) {
                   />
                 </div>
                 <div className={styles.metricFooter}>
-                  <span>Meta: {WEEKLY_GOAL_KM} km</span>
+                  <span>Meta: {weeklyGoal.toFixed(0)} km</span>
                   <span>
                     {weeklyGoalDiff <= 0
                       ? "Meta semanal alcançada"

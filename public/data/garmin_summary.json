@@ -144,6 +144,121 @@
       "average_speed": 6.545454545454546
     }
   ],
-  "last_updated": "2025-11-25T13:40:22.700094",
-  "source": "Garmin Connect Export (Incremental)"
+  "last_updated": "2025-11-25T14:47:45.438896",
+  "source": "Garmin Connect Export (Incremental)",
+  "this_week": {
+    "runs": 1,
+    "distance": 6.25,
+    "time": "00:49:08",
+    "start_date": "2025-11-24",
+    "end_date": "2025-11-30",
+    "goal": 25.0
+  },
+  "latest_run": {
+    "date": "2025-11-25 07:18:53",
+    "distance": 6.25,
+    "total_time": 2948,
+    "calories": 482,
+    "average_heartrate": 138,
+    "average_pace": 7.8613333333333335,
+    "average_speed": 7.632293080054274,
+    "average_speed_kmh": 7.632293080054274,
+    "title": "Porto - 5km @Z2 + Strides",
+    "max_heart_rate": 161
+  },
+  "recent_runs": [
+    {
+      "date": "2025-11-25 07:18:53",
+      "distance": 6.25,
+      "total_time": 2948,
+      "calories": 482,
+      "average_heartrate": 138,
+      "average_pace": 7.8613333333333335,
+      "average_speed": 7.632293080054274,
+      "average_speed_kmh": 7.632293080054274,
+      "title": "Porto - 5km @Z2 + Strides",
+      "max_heart_rate": 161
+    },
+    {
+      "date": "2025-11-23 08:17:58",
+      "distance": 8.1,
+      "total_time": 3826,
+      "calories": 613,
+      "average_heartrate": 129,
+      "average_pace": 7.872427983539096,
+      "average_speed": 7.621536853110298
+    },
+    {
+      "date": "2025-11-20 08:16:47",
+      "distance": 5.49,
+      "total_time": 2555,
+      "calories": 427,
+      "average_heartrate": 148,
+      "average_pace": 7.7565270188221005,
+      "average_speed": 7.7354207436399225
+    },
+    {
+      "date": "2025-11-16 17:50:34",
+      "distance": 11.12,
+      "total_time": 5346,
+      "calories": 891,
+      "average_heartrate": 158,
+      "average_pace": 8.012589928057555,
+      "average_speed": 7.488215488215488
+    },
+    {
+      "date": "2025-11-13 07:08:59",
+      "distance": 7.81,
+      "total_time": 3609,
+      "calories": 587,
+      "average_heartrate": 135,
+      "average_pace": 7.701664532650449,
+      "average_speed": 7.790523690773067
+    },
+    {
+      "date": "2025-11-11 13:34:36",
+      "distance": 6.28,
+      "total_time": 2921,
+      "calories": 505,
+      "average_heartrate": 156,
+      "average_pace": 7.752123142250531,
+      "average_speed": 7.739815131804177
+    },
+    {
+      "date": "2025-11-09 09:52:53",
+      "distance": 9.03,
+      "total_time": 4169,
+      "calories": 698,
+      "average_heartrate": 140,
+      "average_pace": 7.694721299372462,
+      "average_speed": 7.797553370112736
+    },
+    {
+      "date": "2025-11-06 09:10:49",
+      "distance": 8.0,
+      "total_time": 3699,
+      "calories": 679,
+      "average_heartrate": 164,
+      "average_pace": 7.70625,
+      "average_speed": 7.785888077858881
+    },
+    {
+      "date": "2025-11-04 07:13:30",
+      "distance": 6.21,
+      "total_time": 2942,
+      "calories": 479,
+      "average_heartrate": 134,
+      "average_pace": 7.895866881374128,
+      "average_speed": 7.598912304554725
+    },
+    {
+      "date": "2025-11-02 08:11:34",
+      "distance": 10.21,
+      "total_time": 3687,
+      "calories": 868,
+      "average_heartrate": 182,
+      "average_pace": 6.018609206660137,
+      "average_speed": 9.969080553295363
+    }
+  ]
 }
