@@ -146,17 +146,18 @@ export default function GalleryPage() {
                 <p className={styles.loadingText}>A carregar eventos…</p>
               ) : hasError ? (
                 <p className={styles.errorText}>
-                          Não foi possível carregar a galeria. Verifica se o ficheiro{" "}
-                          <code>public/data/gallery_index.json</code> existe.
+                  Não foi possível carregar a galeria. Verifica se o ficheiro{" "}
+                  <code>public/data/gallery_index.json</code> existe.
                 </p>
               ) : (
                 <div className={styles.eventList}>
                   <button
                     type="button"
+                    data-testid="event-button"
+                    data-event-id="all"
                     onClick={() => setSelectedEvent("all")}
-                    className={`${styles.eventButton} ${
-                      selectedEvent === "all" ? styles.active : ""
-                    }`}
+                    className={`${styles.eventButton} ${selectedEvent === "all" ? styles.active : ""
+                      }`}
                   >
                     <div>
                       <span className={styles.eventName}>Todas as fotos</span>
@@ -169,17 +170,16 @@ export default function GalleryPage() {
                     <button
                       key={event.id}
                       type="button"
+                      data-testid="event-button"
+                      data-event-id={event.id}
                       onClick={() => setSelectedEvent(event.id)}
-                      className={`${styles.eventButton} ${
-                        selectedEvent === event.id ? styles.active : ""
-                      }`}
+                      className={`${styles.eventButton} ${selectedEvent === event.id ? styles.active : ""
+                        }`}
                     >
                       <div>
                         <span className={styles.eventName}>{event.name}</span>
                         {event.date && (
-                          <span className={styles.eventDate}>
-                            {event.date}
-                          </span>
+                          <span className={styles.eventDate}>{event.date}</span>
                         )}
                       </div>
                       <span className={styles.eventCount}>
@@ -192,7 +192,6 @@ export default function GalleryPage() {
             </div>
           </aside>
 
-          {/* GRID – Fotos */}
           <main className={styles.mainContent}>
             {isLoading && (
               <div className={styles.loadingBox}>
@@ -216,6 +215,7 @@ export default function GalleryPage() {
                   <Reveal key={photo.id} delay={index * 0.04}>
                     <button
                       type="button"
+                      data-testid="photo-card"
                       className={styles.photoCard}
                       onClick={() => setSelectedImage(photo)}
                     >

@@ -203,9 +203,17 @@
   backdrop-filter: blur(18px);
   border: 1px solid rgba(59, 130, 246, 0.7);
   border-radius: 1.75rem;
-  padding: 1.75rem;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
   display: flex;
   flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .progressCard {
+    align-items: center;
+    text-align: center;
+  }
 }
 
 @media (max-width: 1280px) {

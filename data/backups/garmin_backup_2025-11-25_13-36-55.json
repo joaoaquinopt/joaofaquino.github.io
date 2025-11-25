@@ -1,22 +1,10 @@
 {
-  "total_distance": 104.79,
-  "total_time": 47970,
-  "total_runs": 15,
-  "avg_distance": 6.99,
-  "avg_pace": 7.63,
+  "total_distance": 98.54,
+  "total_time": 45022,
+  "total_runs": 14,
+  "avg_distance": 7.04,
+  "avg_pace": 7.61,
   "activities": [
-    {
-      "date": "2025-11-25 07:18:53",
-      "distance": 6.25,
-      "total_time": 2948,
-      "calories": 482,
-      "average_heartrate": 138,
-      "average_pace": 7.8613333333333335,
-      "average_speed": 7.632293080054274,
-      "average_speed_kmh": 7.632293080054274,
-      "title": "Porto - 5km @Z2 + Strides",
-      "max_heart_rate": 161
-    },
     {
       "date": "2025-11-23 08:17:58",
       "distance": 8.1,
@@ -144,6 +132,6 @@
       "average_speed": 6.545454545454546
     }
   ],
-  "last_updated": "2025-11-25T13:40:22.700094",
-  "source": "Garmin Connect Export (Incremental)"
+  "last_updated": "2025-11-25T12:47:05.607246",
+  "source": "Garmin Connect Export (Auto-update)"
 }

@@ -328,8 +328,8 @@ export default function ProgressoPage() {
                     <button
                       onClick={() => setChartMode("run")}
                       className={`px-3 py-1 rounded-2xl text-xs font-semibold transition-all ${chartMode === "run"
-                          ? "bg-purple-500/20 text-purple-300"
-                          : "bg-white/5 text-gray-400 hover:bg-white/10"
+                        ? "bg-purple-500/20 text-purple-300"
+                        : "bg-white/5 text-gray-400 hover:bg-white/10"
                         }`}
                     >
                       Treino
@@ -337,8 +337,8 @@ export default function ProgressoPage() {
                     <button
                       onClick={() => setChartMode("month")}
                       className={`px-3 py-1 rounded-2xl text-xs font-semibold transition-all ${chartMode === "month"
-                          ? "bg-purple-500/20 text-purple-300"
-                          : "bg-white/5 text-gray-400 hover:bg-white/10"
+                        ? "bg-purple-500/20 text-purple-300"
+                        : "bg-white/5 text-gray-400 hover:bg-white/10"
                         }`}
                     >
                       Mês
@@ -354,12 +354,14 @@ export default function ProgressoPage() {
 
               {/* Meta 2026 */}
               <div className={styles.progressCard}>
-                <div className="flex items-center gap-3 mb-6">
-                  <Target className="w-6 h-6 text-white flex-shrink-0" />
-                  <h3 className="text-white font-bold text-xl">Meta 2026</h3>
+                <div className="flex w-full flex-col items-center gap-4 text-center sm:flex-row sm:items-center sm:justify-start sm:text-left">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 sm:h-14 sm:w-14">
+                    <Target className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="text-lg font-bold text-white sm:text-xl">Meta 2026</h3>
                 </div>
 
-                <div className="flex-1 flex flex-col items-center justify-center py-8">
+                <div className="flex w-full flex-1 flex-col items-center justify-center py-6 sm:py-8">
                   {(() => {
                     const targetDate = new Date("2026-11-01").getTime();
                     const now = new Date().getTime();
@@ -368,11 +370,11 @@ export default function ProgressoPage() {
                     );
 
                     return (
-                      <div className="text-center">
-                        <div className="text-7xl font-bold text-white mb-3">
+                      <div className="flex w-full flex-col items-center gap-2 text-center">
+                        <div className="text-5xl font-extrabold text-white tracking-tight sm:text-6xl lg:text-7xl">
                           {daysRemaining}
                         </div>
-                        <p className="text-base text-gray-300 font-medium">
+                        <p className="text-sm font-medium text-gray-300 sm:text-base">
                           dias restantes para a maratona
                         </p>
                       </div>

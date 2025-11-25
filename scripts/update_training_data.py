@@ -17,6 +17,7 @@ import csv
 import subprocess
 from datetime import datetime
 from pathlib import Path
+from typing import Optional, Union
 
 # Configurações
 GARMIN_EXPORTS_DIR = "data/garmin_exports"
@@ -66,43 +67,79 @@ def load_existing_data():
     return {"activities": []}
 
 
+NumberLike = Optional[Union[str, int, float]]
+
+
+def _parse_float(value: NumberLike) -> float:
+    """Converte campos numéricos do Garmin, tratando '--' ou vazios."""
+    if value is None:
+        return 0.0
+    value_str = str(value).strip().replace(',', '.')
+    if value_str in {"", "--"}:
+        return 0.0
+    try:
+        return float(value_str)
+    except ValueError:
+        return 0.0
+
+
+def _parse_int(value: NumberLike) -> Optional[int]:
+    """Converte valores pretendidos como inteiros, respeitando campos vazios."""
+    parsed = _parse_float(value)
+    return int(parsed) if parsed else None
+
+
+def _parse_time_to_seconds(time_str: str | None) -> int:
+    """Normaliza tempo (HH:MM:SS ou segundos) em segundos, aceitando '--'."""
+    if not time_str or str(time_str).strip() in {"", "--"}:
+        return 0
+    value = str(time_str).strip()
+    if ':' in value:
+        parts = value.split(':')
+        parts = [p or '0' for p in parts]
+        if len(parts) == 3:
+            hours, minutes, seconds = parts
+            return int(hours) * 3600 + int(minutes) * 60 + int(seconds)
+        if len(parts) == 2:
+            minutes, seconds = parts
+            return int(minutes) * 60 + int(seconds)
+    try:
+        return int(float(value))
+    except ValueError:
+        return 0
+
+
 def parse_csv_file(file_path):
     """Parse ficheiro CSV do Garmin"""
     activities = []
-    
+
     with open(file_path, 'r', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
-        
+
         for row in reader:
-            # Ignora linhas sem distância
-            if not row.get('Distance') or float(row.get('Distance', 0)) == 0:
+            distance = _parse_float(row.get('Distance'))
+            if distance <= 0:
                 continue
-            
-            distance = float(row.get('Distance', 0))
-            time_str = row.get('Time', '0')
-            
-            # Converte tempo (formato HH:MM:SS ou segundos)
-            if ':' in time_str:
-                time_parts = time_str.split(':')
-                total_seconds = int(time_parts[0]) * 3600 + int(time_parts[1]) * 60 + int(time_parts[2])
-            else:
-                total_seconds = int(float(time_str))
-            
-            # Calcula pace (min/km)
+
+            total_seconds = _parse_time_to_seconds(row.get('Time'))
+
             average_pace = (total_seconds / 60) / distance if distance > 0 else 0
-            
+
+            avg_hr = _parse_int(row.get('Avg HR'))
+            calories = _parse_int(row.get('Calories')) or 0
+
             activity = {
                 "date": row.get('Date', datetime.now().strftime('%Y-%m-%d %H:%M:%S')),
                 "distance": distance,
                 "total_time": total_seconds,
-                "calories": int(float(row.get('Calories', 0))),
-                "average_heartrate": int(float(row.get('Avg HR', 0))) if row.get('Avg HR') else None,
+                "calories": calories,
+                "average_heartrate": avg_hr,
                 "average_pace": average_pace,
                 "average_speed": (distance / total_seconds) * 3600 if total_seconds > 0 else 0,
             }
-            
+
             activities.append(activity)
-    
+
     return activities
 
 

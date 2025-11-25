@@ -15,7 +15,7 @@ export default defineConfig({
     : [["list"], ["html", { open: "never" }]],
   use: {
     baseURL,
-    trace: "retain-on-failure",
+    trace: "on-first-retry",
     video: "retain-on-failure",
     screenshot: "only-on-failure",
     ignoreHTTPSErrors: true,
@@ -30,6 +30,10 @@ export default defineConfig({
     {
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
+    },
+    {
+      name: "mobile-chrome",
+      use: { ...devices["Pixel 7"] },
     },
   ],
 });

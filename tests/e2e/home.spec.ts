@@ -6,7 +6,9 @@ test.describe("Home Page", () => {
     await page.goto("/");
     await dataRequest;
 
-    await expect(page.getByText("Road to Marathon 2026")).toBeVisible();
+    await expect(
+      page.getByRole("main").getByText("Road to Marathon 2026", { exact: true })
+    ).toBeVisible();
     await expect(
       page.getByRole("heading", {
         name: /Um pai, um ex-fumador, a caminho da primeira maratona em 2026/i,
@@ -24,6 +26,12 @@ test.describe("Home Page", () => {
     page,
   }) => {
     await page.goto("/");
+
+    const menuButton = page.getByRole("button", { name: /Menu/i });
+    if (await menuButton.isVisible()) {
+      await menuButton.click();
+    }
+
     await page.getByRole("link", { name: /Progresso/i }).click();
 
     await expect(page).toHaveURL(/\/progress$/);

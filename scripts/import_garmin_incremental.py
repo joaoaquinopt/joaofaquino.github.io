@@ -28,6 +28,23 @@ def load_existing_data():
     return {"activities": []}
 
 
+def _first_value(row, keys):
+    for key in keys:
+        value = row.get(key)
+        if value not in (None, "", "--"):
+            return value
+    return None
+
+
+def _to_float(value):
+    try:
+        if value in (None, ""):
+            return 0.0
+        return float(str(value).replace(",", "."))
+    except (TypeError, ValueError):
+        return 0.0
+
+
 def parse_csv_file(file_path):
     """Parse ficheiro CSV do Garmin"""
     activities = []
@@ -36,13 +53,19 @@ def parse_csv_file(file_path):
         reader = csv.DictReader(csvfile)
         
         for row in reader:
+            distance_raw = _first_value(row, [
+                'Distance',
+                'Distância',
+                'Distância (km)',
+            ])
+
             # Ignora linhas sem distância
-            if not row.get('Distance') or float(row.get('Distance', 0)) == 0:
+            distance = _to_float(distance_raw)
+            if distance <= 0:
                 continue
             
             # Parse dos dados
-            distance = float(row.get('Distance', 0))
-            time_str = row.get('Time', '0')
+            time_str = _first_value(row, ['Time', 'Tempo']) or '0'
             
             # Converte tempo (formato HH:MM:SS ou segundos)
             if ':' in time_str:
@@ -53,15 +76,22 @@ def parse_csv_file(file_path):
             
             # Calcula pace (min/km)
             average_pace = (total_seconds / 60) / distance if distance > 0 else 0
+
+            avg_hr_raw = _first_value(row, ['Avg HR', 'FC Média'])
+            max_hr_raw = _first_value(row, ['Max HR', 'FC máxima', 'FC Máxima'])
+            calories_raw = _first_value(row, ['Calories', 'Calorias'])
             
             activity = {
-                "date": row.get('Date', datetime.now().strftime('%Y-%m-%d %H:%M:%S')),
+                "date": _first_value(row, ['Date', 'Data']) or datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                 "distance": distance,
                 "total_time": total_seconds,
-                "calories": int(float(row.get('Calories', 0))),
-                "average_heartrate": int(float(row.get('Avg HR', 0))) if row.get('Avg HR') else None,
+                "calories": int(_to_float(calories_raw)) if calories_raw else 0,
+                "average_heartrate": int(_to_float(avg_hr_raw)) if avg_hr_raw else None,
                 "average_pace": average_pace,
                 "average_speed": (distance / total_seconds) * 3600 if total_seconds > 0 else 0,
+                "average_speed_kmh": (distance / total_seconds) * 3600 if total_seconds > 0 else 0,
+                "title": _first_value(row, ['Title', 'Título']) or 'Corrida',
+                "max_heart_rate": int(_to_float(max_hr_raw)) if max_hr_raw else None,
             }
             
             activities.append(activity)
