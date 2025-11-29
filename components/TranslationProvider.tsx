@@ -233,7 +233,7 @@ const translations = {
     "footer.madeWith": "Feito com",
     "footer.and": "e",
     "footer.privacy": "Privacidade",
-    "footer.copyright": "© 2025 João Aquino. Todos os direitos reservados.",
+    "footer.copyright": " João Aquino. Todos os direitos reservados.",
 
     // Common
     "common.roadToMarathon": "Road to Marathon 2026",

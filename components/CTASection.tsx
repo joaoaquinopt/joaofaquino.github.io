@@ -50,7 +50,7 @@ export default function CTASection() {
             </a>
 
             <a
-              href="https://www.strava.com/athletes/joaoaquino"
+              href="https://www.strava.com/athletes/193546194"
               target="_blank"
               rel="noopener noreferrer"
               className="group flex items-center gap-3 bg-orange-500 text-white px-8 py-4 rounded-xl font-bold shadow-lg hover:scale-105 transition-all duration-300"

@@ -51,7 +51,7 @@ export default function Footer() {
           </a>
 
           <a
-            href="mailto:joaofaquino@gmail.com"
+            href="mailto:contacto@joaofaquino.run"
             aria-label="Email"
             className="hover:text-blue-300 transition"
           >

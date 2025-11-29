@@ -30,7 +30,7 @@ export default function ContactPage() {
 
     try {
       // Formspree endpoint - substitua pelo seu ID após criar conta em formspree.io
-      const response = await fetch("https://formspree.io/f/xzzeddok", {
+      const response = await fetch("https://formspree.io/f/xldykjzn", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -188,14 +188,14 @@ export default function ContactPage() {
           <div className={styles.grid}>
             {/* EMAIL */}
             <a
-              href="mailto:joaomfaquino@gmail.com"
+              href="mailto:contacto@joaofaquino.run"
               target="_blank"
               rel="noopener noreferrer"
               className={styles.card}
             >
               <Mail className={styles.icon} />
               <h3>Email</h3>
-              <p>joaomfaquino@gmail.com</p>
+              <p>contacto@joaofaquino.run</p>
             </a>
 
             {/* GARMIN */}
