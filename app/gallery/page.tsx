@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import PageWrapper from "../../components/PageWrapper";
 import Reveal from "../../components/Reveal";
 import styles from "./gallery.module.css";
+import { useTranslation } from "../../components/TranslationProvider";
 
 interface RawPhoto {
   id?: string | number;
@@ -43,12 +44,26 @@ interface GalleryEvent {
 }
 
 export default function GalleryPage() {
+  const { t } = useTranslation();
   const [events, setEvents] = useState<GalleryEvent[]>([]);
   const [photos, setPhotos] = useState<GalleryPhoto[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<string>("all");
   const [selectedImage, setSelectedImage] = useState<GalleryPhoto | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  // Abrir modal
+  const openModal = useCallback((photo: GalleryPhoto) => {
+    setSelectedImage(photo);
+    dialogRef.current?.showModal();
+  }, []);
+
+  // Fechar modal
+  const closeModal = useCallback(() => {
+    dialogRef.current?.close();
+    setSelectedImage(null);
+  }, []);
 
   useEffect(() => {
     const loadGallery = async () => {
@@ -129,10 +144,9 @@ export default function GalleryPage() {
       <div className={styles.galleryPage}>
         {/* Header */}
         <header className={styles.header}>
-          <h1 className={styles.title}>Galeria</h1>
+          <h1 className={styles.title}>{t("gallery.title")}</h1>
           <p className={styles.subtitle}>
-            Momentos registados ao longo da preparação para a maratona de 2026.
-            Cada foto conta uma história, cada treino é uma conquista.
+            {t("gallery.subtitle")}
           </p>
         </header>
 
@@ -140,14 +154,13 @@ export default function GalleryPage() {
           {/* SIDEBAR – Eventos */}
           <aside className={styles.sidebar}>
             <div className={styles.sidebarSticky}>
-              <h2 className={styles.sidebarTitle}>Eventos</h2>
+              <h2 className={styles.sidebarTitle}>{t("gallery.events")}</h2>
 
               {isLoading ? (
-                <p className={styles.loadingText}>A carregar eventos…</p>
+                <p className={styles.loadingText}>{t("gallery.loading")}</p>
               ) : hasError ? (
                 <p className={styles.errorText}>
-                  Não foi possível carregar a galeria. Verifica se o ficheiro{" "}
-                  <code>public/data/gallery_index.json</code> existe.
+                  {t("gallery.error")}
                 </p>
               ) : (
                 <div className={styles.eventList}>
@@ -160,8 +173,8 @@ export default function GalleryPage() {
                       }`}
                   >
                     <div>
-                      <span className={styles.eventName}>Todas as fotos</span>
-                      <span className={styles.eventDate}>Desde 2025</span>
+                      <span className={styles.eventName}>{t("gallery.allPhotos")}</span>
+                      <span className={styles.eventDate}>{t("gallery.since2025")}</span>
                     </div>
                     <span className={styles.eventCount}>{allPhotos.length}</span>
                   </button>
@@ -195,16 +208,16 @@ export default function GalleryPage() {
           <main className={styles.mainContent}>
             {isLoading && (
               <div className={styles.loadingBox}>
-                A carregar fotos…
+                {t("gallery.loadingPhotos")}
               </div>
             )}
 
             {!isLoading && !hasError && filteredPhotos.length === 0 && (
               <div className={styles.emptyState}>
                 <div className={styles.emptyIcon}>🏃‍♂️</div>
-                <h3 className={styles.emptyTitle}>Nenhuma foto neste evento</h3>
+                <h3 className={styles.emptyTitle}>{t("gallery.noPhotos")}</h3>
                 <p className={styles.emptyText}>
-                  Seleciona outro evento na sidebar ou vê todas as fotos.
+                  {t("gallery.selectOther")}
                 </p>
               </div>
             )}
@@ -217,7 +230,7 @@ export default function GalleryPage() {
                       type="button"
                       data-testid="photo-card"
                       className={styles.photoCard}
-                      onClick={() => setSelectedImage(photo)}
+                      onClick={() => openModal(photo)}
                     >
                       <div className={styles.photoImage}>
                         <Image
@@ -281,35 +294,48 @@ export default function GalleryPage() {
         </div>
       </div>
 
-      {/* MODAL – imagem cheia (por enquanto placeholder) */}
-      {selectedImage && (
-        <dialog
-          className={styles.modal}
-          open
-          onCancel={() => setSelectedImage(null)}
-          onClose={() => setSelectedImage(null)}
-        >
-          <div className={styles.modalContent}>
+      {/* MODAL – imagem fullscreen */}
+      <dialog
+        ref={dialogRef}
+        className={styles.modal}
+        onCancel={closeModal}
+        onClose={closeModal}
+        onClick={(e) => {
+          // Fechar ao clicar fora do conteúdo
+          if (e.target === dialogRef.current) {
+            closeModal();
+          }
+        }}
+      >
+        {selectedImage && (
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              className={styles.closeButtonTop}
+              onClick={closeModal}
+              aria-label="Fechar"
+            >
+              ✕
+            </button>
             <div className={styles.modalImageWrapper}>
               <Image
                 src={selectedImage.src}
                 alt={selectedImage.title}
                 fill
-                sizes="(max-width: 1024px) 100vw, 70vw"
+                sizes="(max-width: 1024px) 100vw, 80vw"
                 className={styles.modalImage}
+                priority
               />
             </div>
-            <p className={styles.modalCaption}>{selectedImage.title}</p>
-            <button
-              type="button"
-              className={styles.closeButton}
-              onClick={() => setSelectedImage(null)}
-            >
-              Fechar
-            </button>
+            <div className={styles.modalInfo}>
+              <p className={styles.modalCaption}>{selectedImage.title}</p>
+              {selectedImage.eventName && (
+                <span className={styles.modalEventBadge}>🏃 {selectedImage.eventName}</span>
+              )}
+            </div>
           </div>
-        </dialog>
-      )}
+        )}
+      </dialog>
     </PageWrapper>
   );
 }

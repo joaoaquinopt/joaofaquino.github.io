@@ -3,6 +3,7 @@
 import { Calendar, Clock, Flame, Heart, Zap } from "lucide-react";
 import Reveal from "./Reveal";
 import styles from "./LatestRunCard.module.css";
+import { useTranslation } from "./TranslationProvider";
 
 interface LatestRunCardProps {
   data?: {
@@ -17,10 +18,12 @@ interface LatestRunCardProps {
 }
 
 export default function LatestRunCard({ data }: Readonly<LatestRunCardProps>) {
+  const { t } = useTranslation();
+
   if (!data) {
     return (
       <div className="bg-slate-900/60 border border-slate-700/40 rounded-2xl p-6 text-center text-gray-400">
-        A carregar dados...
+        {t("latestRun.loading")}
       </div>
     );
   }
@@ -32,7 +35,7 @@ export default function LatestRunCard({ data }: Readonly<LatestRunCardProps>) {
         <header className={styles.headerRow}>
           <div className={styles.ribbon}>
             <Zap className="w-4 h-4" />
-            <span>Última corrida</span>
+            <span>{t("latestRun.title")}</span>
           </div>
 
           <div className={styles.dateTag}>
@@ -46,7 +49,7 @@ export default function LatestRunCard({ data }: Readonly<LatestRunCardProps>) {
           {/* LEFT */}
           <div className={styles.leftBlock}>
             <h3 className={styles.title}>{data.title}</h3>
-            <p className={styles.subtitle}>Treino registado no Garmin</p>
+            <p className={styles.subtitle}>{t("latestRun.subtitle")}</p>
 
             <div className={styles.distanceWrapper}>
               <span className={styles.distanceValue}>{data.distance.toFixed(2)}</span>
@@ -59,7 +62,7 @@ export default function LatestRunCard({ data }: Readonly<LatestRunCardProps>) {
             <div className={styles.metricTile}>
               <div className={styles.metricLabel}>
                 <Clock className="w-4 h-4" />
-                <span>Tempo</span>
+                <span>{t("latestRun.time")}</span>
               </div>
               <div className={styles.metricValue}>{data.time}</div>
             </div>
@@ -67,7 +70,7 @@ export default function LatestRunCard({ data }: Readonly<LatestRunCardProps>) {
             <div className={styles.metricTile}>
               <div className={styles.metricLabel}>
                 <Zap className="w-4 h-4" />
-                <span>Pace</span>
+                <span>{t("latestRun.pace")}</span>
               </div>
               <div className={styles.metricValue}>{data.pace}</div>
             </div>
@@ -76,7 +79,7 @@ export default function LatestRunCard({ data }: Readonly<LatestRunCardProps>) {
               <div className={styles.metricTile}>
                 <div className={styles.metricLabel}>
                   <Heart className="w-4 h-4" />
-                  <span>FC média</span>
+                  <span>{t("latestRun.avgHr")}</span>
                 </div>
                 <div className={styles.metricValue}>
                   {data.avg_hr}
@@ -89,7 +92,7 @@ export default function LatestRunCard({ data }: Readonly<LatestRunCardProps>) {
               <div className={styles.metricTile}>
                 <div className={styles.metricLabel}>
                   <Flame className="w-4 h-4" />
-                  <span>Calorias</span>
+                  <span>{t("latestRun.calories")}</span>
                 </div>
                 <div className={styles.metricValue}>
                   {data.calories}

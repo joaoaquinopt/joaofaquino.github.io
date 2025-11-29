@@ -1,11 +1,30 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import LatestRunCard from "../components/LatestRunCard";
-import StatsOverview from "../components/StatsOverview";
-import CTASection from "../components/CTASection";
-import JourneySection from "../components/JourneySection";
+import { useEffect, useMemo, useState, lazy, Suspense } from "react";
 import HeroSection from "../components/HeroSection";
+import StatsOverview from "../components/StatsOverview";
+
+// Lazy load componentes abaixo do fold para melhorar a performance inicial
+const LatestRunCard = lazy(() => import("../components/LatestRunCard"));
+const JourneySection = lazy(() => import("../components/JourneySection"));
+const CTASection = lazy(() => import("../components/CTASection"));
+
+// Skeleton loading para componentes lazy
+const CardSkeleton = () => (
+  <div className="bg-white/5 rounded-2xl p-6 animate-pulse">
+    <div className="h-4 bg-white/10 rounded w-1/3 mb-4" />
+    <div className="h-8 bg-white/10 rounded w-1/2 mb-2" />
+    <div className="h-4 bg-white/10 rounded w-2/3" />
+  </div>
+);
+
+const SectionSkeleton = () => (
+  <div className="bg-white/5 rounded-2xl p-8 animate-pulse space-y-4">
+    <div className="h-6 bg-white/10 rounded w-1/4" />
+    <div className="h-4 bg-white/10 rounded w-3/4" />
+    <div className="h-4 bg-white/10 rounded w-1/2" />
+  </div>
+);
 
 interface NormalizedGarminData {
   stats: {
@@ -220,16 +239,22 @@ export default function HomePage() {
       <div className="grid lg:grid-cols-3 gap-8" id="runs">
         <div className="lg:col-span-1">
           <div className="lg:sticky lg:top-24">
-            <LatestRunCard data={latestRunForCard} />
+            <Suspense fallback={<CardSkeleton />}>
+              <LatestRunCard data={latestRunForCard} />
+            </Suspense>
           </div>
         </div>
 
         <section className="lg:col-span-2" id="journey">
-          <JourneySection />
+          <Suspense fallback={<SectionSkeleton />}>
+            <JourneySection />
+          </Suspense>
         </section>
       </div>
 
-      <CTASection />
+      <Suspense fallback={<SectionSkeleton />}>
+        <CTASection />
+      </Suspense>
     </div>
   );
 }

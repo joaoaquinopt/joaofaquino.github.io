@@ -3,76 +3,72 @@
 import { Award, Flame, HeartPulse, MoonStar, Target } from "lucide-react";
 import Reveal from "./Reveal";
 import styles from "./JourneySection.module.css";
-
-const highlights = [
-  {
-    icon: MoonStar,
-    title: "Nova energia",
-    description:
-      "A corrida começou como resposta à insónia e ao stress. Hoje é um dos pilares da rotina.",
-  },
-  {
-    icon: HeartPulse,
-    title: "Disciplina imperfeita",
-    description:
-      "Falho, recomeço e sigo. O foco não é ser perfeito, é aparecer vezes suficientes para mudar.",
-  },
-  {
-    icon: Target,
-    title: "Meta 2026",
-    description:
-      "Cruzar a primeira maratona com o Davi na meta, a lembrar o caminho desde o zero.",
-  },
-  {
-    icon: Flame,
-    title: "Transformação real",
-    description:
-      "Cada quilómetro queimo vícios antigos e construo uma versão mais leve e mais presente de mim.",
-  },
-];
-
-const milestones = [
-  {
-    year: "Jun 2024",
-    heading: "Primeiro passo",
-    copy: "Começo a correr para lidar com noites em claro, cigarro e falta de energia.",
-  },
-  {
-    year: "Set 2024",
-    heading: "Rotina em construção",
-    copy: "Planilha própria, corridas às 7h e primeiras provas de 5 km completadas.",
-  },
-  {
-    year: "Nov 2024",
-    heading: "Treinos estruturados",
-    copy: "Blocos em Z2/Z3, velocidade e a decisão: Maratona em 2026.",
-  },
-  {
-    year: "2025",
-    heading: "Partilha pública",
-    copy: "Dashboard, dados Garmin e a jornada aberta nas redes — para criar responsabilidade.",
-  },
-];
+import { useTranslation } from "./TranslationProvider";
 
 export default function JourneySection() {
+  const { t } = useTranslation();
+
+  const highlights = [
+    {
+      icon: MoonStar,
+      title: t("journey.highlight.energy.title"),
+      description: t("journey.highlight.energy.desc"),
+    },
+    {
+      icon: HeartPulse,
+      title: t("journey.highlight.discipline.title"),
+      description: t("journey.highlight.discipline.desc"),
+    },
+    {
+      icon: Target,
+      title: t("journey.highlight.goal.title"),
+      description: t("journey.highlight.goal.desc"),
+    },
+    {
+      icon: Flame,
+      title: t("journey.highlight.transform.title"),
+      description: t("journey.highlight.transform.desc"),
+    },
+  ];
+
+  const milestones = [
+    {
+      year: "Jun 2024",
+      heading: t("journey.timeline.2024jun.title"),
+      copy: t("journey.timeline.2024jun.text"),
+    },
+    {
+      year: "Set 2024",
+      heading: t("journey.timeline.2024sep.title"),
+      copy: t("journey.timeline.2024sep.text"),
+    },
+    {
+      year: "Nov 2024",
+      heading: t("journey.timeline.2024nov.title"),
+      copy: t("journey.timeline.2024nov.text"),
+    },
+    {
+      year: "2025",
+      heading: t("journey.timeline.2025.title"),
+      copy: t("journey.timeline.2025.text"),
+    },
+  ];
+
   return (
     <div className={styles.wrapper}>
       <Reveal>
         <section className={styles.heroCard}>
           <div className={styles.heroBadge}>
             <Award className="w-4 h-4" />
-            <span>A jornada</span>
+            <span>{t("journey.badge")}</span>
           </div>
 
           <h2 className={styles.heroTitle}>
-            Sou João Aquino, QA Engineer, pai do Davi, a tentar ser um ex-fumador e corredor amador
-            rumo à maratona de 2026.
+            {t("journey.intro")}
           </h2>
 
           <p className={styles.heroText}>
-            Comecei a correr porque o corpo pediu ajuda: insónia crónica, stress, cigarro e falta
-            de energia. A corrida virou tratamento e promessa. Cada quilómetro é um voto de
-            confiança no futuro que estou a construir.
+            {t("journey.text")}
           </p>
         </section>
       </Reveal>
@@ -99,7 +95,7 @@ export default function JourneySection() {
         <section className={styles.timelineCard}>
           <div className={styles.timelineHeader}>
             <Target className="w-5 h-5" />
-            <span>Linha do tempo</span>
+            <span>{t("journey.timeline.title")}</span>
           </div>
 
           <div className={styles.timelineList}>
@@ -121,7 +117,7 @@ export default function JourneySection() {
 
       <Reveal delay={0.35}>
         <p className={styles.quote}>
-          &ldquo;Nem sempre perfeito, mas sempre em frente.&rdquo;
+          &ldquo;{t("common.roadToMarathon")}&rdquo;
         </p>
       </Reveal>
     </div>

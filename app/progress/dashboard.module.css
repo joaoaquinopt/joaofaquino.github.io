@@ -1,5 +1,41 @@
 /* Dashboard Progress - CSS Modules (isolado) */
 
+/* Month Filter Select */
+.monthSelect {
+  appearance: none;
+  background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.2), rgba(15, 23, 42, 0.95));
+  border: 1px solid rgba(96, 165, 250, 0.4);
+  border-radius: 0.75rem;
+  padding: 0.5rem 2rem 0.5rem 0.75rem;
+  color: #e5e7eb;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2393c5fd'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 1.25rem;
+  min-width: 160px;
+}
+
+.monthSelect:hover {
+  border-color: rgba(96, 165, 250, 0.7);
+  background-color: rgba(59, 130, 246, 0.15);
+}
+
+.monthSelect:focus {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+}
+
+.monthSelect option {
+  background: #0f172a;
+  color: #e5e7eb;
+  padding: 0.5rem;
+}
+
 .metricsGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

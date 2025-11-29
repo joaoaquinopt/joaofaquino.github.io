@@ -2,8 +2,11 @@
 
 import { Instagram, Activity, ArrowRight } from "lucide-react";
 import Reveal from "./Reveal";
+import { useTranslation } from "./TranslationProvider";
 
 export default function CTASection() {
+  const { t } = useTranslation();
+
   return (
     <Reveal delay={0.5}>
       <div className="relative overflow-hidden bg-gradient-to-r from-sky-500 via-blue-600 to-slate-900 rounded-3xl p-8 md:p-12 shadow-2xl">
@@ -26,10 +29,10 @@ export default function CTASection() {
           {/* Title */}
           <div>
             <h2 className="text-3xl md:text-4xl font-black text-white mb-2">
-              Segue a Jornada
+              {t("cta.title")}
             </h2>
             <p className="text-white/90 text-lg">
-              Acompanha cada passo rumo à maratona de 2026
+              {t("cta.subtitle")}
             </p>
           </div>
 
@@ -62,7 +65,7 @@ export default function CTASection() {
 
           {/* Subtitle */}
           <p className="text-white/80 text-sm italic">
-            &ldquo;Nem sempre perfeito, mas sempre em frente.&rdquo; 🏃‍♂️
+            &ldquo;{t("journey.quote")}&rdquo; 🏃‍♂️
           </p>
         </div>
       </div>

@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import PageWrapper from "../../components/PageWrapper";
 import HorizontalProgressChart from "../../components/HorizontalProgressChart";
-import { Activity, BarChart3, Clock, Zap, Target } from "lucide-react";
+import { Activity, BarChart3, Clock, Zap, Target, Calendar } from "lucide-react";
 import styles from "./dashboard.module.css";
+import { useTranslation } from "../../components/TranslationProvider";
 
 interface ActivityData {
   date: string;
@@ -18,6 +19,7 @@ interface ActivityData {
 }
 
 export default function ProgressoPage() {
+  const { t, language } = useTranslation();
   const [activities, setActivities] = useState<ActivityData[]>([]);
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
@@ -29,6 +31,81 @@ export default function ProgressoPage() {
 
   // 👇 novo: modo do gráfico (Treino / Mês)
   const [chartMode, setChartMode] = useState<"run" | "month">("run");
+
+  // 👇 novo: filtro por mês (formato: "YYYY-MM" ou "all")
+  const [selectedMonth, setSelectedMonth] = useState<string>("current");
+
+  // Gerar lista de meses disponíveis
+  const availableMonths = useMemo(() => {
+    if (activities.length === 0) return [];
+
+    const monthsSet = new Set<string>();
+    activities.forEach(act => {
+      const date = new Date(act.date);
+      if (!isNaN(date.getTime())) {
+        const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+        monthsSet.add(key);
+      }
+    });
+
+    return Array.from(monthsSet).sort().reverse(); // Mais recente primeiro
+  }, [activities]);
+
+  // Mês atual no formato "YYYY-MM"
+  const currentMonthKey = useMemo(() => {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  }, []);
+
+  // Filtrar atividades por mês selecionado
+  const filteredActivities = useMemo(() => {
+    if (activities.length === 0) return [];
+
+    // Se "all" ou modo mês, mostrar tudo
+    if (selectedMonth === "all" || chartMode === "month") {
+      return activities;
+    }
+
+    // Determinar o mês a filtrar
+    const targetMonth = selectedMonth === "current" ? currentMonthKey : selectedMonth;
+
+    // Filtrar atividades do mês selecionado
+    const monthActivities = activities.filter(act => {
+      const date = new Date(act.date);
+      if (isNaN(date.getTime())) return false;
+      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+      return key === targetMonth;
+    });
+
+    // Se o mês selecionado tem poucas atividades, adicionar últimas do mês anterior
+    if (monthActivities.length < 3) {
+      const [year, month] = targetMonth.split('-').map(Number);
+      const prevDate = new Date(year, month - 2, 1); // mês anterior
+      const prevMonthKey = `${prevDate.getFullYear()}-${String(prevDate.getMonth() + 1).padStart(2, '0')}`;
+
+      const prevMonthActivities = activities
+        .filter(act => {
+          const date = new Date(act.date);
+          if (isNaN(date.getTime())) return false;
+          const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+          return key === prevMonthKey;
+        })
+        .slice(-2); // Últimas 2 do mês anterior
+
+      return [...prevMonthActivities, ...monthActivities].sort(
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+      );
+    }
+
+    return monthActivities;
+  }, [activities, selectedMonth, currentMonthKey, chartMode]);
+
+  // Formatar nome do mês para exibição
+  const formatMonthName = (monthKey: string) => {
+    const [year, month] = monthKey.split('-').map(Number);
+    const date = new Date(year, month - 1, 1);
+    return date.toLocaleDateString(language === 'pt' ? 'pt-PT' : 'en-GB', { month: 'long', year: 'numeric' });
+  };
 
   const formatPace = (paceMinPerKm: number) => {
     if (!paceMinPerKm || !Number.isFinite(paceMinPerKm)) return "0:00/km";
@@ -183,19 +260,20 @@ export default function ProgressoPage() {
     <PageWrapper>
       <section className="max-w-7xl mx-auto mt-8 px-6 min-h-screen pb-20">
         {/* Header do dashboard */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
           <div>
             <h1 className="text-3xl font-bold text-white mb-1">
-              Dashboard de Progresso
+              {t("progress.title")}
             </h1>
             <p className="text-gray-400 text-sm">
-              Acompanhamento rumo à Maratona 2026
+              {t("progress.subtitle")}
             </p>
           </div>
-          <div className="text-right">
-            <p className="text-sm text-gray-400">Última atualização</p>
+
+          <div className="text-right hidden sm:block">
+            <p className="text-sm text-gray-400">{t("progress.lastUpdate")}</p>
             <p className="text-white font-semibold">
-              {new Date().toLocaleDateString("pt-PT")}
+              {new Date().toLocaleDateString(language === 'pt' ? 'pt-PT' : 'en-GB')}
             </p>
           </div>
         </div>
@@ -204,7 +282,7 @@ export default function ProgressoPage() {
         {loading && (
           <div className="text-center py-20">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-400 border-t-transparent"></div>
-            <p className="text-gray-400 mt-4">Carregando dashboard...</p>
+            <p className="text-gray-400 mt-4">{t("progress.loading")}</p>
           </div>
         )}
 
@@ -212,9 +290,9 @@ export default function ProgressoPage() {
         {!loading && activities.length === 0 && (
           <div className="text-center py-20 bg-white/5 rounded-2xl border border-white/10">
             <div className="text-6xl mb-4">📊</div>
-            <p className="text-gray-400 text-lg mb-2">Dashboard sem dados</p>
+            <p className="text-gray-400 text-lg mb-2">{t("progress.noData")}</p>
             <p className="text-gray-500 text-sm">
-              Importe os dados CSV do Garmin Connect
+              {t("progress.importData")}
             </p>
           </div>
         )}
@@ -235,13 +313,13 @@ export default function ProgressoPage() {
                   </span>
                 </div>
                 <h3 className="text-gray-400 text-sm font-medium mb-1">
-                  Total de Corridas
+                  {t("progress.totalRuns")}
                 </h3>
                 <p className="text-3xl font-bold text-white">
                   {stats.totalRuns}
                 </p>
                 <p className="text-xs text-gray-500 mt-1">
-                  atividades registadas
+                  {t("progress.activitiesRegistered")}
                 </p>
               </div>
 
@@ -252,18 +330,18 @@ export default function ProgressoPage() {
                     <BarChart3 className="w-5 h-5 text-cyan-400" />
                   </div>
                   <span className="text-xs text-cyan-400 font-semibold">
-                    +{stats.totalRuns} treinos
+                    +{stats.totalRuns} {t("progress.training")}s
                   </span>
                 </div>
                 <h3 className="text-gray-400 text-sm font-medium mb-1">
-                  Distância Total
+                  {t("progress.totalDistance")}
                 </h3>
                 <p className="text-3xl font-bold text-white">
                   {stats.totalDistance}{" "}
                   <span className="text-lg text-gray-400">km</span>
                 </p>
                 <p className="text-xs text-gray-500 mt-1">
-                  acumulados em treinos
+                  {t("progress.accumulatedTraining")}
                 </p>
               </div>
 
@@ -278,14 +356,14 @@ export default function ProgressoPage() {
                   </span>
                 </div>
                 <h3 className="text-gray-400 text-sm font-medium mb-1">
-                  Tempo Acumulado
+                  {t("progress.totalTime")}
                 </h3>
                 <p className="text-3xl font-bold text-white">
                   {stats.totalTime}{" "}
                   <span className="text-lg text-gray-400">min</span>
                 </p>
                 <p className="text-xs text-gray-500 mt-1">
-                  tempo total de treino
+                  {t("progress.totalTrainingTime")}
                 </p>
               </div>
 
@@ -296,32 +374,53 @@ export default function ProgressoPage() {
                     <Zap className="w-5 h-5 text-orange-400" />
                   </div>
                   <span className="text-xs text-orange-400 font-semibold">
-                    médio
+                    avg
                   </span>
                 </div>
                 <h3 className="text-gray-400 text-sm font-medium mb-1">
-                  Ritmo Médio
+                  {t("progress.avgPace")}
                 </h3>
                 <p className="text-3xl font-bold text-white">
                   {stats.avgPace}
                 </p>
-                <p className="text-xs text-gray-500 mt-1">minutos por km</p>
+                <p className="text-xs text-gray-500 mt-1">{t("progress.minPerKm")}</p>
               </div>
             </div>
 
-            {/* Row 2: Chart + Meta 2026 */}
+            {/* Row 2: Filtro + Chart + Meta 2026 */}
+            {/* Filtro por Mês */}
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-3">
+                <Calendar className="w-5 h-5 text-blue-400" />
+                <span className="text-sm text-gray-300 font-medium">{t("progress.filterBy")}</span>
+                <select
+                  value={selectedMonth}
+                  onChange={(e) => setSelectedMonth(e.target.value)}
+                  className={styles.monthSelect}
+                >
+                  <option value="current">{t("progress.currentMonth")}</option>
+                  <option value="all">{t("progress.allMonths")}</option>
+                  {availableMonths.map((month) => (
+                    <option key={month} value={month}>
+                      {formatMonthName(month)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
             <div className={styles.chartGrid}>
               {/* Chart */}
               <div className={styles.chartCard}>
                 <div className="flex items-center justify-between mb-6">
                   <div>
                     <h2 className="text-lg font-bold text-white mb-1">
-                      Distância {chartMode === "run" ? "por Treino" : "por Mês"}
+                      {chartMode === "run" ? t("progress.distanceByRun") : t("progress.distanceByMonth")}
                     </h2>
                     <p className="text-xs text-gray-400">
                       {chartMode === "run"
-                        ? `Últimas ${activities.length} corridas`
-                        : "Distância total por mês"}
+                        ? `${filteredActivities.length} ${t("progress.runsIn")}${selectedMonth !== "all" && selectedMonth !== "current" ? ` ${formatMonthName(selectedMonth)}` : ""}`
+                        : t("progress.totalDistanceByMonth")}
                     </p>
                   </div>
                   <div className="flex gap-2">
@@ -332,7 +431,7 @@ export default function ProgressoPage() {
                         : "bg-white/5 text-gray-400 hover:bg-white/10"
                         }`}
                     >
-                      Treino
+                      {t("progress.training")}
                     </button>
                     <button
                       onClick={() => setChartMode("month")}
@@ -341,13 +440,13 @@ export default function ProgressoPage() {
                         : "bg-white/5 text-gray-400 hover:bg-white/10"
                         }`}
                     >
-                      Mês
+                      {t("progress.month")}
                     </button>
                   </div>
                 </div>
 
                 <HorizontalProgressChart
-                  activities={activities}
+                  activities={chartMode === "month" ? activities : filteredActivities}
                   mode={chartMode}
                 />
               </div>
@@ -358,7 +457,7 @@ export default function ProgressoPage() {
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 sm:h-14 sm:w-14">
                     <Target className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="text-lg font-bold text-white sm:text-xl">Meta 2026</h3>
+                  <h3 className="text-lg font-bold text-white sm:text-xl">{t("progress.goal.title")}</h3>
                 </div>
 
                 <div className="flex w-full flex-1 flex-col items-center justify-center py-6 sm:py-8">
@@ -375,7 +474,7 @@ export default function ProgressoPage() {
                           {daysRemaining}
                         </div>
                         <p className="text-sm font-medium text-gray-300 sm:text-base">
-                          dias restantes para a maratona
+                          {t("progress.goal.daysRemaining")}
                         </p>
                       </div>
                     );
@@ -389,24 +488,33 @@ export default function ProgressoPage() {
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h2 className="text-lg font-bold text-white mb-1">
-                    Histórico de Corridas
+                    {t("progress.history.title")}
                   </h2>
                   <p className="text-xs text-gray-400">
-                    {activities.length} atividades registadas
+                    {selectedMonth === "all"
+                      ? `${activities.length} ${t("progress.history.activitiesRegistered")}`
+                      : `${filteredActivities.length} ${t("progress.history.activities")}${selectedMonth !== "current" ? ` ${t("progress.chart.in")} ${formatMonthName(selectedMonth)}` : ` ${t("progress.history.thisMonth")}`}`
+                    }
                   </p>
                 </div>
-                <button className="px-4 py-2 rounded-2xl bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 text-sm font-semibold transition-all">
-                  Ver todas
-                </button>
+                {selectedMonth !== "all" && (
+                  <button
+                    onClick={() => setSelectedMonth("all")}
+                    className="px-4 py-2 rounded-2xl bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 text-sm font-semibold transition-all"
+                  >
+                    {t("progress.history.viewAll")}
+                  </button>
+                )}
               </div>
 
               <div className={styles.activitiesGrid}>
-                {activities.map((activity, index) => {
+                {(selectedMonth === "all" ? activities : filteredActivities).map((activity, index) => {
+                  const displayActivities = selectedMonth === "all" ? activities : filteredActivities;
                   const date = new Date(activity.date);
                   const dayMonth = isNaN(date.getTime())
                     ? activity.date
                     : `${date.getDate()}/${date.getMonth() + 1}`;
-                  const runNumber = activities.length - index;
+                  const runNumber = displayActivities.length - index;
 
                   const colors = [
                     {
@@ -456,7 +564,7 @@ export default function ProgressoPage() {
 
                       <div className={styles.activityCardHeader}>
                         <div>
-                          <p className="text-xs text-gray-400">Data</p>
+                          <p className="text-xs text-gray-400">{t("progress.history.date")}</p>
                           <p className="text-white font-semibold text-sm">
                             {dayMonth}
                           </p>
@@ -472,7 +580,7 @@ export default function ProgressoPage() {
                         <div className={styles.activityCardStat}>
                           <BarChart3 className="w-4 h-4 text-blue-400" />
                           <div className="flex-1">
-                            <p className="text-xs text-gray-400">Distância</p>
+                            <p className="text-xs text-gray-400">{t("progress.history.distance")}</p>
                             <p className="text-white font-bold">
                               {activity.distance} km
                             </p>
@@ -482,7 +590,7 @@ export default function ProgressoPage() {
                         <div className={styles.activityCardStat}>
                           <Clock className="w-4 h-4 text-cyan-400" />
                           <div className="flex-1">
-                            <p className="text-xs text-gray-400">Tempo</p>
+                            <p className="text-xs text-gray-400">{t("progress.history.time")}</p>
                             <p className="text-white font-bold">
                               {Math.floor(activity.moving_time / 60)}:
                               {(activity.moving_time % 60)
@@ -497,7 +605,7 @@ export default function ProgressoPage() {
                             <Activity className="w-4 h-4 text-red-400" />
                             <div className="flex-1">
                               <p className="text-xs text-gray-400">
-                                FC Média
+                                {t("progress.history.avgHr")}
                               </p>
                               <p className="text-white font-bold">
                                 {activity.avg_heart_rate} bpm
@@ -511,7 +619,7 @@ export default function ProgressoPage() {
                             <Zap className="w-4 h-4 text-orange-400" />
                             <div className="flex-1">
                               <p className="text-xs text-gray-400">
-                                Calorias
+                                {t("progress.history.calories")}
                               </p>
                               <p className="text-white font-bold">
                                 {activity.calories}

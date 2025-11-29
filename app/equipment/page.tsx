@@ -420,20 +420,22 @@
 
 import PageWrapper from "../../components/PageWrapper";
 import styles from "../equipment/EquipmentPage.module.css";
+import { useTranslation } from "../../components/TranslationProvider";
 
 export default function EquipamentosPage() {
+  const { t } = useTranslation();
+
   return (
     <PageWrapper>
       <section className={styles.wrapper}>
         <div className={styles.card}>
-          <span className={styles.badge}>🚧 Em construção</span>
-          <h1 className={styles.title}>Equipamentos</h1>
+          <span className={styles.badge}>{t("equipment.badge")}</span>
+          <h1 className={styles.title}>{t("equipment.title")}</h1>
           <p className={styles.text}>
-            Em breve vou detalhar aqui os ténis, relógio, acessórios e tudo o
-            que estou a usar nesta jornada até à maratona de 2026.
+            {t("equipment.text")}
           </p>
           <p className={styles.subtext}>
-            Enquanto isso, podes acompanhar os treinos no Instagram e Garmin.
+            {t("equipment.subtext")}
           </p>
         </div>
       </section>
