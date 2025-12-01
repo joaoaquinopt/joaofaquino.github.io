@@ -17,12 +17,12 @@ const translations = {
     "nav.progress": "Progresso",
     "nav.equipment": "Equipamentos & Parceiros",
     "nav.gallery": "Galeria",
-    "nav.contact": "Contacto",
+    "nav.contact": "Contato",
     "nav.links": "Links",
 
     // Hero Section
     "hero.label": "Road to Marathon 2026",
-    "hero.title": "Um pai, um ex-fumador, a caminho da primeira maratona em 2026.",
+    "hero.title": "Um pai, marido, ex-fumante, a caminho da primeira maratona em 2026.",
     "hero.subtitle": "Estou a documentar a jornada real até à minha primeira maratona — treinos, insónias, falhas e vitórias.",
     "hero.cta.journey": "Ver jornada",
     "hero.cta.runs": "Ver últimas corridas",
@@ -31,7 +31,7 @@ const translations = {
 
     // Journey Section
     "journey.badge": "A jornada",
-    "journey.intro": "Sou João Aquino, QA Engineer, pai do Davi, a tentar ser um ex-fumador e corredor amador rumo à maratona de 2026.",
+    "journey.intro": "Sou João Aquino, QA Engineer, pai do Davi, esposo da Maiara, a tentar ser um ex-fumante e corredor amador rumo à maratona de 2026.",
     "journey.text": "Comecei a correr porque o corpo pediu ajuda: insónia crónica, stress, cigarro e falta de energia. A corrida virou tratamento e promessa. Cada quilómetro é um voto de confiança no futuro que estou a construir.",
     "journey.highlight.energy.title": "Nova energia",
     "journey.highlight.energy.desc": "A corrida começou como resposta à insónia e ao stress. Hoje é um dos pilares da rotina.",
