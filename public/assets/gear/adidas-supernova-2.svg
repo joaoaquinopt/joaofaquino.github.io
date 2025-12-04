@@ -1,0 +1,35 @@
+<svg width="360" height="220" viewBox="0 0 360 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="supernovaBackground" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0E1C33"/>
+      <stop offset="100%" stop-color="#173756"/>
+    </linearGradient>
+    <linearGradient id="supernovaMidsole" x1="80" y1="148" x2="300" y2="176" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6AE3D8"/>
+      <stop offset="100%" stop-color="#3BC6C5"/>
+    </linearGradient>
+    <linearGradient id="supernovaUpper" x1="60" y1="96" x2="320" y2="168" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#314F78"/>
+      <stop offset="100%" stop-color="#1F3556"/>
+    </linearGradient>
+  </defs>
+  <rect width="360" height="220" rx="18" fill="url(#supernovaBackground)"/>
+  <g transform="translate(18 12)">
+    <path d="M18 142C24 130 44 118 66 114C130 100 200 100 268 118C292 124 314 130 326 146C334 156 330 166 322 172C302 188 254 194 208 194C140 196 80 188 38 176C18 170 10 156 18 142Z" fill="url(#supernovaMidsole)"/>
+    <path d="M46 128C64 104 116 86 166 86C220 86 274 96 308 110C320 116 328 124 330 130C334 144 314 162 286 168C232 180 168 174 120 170C80 166 46 158 46 128Z" fill="url(#supernovaUpper)"/>
+    <path d="M58 134C72 130 88 132 104 140C118 146 138 154 170 156C192 158 210 154 230 148C254 140 284 132 304 134" fill="#1B2C45" opacity="0.5"/>
+    <path d="M92 120C106 112 134 104 160 104C182 106 206 110 222 118C236 124 250 134 260 146C232 146 180 142 136 134C114 130 98 124 92 120Z" fill="#3C5F8C" opacity="0.7"/>
+    <path d="M148 120L196 136L186 150L140 134Z" fill="#43C4D2"/>
+    <path d="M166 114L214 132L204 146L158 128Z" fill="#3AB6C9"/>
+    <path d="M184 110L232 130L220 144L176 124Z" fill="#2FA7C0"/>
+    <path d="M122 110C146 110 180 116 206 126" stroke="#C9DDF4" stroke-width="6" stroke-linecap="round"/>
+    <path d="M96 142C104 152 138 164 176 166C216 168 246 162 272 150" stroke="#101B2E" stroke-width="8" stroke-linecap="round" opacity="0.35"/>
+    <path d="M266 94C278 94 296 98 304 106C310 112 308 122 296 126C284 130 268 128 254 122C244 118 238 114 234 108C242 98 254 94 266 94Z" fill="#506E99"/>
+    <path d="M56 150C60 160 70 166 86 170C124 180 214 186 260 176C284 170 300 158 308 146" stroke="#081223" stroke-width="8" stroke-linecap="round" opacity="0.45"/>
+    <path d="M50 150C48 140 54 126 74 120" stroke="#79EBE1" stroke-width="4" stroke-linecap="round" opacity="0.45"/>
+    <path d="M296 168C300 162 310 154 318 152" stroke="#2B495F" stroke-width="6" stroke-linecap="round" opacity="0.6"/>
+    <circle cx="298" cy="170" r="6" fill="#ADEE4C"/>
+  </g>
+  <text x="32" y="56" fill="#E6F6FF" font-family="'Segoe UI', 'Arial', sans-serif" font-weight="700" font-size="26">Adidas Supernova 2</text>
+  <text x="32" y="86" fill="rgba(230, 246, 255, 0.8)" font-family="'Segoe UI', 'Arial', sans-serif" font-weight="500" font-size="16">Treino diário favorito • Primavera 2025</text>
+</svg>

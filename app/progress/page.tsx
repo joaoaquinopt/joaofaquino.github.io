@@ -90,7 +90,8 @@ export default function ProgressoPage() {
           const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
           return key === prevMonthKey;
         })
-        .slice(-2); // Últimas 2 do mês anterior
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()) // Ordenar por data
+        .slice(-2); // Últimas 2 do mês anterior (mais recentes)
 
       return [...prevMonthActivities, ...monthActivities].sort(
         (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
@@ -509,12 +510,11 @@ export default function ProgressoPage() {
 
               <div className={styles.activitiesGrid}>
                 {(selectedMonth === "all" ? activities : filteredActivities).map((activity, index) => {
-                  const displayActivities = selectedMonth === "all" ? activities : filteredActivities;
                   const date = new Date(activity.date);
                   const dayMonth = isNaN(date.getTime())
                     ? activity.date
                     : `${date.getDate()}/${date.getMonth() + 1}`;
-                  const runNumber = displayActivities.length - index;
+                  const runNumber = index + 1; // Numeração sequencial: 1, 2, 3...
 
                   const colors = [
                     {

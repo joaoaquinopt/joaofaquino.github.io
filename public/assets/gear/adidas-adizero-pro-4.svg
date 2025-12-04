@@ -1,0 +1,36 @@
+<svg width="360" height="220" viewBox="0 0 360 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="adizeroBackground" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#111318"/>
+      <stop offset="100%" stop-color="#1E2127"/>
+    </linearGradient>
+    <linearGradient id="adizeroUpper" x1="58" y1="92" x2="330" y2="180" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2B2F38"/>
+      <stop offset="100%" stop-color="#1B1D23"/>
+    </linearGradient>
+    <linearGradient id="adizeroMidsole" x1="42" y1="156" x2="324" y2="194" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2E3038"/>
+      <stop offset="60%" stop-color="#16181F"/>
+      <stop offset="100%" stop-color="#0A0B0F"/>
+    </linearGradient>
+  </defs>
+  <rect width="360" height="220" rx="18" fill="url(#adizeroBackground)"/>
+  <g transform="translate(16 14)">
+    <path d="M26 146C34 126 64 110 100 102C168 88 246 98 300 118C322 126 338 138 342 150C346 166 328 178 302 186C244 204 140 202 78 190C40 182 20 170 26 146Z" fill="url(#adizeroMidsole)"/>
+    <path d="M54 128C62 100 120 78 188 78C244 78 302 92 330 110C340 118 348 130 346 138C342 150 320 164 286 172C224 188 150 176 104 168C70 162 54 152 54 128Z" fill="url(#adizeroUpper)"/>
+    <path d="M80 120C94 108 148 90 208 92C242 94 292 106 316 118C328 124 336 134 332 140C320 156 270 166 224 168C182 170 122 164 98 158C80 154 74 144 80 120Z" fill="#2C3139"/>
+    <path d="M110 108C140 96 198 96 238 104" stroke="#3B414B" stroke-width="8" stroke-linecap="round"/>
+    <path d="M188 108L244 128L232 148L176 126Z" fill="#C5C7CC"/>
+    <path d="M206 104L262 126L248 146L192 122Z" fill="#9FA4AE"/>
+    <path d="M224 100L280 124L264 144L208 118Z" fill="#7B808B"/>
+    <path d="M150 116C176 104 236 108 266 118" stroke="#555862" stroke-width="6" stroke-linecap="round"/>
+    <path d="M96 150C110 170 162 184 218 186C260 188 298 180 326 166" stroke="#040507" stroke-width="10" stroke-linecap="round" opacity="0.45"/>
+    <path d="M66 152C60 140 70 118 102 106" stroke="#484D58" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+    <path d="M304 164C312 154 328 142 334 140" stroke="#272B34" stroke-width="6" stroke-linecap="round" opacity="0.6"/>
+    <path d="M244 156C220 172 170 184 118 182" stroke="#0C0D11" stroke-width="8" stroke-linecap="round" opacity="0.4"/>
+    <path d="M256 94C278 92 302 100 316 112C322 118 318 126 306 130C288 136 260 134 242 126C232 122 222 114 226 106C232 98 242 96 256 94Z" fill="#383C45"/>
+    <rect x="220" y="120" width="72" height="8" rx="4" transform="rotate(-20 220 120)" fill="#D7D9DE" opacity="0.6"/>
+  </g>
+  <text x="32" y="56" fill="#F0F3F8" font-family="'Segoe UI', 'Arial', sans-serif" font-weight="700" font-size="26">Adidas Adizero Pro 4</text>
+  <text x="32" y="86" fill="rgba(240, 243, 248, 0.7)" font-family="'Segoe UI', 'Arial', sans-serif" font-weight="500" font-size="16">Competição • Placa de carbono • 2025</text>
+</svg>
