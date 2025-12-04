@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://joaofaquino.run
+
+# Sitemaps
+Sitemap: https://joaofaquino.run/sitemap.xml
