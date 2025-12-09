@@ -44,6 +44,7 @@ export default function HorizontalProgressChart({
   mode = "run",
 }: Readonly<HorizontalProgressChartProps>) {
   const scrollAreaRef = useRef<HTMLDivElement | null>(null);
+  const rafIdRef = useRef<number | null>(null);
   const [scrollState, setScrollState] = useState({ atStart: true, atEnd: false });
   const [scrollIndicator, setScrollIndicator] = useState({ width: 100, left: 0 });
   const barGapPx = 24;
@@ -135,6 +136,18 @@ export default function HorizontalProgressChart({
     }
   }, []);
 
+  // Throttle scroll updates using RAF for better performance
+  const throttledUpdateScrollState = useMemo(() => {
+    return () => {
+      if (rafIdRef.current !== null) return;
+      
+      rafIdRef.current = requestAnimationFrame(() => {
+        updateScrollState();
+        rafIdRef.current = null;
+      });
+    };
+  }, [updateScrollState]);
+
   useEffect(() => {
     updateScrollState();
 
@@ -144,14 +157,14 @@ export default function HorizontalProgressChart({
     }
 
     const handleResize = () => updateScrollState();
-    el.addEventListener("scroll", updateScrollState, { passive: true });
+    el.addEventListener("scroll", throttledUpdateScrollState, { passive: true });
     window.addEventListener("resize", handleResize);
 
     return () => {
-      el.removeEventListener("scroll", updateScrollState);
+      el.removeEventListener("scroll", throttledUpdateScrollState);
       window.removeEventListener("resize", handleResize);
     };
-  }, [chartData.length, updateScrollState]);
+  }, [chartData.length, updateScrollState, throttledUpdateScrollState]);
 
   useEffect(() => {
     const el = scrollAreaRef.current;

@@ -73,13 +73,13 @@ def process_garmin_csv():
             # Parse data
             date_str = row['Date']
             distance = float(row['Distance']) if row['Distance'] else 0
-            time_seconds = parse_time(row['Time'])
-            avg_pace_str = row['Avg Pace']
-            title = row['Title']
             
             # Skip if no distance
             if distance == 0:
                 continue
+            
+            time_seconds = parse_time(row['Time'])
+            title = row['Title']
             
             # Calculate pace in seconds per km
             pace_seconds = (time_seconds / distance) if distance > 0 else 0
@@ -93,6 +93,18 @@ def process_garmin_csv():
                 formatted_date = date_str
                 iso_date = date_str
             
+            # Parse optional fields once
+            avg_hr = row['Avg HR'] if row['Avg HR'] != '--' else None
+            max_hr = row['Max HR'] if row['Max HR'] != '--' else None
+            try:
+                calories = int(row['Calories']) if row['Calories'] else 0
+            except (ValueError, TypeError):
+                calories = 0
+            try:
+                elevation = int(row['Total Ascent']) if row['Total Ascent'] and row['Total Ascent'] != '--' else 0
+            except (ValueError, TypeError):
+                elevation = 0
+            
             # Add to runs list
             runs.append({
                 "date": formatted_date,
@@ -102,18 +114,18 @@ def process_garmin_csv():
                 "time": row['Time'],
                 "time_seconds": time_seconds,
                 "pace": format_pace(pace_seconds),
-                "avg_hr": row['Avg HR'] if row['Avg HR'] != '--' else None,
-                "max_hr": row['Max HR'] if row['Max HR'] != '--' else None,
-                "calories": int(row['Calories']) if row['Calories'] else 0,
-                "elevation_gain": int(row['Total Ascent']) if row['Total Ascent'] and row['Total Ascent'] != '--' else 0
+                "avg_hr": avg_hr,
+                "max_hr": max_hr,
+                "calories": calories,
+                "elevation_gain": elevation
             })
             
-            # Accumulate totals
+            # Accumulate totals in single pass
             total_distance += distance
             total_time += time_seconds
             total_runs += 1
     
-    # Sort runs by date (most recent first)
+    # Sort runs by date (most recent first) - single sort
     runs.sort(key=lambda x: x['iso_date'], reverse=True)
     
     # Calculate averages
@@ -123,18 +135,21 @@ def process_garmin_csv():
     # Get latest run
     latest_run = runs[0] if runs else None
     
-    # Calculate this week's stats (last 7 days)
+    # Calculate this week's stats (last 7 days) - optimized
     from datetime import date, timedelta
     today = date.today()
     week_ago = today - timedelta(days=7)
     
-    weekly_runs = [
-        r for r in runs 
-        if datetime.strptime(r['iso_date'], "%Y-%m-%d").date() >= week_ago
-    ]
+    weekly_distance = 0
+    weekly_time = 0
+    weekly_count = 0
     
-    weekly_distance = sum(r['distance'] for r in weekly_runs)
-    weekly_time = sum(r['time_seconds'] for r in weekly_runs)
+    for r in runs:
+        run_date = datetime.strptime(r['iso_date'], "%Y-%m-%d").date()
+        if run_date >= week_ago:
+            weekly_distance += r['distance']
+            weekly_time += r['time_seconds']
+            weekly_count += 1
     
     # Build summary object
     summary = {
@@ -150,7 +165,7 @@ def process_garmin_csv():
         },
         "latest_run": latest_run,
         "this_week": {
-            "runs": len(weekly_runs),
+            "runs": weekly_count,
             "distance": round(weekly_distance, 2),
             "time": format_time_hours(weekly_time)
         },

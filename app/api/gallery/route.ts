@@ -17,6 +17,10 @@ type GalleryEvent = {
   photos: GalleryPhoto[];
 };
 
+// Simple in-memory cache
+let cache: { data: { events: GalleryEvent[] }; timestamp: number } | null = null;
+const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
+
 function toTitleCaseFromFolder(folderName: string): string {
   // ex: "training-nov-2024" -> "Training Nov 2024"
   return folderName
@@ -28,6 +32,11 @@ function toTitleCaseFromFolder(folderName: string): string {
 
 export async function GET() {
   try {
+    // Check cache first
+    if (cache && Date.now() - cache.timestamp < CACHE_DURATION) {
+      return Response.json(cache.data, { status: 200 });
+    }
+
     const galleryRoot = path.join(process.cwd(), "public", "assets", "gallery");
 
     if (!fs.existsSync(galleryRoot)) {
@@ -74,7 +83,12 @@ export async function GET() {
     // opcional: ordenar eventos alfabeticamente ou por nome
     events.sort((a, b) => a.name.localeCompare(b.name));
 
-    return Response.json({ events }, { status: 200 });
+    const responseData = { events };
+    
+    // Update cache
+    cache = { data: responseData, timestamp: Date.now() };
+
+    return Response.json(responseData, { status: 200 });
   } catch (err) {
     console.error("❌ Erro ao ler galeria:", err);
     return Response.json(

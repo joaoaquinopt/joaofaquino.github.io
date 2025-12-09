@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { Calendar, Clock, Flame, Heart, Zap } from "lucide-react";
 import Reveal from "./Reveal";
 import styles from "./LatestRunCard.module.css";
@@ -17,7 +18,7 @@ interface LatestRunCardProps {
   };
 }
 
-export default function LatestRunCard({ data }: Readonly<LatestRunCardProps>) {
+function LatestRunCard({ data }: Readonly<LatestRunCardProps>) {
   const { t } = useTranslation();
 
   if (!data) {
@@ -106,3 +107,5 @@ export default function LatestRunCard({ data }: Readonly<LatestRunCardProps>) {
     </Reveal>
   );
 }
+
+export default memo(LatestRunCard);

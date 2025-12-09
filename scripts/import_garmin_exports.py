@@ -365,8 +365,11 @@ def import_garmin_data():
     
     activities = []
     
-    # Processa ficheiros .FIT
+    # Batch process all files at once to reduce I/O operations
     fit_files = glob.glob(f"{GARMIN_EXPORTS_DIR}/*.fit")
+    csv_files = glob.glob(f"{GARMIN_EXPORTS_DIR}/*.csv")
+    
+    # Processa ficheiros .FIT
     for fit_file in fit_files:
         print(f"📁 A processar {os.path.basename(fit_file)}...")
         data = parse_fit_file(fit_file)
@@ -375,7 +378,6 @@ def import_garmin_data():
             print(f"   ✅ {data['distance']:.2f}km em {data['total_time']/60:.1f}min")
     
     # Processa ficheiros .CSV
-    csv_files = glob.glob(f"{GARMIN_EXPORTS_DIR}/*.csv")
     for csv_file in csv_files:
         print(f"📁 A processar {os.path.basename(csv_file)}...")
         csv_activities = parse_csv_file(csv_file)

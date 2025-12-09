@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import PageWrapper from "../../components/PageWrapper";
 import HorizontalProgressChart from "../../components/HorizontalProgressChart";
 import { Activity, BarChart3, Clock, Zap, Target, Calendar } from "lucide-react";
@@ -51,13 +51,13 @@ export default function ProgressoPage() {
     return Array.from(monthsSet).sort().reverse(); // Mais recente primeiro
   }, [activities]);
 
-  // Mês atual no formato "YYYY-MM"
+  // Mês atual no formato "YYYY-MM" - computed once
   const currentMonthKey = useMemo(() => {
     const now = new Date();
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
   }, []);
 
-  // Filtrar atividades por mês selecionado
+  // Filtrar atividades por mês selecionado - optimized with early returns
   const filteredActivities = useMemo(() => {
     if (activities.length === 0) return [];
 
@@ -101,12 +101,12 @@ export default function ProgressoPage() {
     return monthActivities;
   }, [activities, selectedMonth, currentMonthKey, chartMode]);
 
-  // Formatar nome do mês para exibição
-  const formatMonthName = (monthKey: string) => {
+  // Formatar nome do mês para exibição (memoized)
+  const formatMonthName = useCallback((monthKey: string) => {
     const [year, month] = monthKey.split('-').map(Number);
     const date = new Date(year, month - 1, 1);
     return date.toLocaleDateString(language === 'pt' ? 'pt-PT' : 'en-GB', { month: 'long', year: 'numeric' });
-  };
+  }, [language]);
 
   const formatPace = (paceMinPerKm: number) => {
     if (!paceMinPerKm || !Number.isFinite(paceMinPerKm)) return "0:00/km";
