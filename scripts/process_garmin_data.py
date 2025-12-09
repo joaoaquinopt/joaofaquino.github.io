@@ -96,8 +96,14 @@ def process_garmin_csv():
             # Parse optional fields once
             avg_hr = row['Avg HR'] if row['Avg HR'] != '--' else None
             max_hr = row['Max HR'] if row['Max HR'] != '--' else None
-            calories = int(row['Calories']) if row['Calories'] else 0
-            elevation = int(row['Total Ascent']) if row['Total Ascent'] and row['Total Ascent'] != '--' else 0
+            try:
+                calories = int(row['Calories']) if row['Calories'] else 0
+            except (ValueError, TypeError):
+                calories = 0
+            try:
+                elevation = int(row['Total Ascent']) if row['Total Ascent'] and row['Total Ascent'] != '--' else 0
+            except (ValueError, TypeError):
+                elevation = 0
             
             # Add to runs list
             runs.append({

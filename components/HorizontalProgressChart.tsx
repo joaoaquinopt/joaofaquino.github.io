@@ -44,6 +44,7 @@ export default function HorizontalProgressChart({
   mode = "run",
 }: Readonly<HorizontalProgressChartProps>) {
   const scrollAreaRef = useRef<HTMLDivElement | null>(null);
+  const rafIdRef = useRef<number | null>(null);
   const [scrollState, setScrollState] = useState({ atStart: true, atEnd: false });
   const [scrollIndicator, setScrollIndicator] = useState({ width: 100, left: 0 });
   const barGapPx = 24;
@@ -135,19 +136,17 @@ export default function HorizontalProgressChart({
     }
   }, []);
 
-  // Throttle scroll updates to improve performance
-  const throttledUpdateScrollState = useCallback(() => {
-    let rafId: number | null = null;
-    
+  // Throttle scroll updates using RAF for better performance
+  const throttledUpdateScrollState = useMemo(() => {
     return () => {
-      if (rafId !== null) return;
+      if (rafIdRef.current !== null) return;
       
-      rafId = requestAnimationFrame(() => {
+      rafIdRef.current = requestAnimationFrame(() => {
         updateScrollState();
-        rafId = null;
+        rafIdRef.current = null;
       });
     };
-  }, [updateScrollState])();
+  }, [updateScrollState]);
 
   useEffect(() => {
     updateScrollState();
