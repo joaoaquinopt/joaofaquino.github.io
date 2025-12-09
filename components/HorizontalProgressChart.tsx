@@ -135,6 +135,20 @@ export default function HorizontalProgressChart({
     }
   }, []);
 
+  // Throttle scroll updates to improve performance
+  const throttledUpdateScrollState = useCallback(() => {
+    let rafId: number | null = null;
+    
+    return () => {
+      if (rafId !== null) return;
+      
+      rafId = requestAnimationFrame(() => {
+        updateScrollState();
+        rafId = null;
+      });
+    };
+  }, [updateScrollState])();
+
   useEffect(() => {
     updateScrollState();
 
@@ -144,14 +158,14 @@ export default function HorizontalProgressChart({
     }
 
     const handleResize = () => updateScrollState();
-    el.addEventListener("scroll", updateScrollState, { passive: true });
+    el.addEventListener("scroll", throttledUpdateScrollState, { passive: true });
     window.addEventListener("resize", handleResize);
 
     return () => {
-      el.removeEventListener("scroll", updateScrollState);
+      el.removeEventListener("scroll", throttledUpdateScrollState);
       window.removeEventListener("resize", handleResize);
     };
-  }, [chartData.length, updateScrollState]);
+  }, [chartData.length, updateScrollState, throttledUpdateScrollState]);
 
   useEffect(() => {
     const el = scrollAreaRef.current;

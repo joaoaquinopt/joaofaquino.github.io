@@ -77,6 +77,7 @@ export default function HomePage() {
     fetch("/data/garmin_summary.json")
       .then((res) => res.json())
       .then((data) => {
+        // Consolidate data sources
         const statsSource = data.stats ?? {};
         const latest =
           data.latest_run ??
@@ -84,40 +85,31 @@ export default function HomePage() {
           data.activities?.[0] ??
           null;
 
-        const rawTotalTime =
-          data.total_time_seconds ??
-          data.total_time ??
-          statsSource.total_time_seconds ??
-          statsSource.total_time ??
-          0;
-
-        const normalizePace = (value: unknown) => {
-          if (typeof value === "string") {
-            return value.includes("/") ? value : `${value}/km`;
-          }
-          return formatPace(Number(value ?? 0));
-        };
-
-        const thisWeekRaw = data.this_week ?? statsSource.this_week ?? null;
-
-        setGarminData({
+        // Single-pass normalization
+        const normalizedData: NormalizedGarminData = {
           stats: {
             total_runs: Number(data.total_runs ?? statsSource.total_runs ?? 0),
             total_distance: Number(data.total_distance ?? statsSource.total_distance ?? 0),
-            total_time: formatTotalTimeForStats(Number(rawTotalTime ?? 0)),
-            avg_pace: normalizePace(data.avg_pace ?? statsSource.avg_pace ?? 0),
-            avg_distance: Number(data.avg_distance ?? statsSource.avg_distance ?? 0) || undefined,
-            marathon_progress: Number(
-              data.marathon_progress ?? statsSource.marathon_progress ?? 0
+            total_time: formatTotalTimeForStats(
+              Number(data.total_time_seconds ?? data.total_time ?? statsSource.total_time_seconds ?? statsSource.total_time ?? 0)
             ),
+            avg_pace: (() => {
+              const paceValue = data.avg_pace ?? statsSource.avg_pace ?? 0;
+              if (typeof paceValue === "string") {
+                return paceValue.includes("/") ? paceValue : `${paceValue}/km`;
+              }
+              return formatPace(Number(paceValue));
+            })(),
+            avg_distance: Number(data.avg_distance ?? statsSource.avg_distance ?? 0) || undefined,
+            marathon_progress: Number(data.marathon_progress ?? statsSource.marathon_progress ?? 0),
           },
-          this_week: thisWeekRaw
+          this_week: data.this_week ?? statsSource.this_week
             ? {
-              runs: Number(thisWeekRaw.runs ?? 0),
-              distance: Number(thisWeekRaw.distance ?? 0),
-              time: typeof thisWeekRaw.time === "string"
-                ? thisWeekRaw.time
-                : formatTimeHours(Number(thisWeekRaw.time ?? 0)),
+              runs: Number((data.this_week ?? statsSource.this_week).runs ?? 0),
+              distance: Number((data.this_week ?? statsSource.this_week).distance ?? 0),
+              time: typeof (data.this_week ?? statsSource.this_week).time === "string"
+                ? (data.this_week ?? statsSource.this_week).time
+                : formatTimeHours(Number((data.this_week ?? statsSource.this_week).time ?? 0)),
             }
             : undefined,
           latest_run: latest
@@ -134,13 +126,13 @@ export default function HomePage() {
                   0
                 )
               ),
-              pace: normalizePace(
-                latest.pace ??
-                latest.avg_pace ??
-                latest.average_pace ??
-                latest.average_pace_min_per_km ??
-                0
-              ),
+              pace: (() => {
+                const paceValue = latest.pace ?? latest.avg_pace ?? latest.average_pace ?? latest.average_pace_min_per_km ?? 0;
+                if (typeof paceValue === "string") {
+                  return paceValue.includes("/") ? paceValue : `${paceValue}/km`;
+                }
+                return formatPace(Number(paceValue));
+              })(),
               calories: Number(latest.calories ?? latest.total_calories ?? 0) || undefined,
               avg_hr: Number(
                 latest.avg_hr ??
@@ -151,7 +143,9 @@ export default function HomePage() {
               ) || undefined,
             }
             : null,
-        });
+        };
+
+        setGarminData(normalizedData);
       })
       .catch((err) => console.error("Erro ao carregar dados do Garmin:", err));
   }, []);
@@ -160,70 +154,21 @@ export default function HomePage() {
   const latestRunForCard = useMemo(() => {
     if (!garminData?.latest_run) return null;
 
-    const r: any = garminData.latest_run;
+    const r = garminData.latest_run;
 
-    // Distância (aceita vários nomes)
-    const distanceKm =
-      Number(r.distance_km ?? r.distance ?? r.total_distance ?? 0) || 0;
-
-    // Tempo em segundos (tenta vários campos que o script possa ter criado)
-    const timeSeconds =
-      Number(
-        r.moving_time_seconds ??
-        r.moving_time ??
-        r.elapsed_time ??
-        r.duration_sec ??
-        r.duration ??
-        r.total_time_seconds ??
-        0
-      ) || 0;
-
-    // Pace (string pronto ou valor numérico)
-    let paceStr: string | undefined =
-      r.pace ??
-      r.avg_pace ??
-      r.average_pace ??
-      r.average_pace_min_per_km ??
-      undefined;
-
-    if (!paceStr && timeSeconds > 0 && distanceKm > 0) {
-      const minPerKm = (timeSeconds / 60) / distanceKm;
-      paceStr = formatPace(minPerKm);
-    }
-
-    const calories =
-      Number(
-        r.calories ??
-        r.kcal ??
-        r.total_calories ??
-        r.totalCalories ??
-        0
-      ) || 0;
-
-    const startTime =
-      r.start_time_local ??
-      r.start_time ??
-      r.start ??
-      r.date ??
-      r.activity_date ??
-      null;
-
-    // Devolvemos um objeto com TODOS os nomes mais comuns
+    // Data já está normalizada no useEffect
     return {
       ...r,
-      distance_km: distanceKm,
-      distance: distanceKm,
-      moving_time: timeSeconds,
-      elapsed_time: timeSeconds,
-      total_time_seconds: timeSeconds,
-      avg_pace: paceStr,
-      pace: paceStr,
-      calories,
-      start_time_local: startTime,
-      start_time: startTime,
-      date: startTime,
+      // Aliases para compatibilidade
+      distance_km: r.distance,
+      moving_time: r.time,
+      elapsed_time: r.time,
+      total_time_seconds: r.time,
+      avg_pace: r.pace,
+      start_time_local: r.date,
+      start_time: r.date,
     };
-  }, [garminData]);
+  }, [garminData?.latest_run]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-6 mt-8 md:mt-12 pb-20 space-y-12">
