@@ -6,6 +6,10 @@ const nextConfig = {
   },
   // Ensure proper compilation
   compress: true,
+  // Production optimizations
+  poweredByHeader: false,
+  // Optimize for performance
+  swcMinify: true,
 };
 
 export default nextConfig;

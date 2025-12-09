@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import {
   Activity,
   Calendar,
@@ -31,7 +32,7 @@ interface StatsOverviewProps {
 
 const DEFAULT_WEEKLY_GOAL_KM = 25;
 
-export default function StatsOverview({ stats, thisWeek }: StatsOverviewProps) {
+function StatsOverview({ stats, thisWeek }: StatsOverviewProps) {
   const { t, language } = useTranslation();
 
   const formatWeekRange = (start?: string, end?: string) => {
@@ -220,3 +221,5 @@ export default function StatsOverview({ stats, thisWeek }: StatsOverviewProps) {
     </div>
   );
 }
+
+export default memo(StatsOverview);
