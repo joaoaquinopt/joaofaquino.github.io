@@ -1,16 +1,16 @@
 {
-  "generated_at": "2025-12-11T17:14:24.480790",
+  "generated_at": "2025-12-11T18:24:09.603078+00:00",
   "stats": {
-    "total_runs": 23,
-    "total_distance": 122.8,
-    "total_time": "15:20:27",
-    "total_time_seconds": 55227,
-    "avg_pace": "7:30/km",
-    "avg_distance": 5.34,
-    "marathon_progress": 291.0
+    "total_runs": 18,
+    "total_distance": 135.56,
+    "total_time": "17:04:12",
+    "total_time_seconds": 61452,
+    "avg_pace": "7:33/km",
+    "avg_distance": 7.53,
+    "marathon_progress": 321.3
   },
   "latest_run": {
-    "date": "11/12/2025",
+    "date": "2025-12-11 08:46:49",
     "iso_date": "2025-12-11",
     "title": "Corrida",
     "distance": 7.41,
@@ -23,13 +23,13 @@
     "elevation_gain": 0
   },
   "this_week": {
-    "runs": 10,
-    "distance": 19.84,
-    "time": "02:15:02"
+    "runs": 2,
+    "distance": 12.43,
+    "time": "01:21:39"
   },
   "recent_runs": [
     {
-      "date": "11/12/2025",
+      "date": "2025-12-11 08:46:49",
       "iso_date": "2025-12-11",
       "title": "Corrida",
       "distance": 7.41,
@@ -42,243 +42,7 @@
       "elevation_gain": 0
     },
     {
-      "date": "11/12/2025",
-      "iso_date": "2025-12-11",
-      "title": "Corrida",
-      "distance": 6.0,
-      "time": "00:40:31",
-      "time_seconds": 2431,
-      "pace": "6:45/km",
-      "avg_hr": 131,
-      "max_hr": null,
-      "calories": 429,
-      "elevation_gain": 0
-    },
-    {
-      "date": "11/12/2025",
-      "iso_date": "2025-12-11",
-      "title": "Corrida",
-      "distance": 0.21,
-      "time": "00:05:08",
-      "time_seconds": 308,
-      "pace": "24:27/km",
-      "avg_hr": 125,
-      "max_hr": null,
-      "calories": 25,
-      "elevation_gain": 0
-    },
-    {
-      "date": "11/12/2025",
-      "iso_date": "2025-12-11",
-      "title": "Corrida",
-      "distance": 0.2,
-      "time": "00:01:33",
-      "time_seconds": 93,
-      "pace": "7:45/km",
-      "avg_hr": 152,
-      "max_hr": null,
-      "calories": 15,
-      "elevation_gain": 0
-    },
-    {
-      "date": "11/12/2025",
-      "iso_date": "2025-12-11",
-      "title": "Corrida",
-      "distance": 0.2,
-      "time": "00:01:29",
-      "time_seconds": 89,
-      "pace": "7:25/km",
-      "avg_hr": 141,
-      "max_hr": null,
-      "calories": 15,
-      "elevation_gain": 0
-    },
-    {
-      "date": "11/12/2025",
-      "iso_date": "2025-12-11",
-      "title": "Corrida",
-      "distance": 0.2,
-      "time": "00:01:28",
-      "time_seconds": 88,
-      "pace": "7:20/km",
-      "avg_hr": 141,
-      "max_hr": null,
-      "calories": 15,
-      "elevation_gain": 0
-    },
-    {
-      "date": "11/12/2025",
-      "iso_date": "2025-12-11",
-      "title": "Corrida",
-      "distance": 0.2,
-      "time": "00:01:07",
-      "time_seconds": 67,
-      "pace": "5:35/km",
-      "avg_hr": 140,
-      "max_hr": null,
-      "calories": 12,
-      "elevation_gain": 0
-    },
-    {
-      "date": "11/12/2025",
-      "iso_date": "2025-12-11",
-      "title": "Corrida",
-      "distance": 0.2,
-      "time": "00:01:04",
-      "time_seconds": 64,
-      "pace": "5:20/km",
-      "avg_hr": 144,
-      "max_hr": null,
-      "calories": 13,
-      "elevation_gain": 0
-    },
-    {
-      "date": "11/12/2025",
-      "iso_date": "2025-12-11",
-      "title": "Corrida",
-      "distance": 0.2,
-      "time": "00:01:03",
-      "time_seconds": 63,
-      "pace": "5:15/km",
-      "avg_hr": 142,
-      "max_hr": null,
-      "calories": 13,
-      "elevation_gain": 0
-    },
-    {
-      "date": "09/12/2025",
-      "iso_date": "2025-12-09",
-      "title": "Corrida",
-      "distance": 5.02,
-      "time": "00:28:16",
-      "time_seconds": 1696,
-      "pace": "5:38/km",
-      "avg_hr": 185,
-      "max_hr": null,
-      "calories": 388,
-      "elevation_gain": 0
-    }
-  ],
-  "activities": [
-    {
-      "date": "11/12/2025",
-      "iso_date": "2025-12-11",
-      "title": "Corrida",
-      "distance": 7.41,
-      "time": "00:53:23",
-      "time_seconds": 3203,
-      "pace": "7:12/km",
-      "avg_hr": 133,
-      "max_hr": null,
-      "calories": 539,
-      "elevation_gain": 0
-    },
-    {
-      "date": "11/12/2025",
-      "iso_date": "2025-12-11",
-      "title": "Corrida",
-      "distance": 6.0,
-      "time": "00:40:31",
-      "time_seconds": 2431,
-      "pace": "6:45/km",
-      "avg_hr": 131,
-      "max_hr": null,
-      "calories": 429,
-      "elevation_gain": 0
-    },
-    {
-      "date": "11/12/2025",
-      "iso_date": "2025-12-11",
-      "title": "Corrida",
-      "distance": 0.21,
-      "time": "00:05:08",
-      "time_seconds": 308,
-      "pace": "24:27/km",
-      "avg_hr": 125,
-      "max_hr": null,
-      "calories": 25,
-      "elevation_gain": 0
-    },
-    {
-      "date": "11/12/2025",
-      "iso_date": "2025-12-11",
-      "title": "Corrida",
-      "distance": 0.2,
-      "time": "00:01:33",
-      "time_seconds": 93,
-      "pace": "7:45/km",
-      "avg_hr": 152,
-      "max_hr": null,
-      "calories": 15,
-      "elevation_gain": 0
-    },
-    {
-      "date": "11/12/2025",
-      "iso_date": "2025-12-11",
-      "title": "Corrida",
-      "distance": 0.2,
-      "time": "00:01:29",
-      "time_seconds": 89,
-      "pace": "7:25/km",
-      "avg_hr": 141,
-      "max_hr": null,
-      "calories": 15,
-      "elevation_gain": 0
-    },
-    {
-      "date": "11/12/2025",
-      "iso_date": "2025-12-11",
-      "title": "Corrida",
-      "distance": 0.2,
-      "time": "00:01:28",
-      "time_seconds": 88,
-      "pace": "7:20/km",
-      "avg_hr": 141,
-      "max_hr": null,
-      "calories": 15,
-      "elevation_gain": 0
-    },
-    {
-      "date": "11/12/2025",
-      "iso_date": "2025-12-11",
-      "title": "Corrida",
-      "distance": 0.2,
-      "time": "00:01:07",
-      "time_seconds": 67,
-      "pace": "5:35/km",
-      "avg_hr": 140,
-      "max_hr": null,
-      "calories": 12,
-      "elevation_gain": 0
-    },
-    {
-      "date": "11/12/2025",
-      "iso_date": "2025-12-11",
-      "title": "Corrida",
-      "distance": 0.2,
-      "time": "00:01:04",
-      "time_seconds": 64,
-      "pace": "5:20/km",
-      "avg_hr": 144,
-      "max_hr": null,
-      "calories": 13,
-      "elevation_gain": 0
-    },
-    {
-      "date": "11/12/2025",
-      "iso_date": "2025-12-11",
-      "title": "Corrida",
-      "distance": 0.2,
-      "time": "00:01:03",
-      "time_seconds": 63,
-      "pace": "5:15/km",
-      "avg_hr": 142,
-      "max_hr": null,
-      "calories": 13,
-      "elevation_gain": 0
-    },
-    {
-      "date": "09/12/2025",
+      "date": "2025-12-09 13:32:24",
       "iso_date": "2025-12-09",
       "title": "Corrida",
       "distance": 5.02,
@@ -291,7 +55,7 @@
       "elevation_gain": 0
     },
     {
-      "date": "02/12/2025",
+      "date": "2025-12-02 07:18:54",
       "iso_date": "2025-12-02",
       "title": "Corrida",
       "distance": 6.52,
@@ -304,7 +68,7 @@
       "elevation_gain": 0
     },
     {
-      "date": "30/11/2025",
+      "date": "2025-11-30 12:47:33",
       "iso_date": "2025-11-30",
       "title": "Corrida",
       "distance": 10.04,
@@ -317,7 +81,7 @@
       "elevation_gain": 0
     },
     {
-      "date": "27/11/2025",
+      "date": "2025-11-27 08:17:39",
       "iso_date": "2025-11-27",
       "title": "Corrida",
       "distance": 7.9,
@@ -330,7 +94,7 @@
       "elevation_gain": 0
     },
     {
-      "date": "25/11/2025",
+      "date": "2025-11-25 07:18:53",
       "iso_date": "2025-11-25",
       "title": "Corrida",
       "distance": 6.25,
@@ -343,7 +107,7 @@
       "elevation_gain": 0
     },
     {
-      "date": "23/11/2025",
+      "date": "2025-11-23 08:17:58",
       "iso_date": "2025-11-23",
       "title": "Corrida",
       "distance": 8.1,
@@ -356,7 +120,7 @@
       "elevation_gain": 0
     },
     {
-      "date": "20/11/2025",
+      "date": "2025-11-20 08:16:47",
       "iso_date": "2025-11-20",
       "title": "Corrida",
       "distance": 5.49,
@@ -369,7 +133,7 @@
       "elevation_gain": 0
     },
     {
-      "date": "16/11/2025",
+      "date": "2025-11-16 17:50:34",
       "iso_date": "2025-11-16",
       "title": "Corrida",
       "distance": 11.12,
@@ -382,7 +146,139 @@
       "elevation_gain": 0
     },
     {
-      "date": "13/11/2025",
+      "date": "2025-11-13 07:08:59",
+      "iso_date": "2025-11-13",
+      "title": "Corrida",
+      "distance": 7.81,
+      "time": "01:00:09",
+      "time_seconds": 3609,
+      "pace": "7:42/km",
+      "avg_hr": 135,
+      "max_hr": null,
+      "calories": 587,
+      "elevation_gain": 0
+    }
+  ],
+  "activities": [
+    {
+      "date": "2025-12-11 08:46:49",
+      "iso_date": "2025-12-11",
+      "title": "Corrida",
+      "distance": 7.41,
+      "time": "00:53:23",
+      "time_seconds": 3203,
+      "pace": "7:12/km",
+      "avg_hr": 133,
+      "max_hr": null,
+      "calories": 539,
+      "elevation_gain": 0
+    },
+    {
+      "date": "2025-12-09 13:32:24",
+      "iso_date": "2025-12-09",
+      "title": "Corrida",
+      "distance": 5.02,
+      "time": "00:28:16",
+      "time_seconds": 1696,
+      "pace": "5:38/km",
+      "avg_hr": 185,
+      "max_hr": null,
+      "calories": 388,
+      "elevation_gain": 0
+    },
+    {
+      "date": "2025-12-02 07:18:54",
+      "iso_date": "2025-12-02",
+      "title": "Corrida",
+      "distance": 6.52,
+      "time": "00:53:28",
+      "time_seconds": 3208,
+      "pace": "8:12/km",
+      "avg_hr": 156,
+      "max_hr": null,
+      "calories": 528,
+      "elevation_gain": 0
+    },
+    {
+      "date": "2025-11-30 12:47:33",
+      "iso_date": "2025-11-30",
+      "title": "Corrida",
+      "distance": 10.04,
+      "time": "01:17:52",
+      "time_seconds": 4672,
+      "pace": "7:45/km",
+      "avg_hr": 155,
+      "max_hr": null,
+      "calories": 778,
+      "elevation_gain": 0
+    },
+    {
+      "date": "2025-11-27 08:17:39",
+      "iso_date": "2025-11-27",
+      "title": "Corrida",
+      "distance": 7.9,
+      "time": "00:59:03",
+      "time_seconds": 3543,
+      "pace": "7:28/km",
+      "avg_hr": 156,
+      "max_hr": null,
+      "calories": 620,
+      "elevation_gain": 0
+    },
+    {
+      "date": "2025-11-25 07:18:53",
+      "iso_date": "2025-11-25",
+      "title": "Corrida",
+      "distance": 6.25,
+      "time": "00:49:08",
+      "time_seconds": 2948,
+      "pace": "7:52/km",
+      "avg_hr": 138,
+      "max_hr": null,
+      "calories": 482,
+      "elevation_gain": 0
+    },
+    {
+      "date": "2025-11-23 08:17:58",
+      "iso_date": "2025-11-23",
+      "title": "Corrida",
+      "distance": 8.1,
+      "time": "01:03:46",
+      "time_seconds": 3826,
+      "pace": "7:52/km",
+      "avg_hr": 129,
+      "max_hr": null,
+      "calories": 613,
+      "elevation_gain": 0
+    },
+    {
+      "date": "2025-11-20 08:16:47",
+      "iso_date": "2025-11-20",
+      "title": "Corrida",
+      "distance": 5.49,
+      "time": "00:42:35",
+      "time_seconds": 2555,
+      "pace": "7:45/km",
+      "avg_hr": 148,
+      "max_hr": null,
+      "calories": 427,
+      "elevation_gain": 0
+    },
+    {
+      "date": "2025-11-16 17:50:34",
+      "iso_date": "2025-11-16",
+      "title": "Corrida",
+      "distance": 11.12,
+      "time": "01:29:06",
+      "time_seconds": 5346,
+      "pace": "8:01/km",
+      "avg_hr": 158,
+      "max_hr": null,
+      "calories": 891,
+      "elevation_gain": 0
+    },
+    {
+      "date": "2025-11-13 07:08:59",
       "iso_date": "2025-11-13",
       "title": "Corrida",
       "distance": 7.81,
@@ -395,7 +291,7 @@
       "elevation_gain": 0
     },
     {
-      "date": "11/11/2025",
+      "date": "2025-11-11 13:34:36",
       "iso_date": "2025-11-11",
       "title": "Corrida",
       "distance": 6.28,
@@ -408,7 +304,7 @@
       "elevation_gain": 0
     },
     {
-      "date": "09/11/2025",
+      "date": "2025-11-09 09:52:53",
       "iso_date": "2025-11-09",
       "title": "Corrida",
       "distance": 9.03,
@@ -421,7 +317,7 @@
       "elevation_gain": 0
     },
     {
-      "date": "06/11/2025",
+      "date": "2025-11-06 09:10:49",
       "iso_date": "2025-11-06",
       "title": "Corrida",
       "distance": 8.0,
@@ -434,7 +330,7 @@
       "elevation_gain": 0
     },
     {
-      "date": "04/11/2025",
+      "date": "2025-11-04 07:13:30",
       "iso_date": "2025-11-04",
       "title": "Corrida",
       "distance": 6.21,
@@ -447,7 +343,7 @@
       "elevation_gain": 0
     },
     {
-      "date": "02/11/2025",
+      "date": "2025-11-02 08:11:34",
       "iso_date": "2025-11-02",
       "title": "Corrida",
       "distance": 10.21,
@@ -458,8 +354,45 @@
       "max_hr": null,
       "calories": 868,
       "elevation_gain": 0
+    },
+    {
+      "date": "2025-10-30 07:44:37",
+      "iso_date": "2025-10-30",
+      "title": "Corrida",
+      "distance": 7.09,
+      "time": "00:55:00",
+      "time_seconds": 3300,
+      "pace": "7:45/km",
+      "avg_hr": 160,
+      "max_hr": null,
+      "calories": 606,
+      "elevation_gain": 0
+    },
+    {
+      "date": "2025-10-28 07:11:54",
+      "iso_date": "2025-10-28",
+      "title": "Corrida",
+      "distance": 5.01,
+      "time": "00:39:24",
+      "time_seconds": 2364,
+      "pace": "7:52/km",
+      "avg_hr": 143,
+      "max_hr": null,
+      "calories": 396,
+      "elevation_gain": 0
+    },
+    {
+      "date": "2025-10-26 09:05:43",
+      "iso_date": "2025-10-26",
+      "title": "Corrida",
+      "distance": 8.07,
+      "time": "01:02:44",
+      "time_seconds": 3764,
+      "pace": "7:46/km",
+      "avg_hr": 145,
+      "max_hr": null,
+      "calories": 627,
+      "elevation_gain": 0
     }
-  ],
-  "last_updated": "2025-12-11T17:14:24.480790",
-  "source": "Garmin Connect Export (Auto-update)"
+  ]
 }
