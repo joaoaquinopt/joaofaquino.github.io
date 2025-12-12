@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60">
-  <rect width="120" height="60" fill="#FF9900"/>
-  <text x="60" y="38" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#232F3E">amazon</text>
-  <!-- Smile arrow -->
-  <path d="M35 42 Q60 50 85 42" stroke="#232F3E" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <polygon points="83,40 88,44 83,44" fill="#232F3E"/>
-</svg>

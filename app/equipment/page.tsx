@@ -2,15 +2,16 @@
 
 import { useEffect, useState } from "react";
 import PageWrapper from "../../components/PageWrapper";
-import { useTranslation } from "../../components/TranslationProvider";
 import { ChevronDown, ExternalLink, X, Watch, Footprints, Shirt, Pill, Headphones } from "lucide-react";
 import Image from "next/image";
 import styles from "./equipment.module.css";
+import { useTranslation } from "../../components/TranslationProvider";
 
 // Tipos
 type ProductType = "affiliate" | "personal";
 type Category = "shoes" | "watch" | "clothing" | "supplements" | "accessories";
 type Region = "pt" | "br";
+type RecommendationGroup = "daily" | "performance" | "female" | "trail";
 
 interface Product {
   id: string;
@@ -25,14 +26,16 @@ interface Product {
   specs?: string[];
   status?: "main" | "backup" | "retired";
   region?: Region;
+  recommendationGroup?: RecommendationGroup;
 }
 
 interface Partner {
   id: string;
   name: string;
-  logo: string;
+  logo?: string;
   url: string;
   description: string;
+  region: Region;
 }
 
 const categoryLabels: Record<Category, string> = {
@@ -49,6 +52,49 @@ const categoryIcons: Record<Category, React.ComponentType<{ size?: number; class
   clothing: Shirt,
   supplements: Pill,
   accessories: Headphones,
+};
+
+const recommendationGroupsOrder: RecommendationGroup[] = [
+  "daily",
+  "performance",
+  "female",
+  "trail",
+];
+
+const recommendationGroupConfig: Record<
+  RecommendationGroup,
+  { icon: string; title: string; description: string }
+> = {
+  daily: {
+    icon: "🏃‍♂️",
+    title: "Treino Diário & Versáteis",
+    description: "Modelos equilibrados para cumprir quilometragem sem drama.",
+  },
+  performance: {
+    icon: "🏃‍♀️",
+    title: "Performance Leve / Ritmo",
+    description: "Opções rápidas para séries, ritmo e dias em que o relógio importa.",
+  },
+  female: {
+    icon: "👟",
+    title: "Modelos Específicos para Mulher",
+    description: "Calçado pensado para anatomia feminina e ajustes precisos.",
+  },
+  trail: {
+    icon: "🏞️",
+    title: "Trail & Off-Road",
+    description: "Ténis com grip e proteção para explorar estradões e trilhos.",
+  },
+};
+
+const regionGroupPlaceholders: Record<Region, string> = {
+  pt: "Sem sugestões nesta categoria com os filtros selecionados.",
+  br: "Vou atualizar esta categoria com parceiros brasileiros muito em breve.",
+};
+
+const partnerRegionEmptyMessages: Record<Region, string> = {
+  pt: "Ainda não há parceiros listados nesta categoria para Portugal.",
+  br: "Estou a fechar novas parcerias brasileiras — em breve atualizo!",
 };
 
 // Dados dos produtos
@@ -111,40 +157,167 @@ const products: Product[] = [
   },
   // AFILIADOS / RECOMENDADOS
   {
-    id: "nike-pegasus-41",
-    name: "Nike Pegasus 41",
+    id: "adidas-adizero-evo-sl",
+    name: "Adidas Adizero Evo SL",
+    brand: "Adidas",
+    category: "shoes",
+    type: "affiliate",
+    price: "€109,00",
+    link: "https://tidd.ly/4q4DfKC",
+    description: "Leve e responsivo, ótimo para treino rápido, ritmo moderado e sessões de intervalos.",
+    specs: ["Dinamismo e leveza", "Drop 6mm", "Peso 224g"],
+    image: "/assets/gear/adizero-evo-sl.jpg",
+    region: "pt",
+    recommendationGroup: "daily",
+  },
+  {
+    id: "adidas-adizero-boston-13",
+    name: "Adidas Adizero Boston 13",
+    brand: "Adidas",
+    category: "shoes",
+    type: "affiliate",
+    price: "€159,00",
+    link: "https://tidd.ly/4oUOUuK",
+    description: "Ótimo everyday trainer com bom retorno de energia e conforto.",
+    specs: ["LIGHTSTRIKE 2.0", "Drop 8mm", "Peso 260g"],
+    image: "/assets/gear/adizero-boston-13.jpg",
+    region: "pt",
+    recommendationGroup: "daily",
+  },
+  {
+    id: "nike-vomero-plus",
+    name: "Nike Vomero Plus",
     brand: "Nike",
     category: "shoes",
     type: "affiliate",
-    price: "€129,99",
-    link: "https://tidd.ly/4rCMmnn",
-    description: "Ténis versátil para treino diário",
-    specs: ["React Foam", "Drop 10mm", "Peso 280g"],
+    price: "€179,99",
+    link: "https://tidd.ly/4iSNeQM",
+    description: "Ótimo everyday trainer com bom retorno de energia e conforto.",
+    specs: ["LIGHTSTRIKE 2.0", "Drop 8mm", "Peso 260g"],
+    image: "/assets/gear/vomero-plus-mens.jpg",
     region: "pt",
+    recommendationGroup: "daily",
   },
   {
-    id: "garmin-255",
-    name: "Garmin Forerunner 255",
-    brand: "Garmin",
-    category: "watch",
+    id: "cloudswift-4",
+    name: "Cloudswift 4",
+    brand: "ON Running",
+    category: "shoes",
     type: "affiliate",
-    price: "€181,93",
-    link: "https://amzn.to/48jnk5d",
-    description: "Relógio GPS com ecrã AMOLED",
-    specs: ["GPS Multibanda", "Ecrã AMOLED", "Training Readiness", "HRV Status"],
+    price: "€152,19",
+    link: "https://tidd.ly/3YpzFiq",
+    description: "Confortável e estável, boa opção “all-round runner”.",
+    specs: ["Forward rolling", "Drop 6mm", "Peso 275g"],
+    image: "/assets/gear/cloudswift-4.jpg",
     region: "pt",
+    recommendationGroup: "daily",
   },
   {
-    id: "saucony-endorphin-speed-4",
-    name: "Saucony Endorphin Speed 4",
+    id: "new-balance-garoe-v2",
+    name: "New Balance Garoe V2",
+    brand: "New Balance",
+    category: "shoes",
+    type: "affiliate",
+    price: "€119,99",
+    link: "https://tidd.ly/3XMHoHf",
+    description: "Opção boa e acessível para correr confortável sem exagerar no preço.",
+    specs: ["Fresh Foam X", "Peso 304g"],
+    image: "/assets/gear/newbalancegaroev2.jpg",
+    region: "pt",
+    recommendationGroup: "performance",
+  },
+  {
+    id: "saucony-ride-18",
+    name: "Saucony Ride 18",
     brand: "Saucony",
     category: "shoes",
     type: "affiliate",
-    price: "€159,90",
-    link: "https://tidd.ly/4arhYX2",
-    description: "Ténis de treino com placa de nylon",
-    specs: ["PWRRUN PB", "Drop 8mm", "Peso 215g", "Placa Nylon"],
+    price: "€149,00",
+    link: "https://tidd.ly/3XQT4Zy",
+    description: "Clássico conforto Saucony com ótimo equilíbrio amortecimento ↔ retorno.",
+    specs: ["PWRRUN+", "Drop 8mm", "Peso 259g"],
+    image: "/assets/gear/sauconyride18.jpg",
     region: "pt",
+    recommendationGroup: "performance",
+  },
+  {
+    id: "altra-torin-8",
+    name: "Altra Torin 8",
+    brand: "Altra",
+    category: "shoes",
+    type: "affiliate",
+    price: "€160,99",
+    link: "https://tidd.ly/4pZxnlW",
+    description: "Drop zero e espaço para antepé, ideal para quem curte pisada natural.",
+    specs: ["Altra EGO MAX", "Drop 0mm", "Peso 288g"],
+    image: "/assets/gear/altratorin8.jpg",
+    region: "pt",
+    recommendationGroup: "performance",
+  },
+  {
+    id: "salomon-sense-ride-5",
+    name: "Salomon Sense Ride 5",
+    brand: "Salomon",
+    category: "shoes",
+    type: "affiliate",
+    price: "€139,99",
+    link: "https://tidd.ly/4f0Spy3",
+    description: "Grip agressivo e estabilidade para trilhos húmidos ou serras portuguesas.",
+    specs: ["All Terrain Contagrip", "Drop 8mm", "Peso 286g", "Quicklace"],
+    region: "pt",
+    recommendationGroup: "trail",
+  },
+  {
+    id: "olympikus-vortex-5",
+    name: "Olympikus Vortex 5",
+    brand: "Olympikus",
+    category: "shoes",
+    type: "affiliate",
+    price: "R$ 399,90",
+    link: "https://www.olympikus.com.br/tenis-de-corrida-olympikus-vortex-5",
+    description: "Tênis brasileiro acessível para treinos diários e rodagens na cidade.",
+    specs: ["Espuma Eleva", "Drop 10mm", "Peso 278g"],
+    region: "br",
+    recommendationGroup: "daily",
+  },
+  {
+    id: "mizuno-wave-rebellion-pro-2-br",
+    name: "Mizuno Wave Rebellion Pro 2",
+    brand: "Mizuno",
+    category: "shoes",
+    type: "affiliate",
+    price: "R$ 1.499,90",
+    link: "https://www.mizuno.com.br/wave-rebellion-pro-2",
+    description: "Opção agressiva para provas rápidas e treinos de ritmo no calor brasileiro.",
+    specs: ["Enerzy Lite+", "Placa de carbono", "Drop 4mm"],
+    region: "br",
+    recommendationGroup: "performance",
+  },
+  {
+    id: "fila-kr5-feminino",
+    name: "Fila KR5 Feminino",
+    brand: "Fila",
+    category: "shoes",
+    type: "affiliate",
+    price: "R$ 699,90",
+    link: "https://www.fila.com.br/kr5-feminino",
+    description: "Modelo leve pensado para corredoras que querem resposta rápida em provas de 5K a 21K.",
+    specs: ["Ennergize PRO", "Drop 6mm", "Peso 185g"],
+    region: "br",
+    recommendationGroup: "female",
+  },
+  {
+    id: "adidas-terrex-agravic-speed-br",
+    name: "adidas Terrex Agravic Speed",
+    brand: "adidas",
+    category: "shoes",
+    type: "affiliate",
+    price: "R$ 899,90",
+    link: "https://www.adidas.com.br/tenis-terrex-agravic-speed",
+    description: "Tração Continental e proteção leve para trilhos técnicos no Brasil.",
+    specs: ["Continental Rubber", "Drop 6mm", "Peso 255g"],
+    region: "br",
+    recommendationGroup: "trail",
   },
   {
     id: "maurten-gel-100",
@@ -154,9 +327,11 @@ const products: Product[] = [
     type: "affiliate",
     price: "€35 (pack 12)",
     link: "https://amzn.to/4rHV83O",
-    description: "Gel de hidrogel para corridas longas",
+    description: "Gel de hidrogel para corridas longas e treinos longões.",
     specs: ["25g carboidratos", "Sem sabor", "Fácil digestão"],
+    image: "/assets/gear/maurten-gel-100.jpg",
     region: "pt",
+    recommendationGroup: "performance",
   },
   {
     id: "coros-pod-2",
@@ -166,47 +341,70 @@ const products: Product[] = [
     type: "affiliate",
     price: "€89",
     link: "https://amzn.to/48vvI0f",
-    description: "Sensor de dinâmica de corrida",
+    description: "Sensor de dinâmica para analisar cadência, oscilação e forma.",
     specs: ["Cadência", "Oscilação vertical", "Tempo de contacto", "Bateria 28h"],
+    image: "/assets/gear/coros-pod-2.jpg",
     region: "pt",
+    recommendationGroup: "performance",
   },
 ];
 
 const partners: Partner[] = [
   {
-    id: "sportzone",
+    id: "sportzone-pt",
     name: "Sport Zone",
-    logo: "/assets/brand/partners/sportzone.svg",
+    logo: "/assets/brand/partners/sportzone-pt.png",
     url: "https://tidd.ly/3KdqaQ6",
     description: "Equipamento desportivo em Portugal",
+    region: "pt",
   },
   {
-    id: "decathlon",
-    name: "Decathlon",
-    logo: "/assets/brand/partners/decathlon.svg",
+    id: "decathlon-pt",
+    name: "Decathlon Portugal",
+    logo: "/assets/brand/partners/decathlon.png",
     url: "https://tidd.ly/48uK7tG",
     description: "Desporto acessível para todos",
+    region: "pt",
   },
   {
-    id: "adidas",
-    name: "Adidas",
-    logo: "/assets/brand/partners/adidas.svg",
-    url: "https://www.adidas.pt",
-    description: "Performance running gear",
-  },
-  {
-    id: "asics",
-    name: "ASICS",
-    logo: "/assets/brand/partners/asics.svg",
-    url: "https://www.asics.com/pt",
-    description: "Sound mind, sound body",
-  },
-  {
-    id: "amazon",
-    name: "Amazon",
-    logo: "/assets/brand/partners/amazon.svg",
+    id: "amazon-es",
+    name: "Amazon ES",
+    logo: "/assets/brand/partners/amazon.png",
     url: "https://amzn.to/4oCcFYq",
     description: "Suplementos e acessórios",
+    region: "pt",
+  },
+  {
+    id: "adidas-br",
+    name: "Adidas Brasil",
+    logo: "/assets/brand/partners/adidas.png",
+    url: "https://tidd.ly/4pytdl5",
+    description: "Performance running gear",
+    region: "br",
+  },
+  {
+    id: "netshoes",
+    name: "Netshoes Brasil",
+    logo: "/assets/brand/partners/netshoes.svg",
+    url: "https://www.netshoes.com.br/corrida",
+    description: "Marketplace brasileiro com curadoria forte de corrida.",
+    region: "br",
+  },
+  {
+    id: "mizuno-br",
+    name: "Mizuno Brasil",
+    logo: "/assets/brand/partners/mizuno-usa.png",
+    url: "https://www.mizuno.com.br",
+    description: "Tecnologia japonesa adaptada ao calor brasileiro.",
+    region: "br",
+  },
+  {
+    id: "nike-br",
+    name: "Nike Brasil",
+    logo: "/assets/brand/partners/nike (1).png",
+    url: "https://tidd.ly/4jd0RuF",
+    description: "Marca brasileira focada em running lifestyle premium.",
+    region: "br",
   },
 ];
 
@@ -259,11 +457,17 @@ export default function EquipmentPage() {
   const personalProducts = filteredProducts.filter(p => p.type === "personal");
   const affiliateProducts = filteredProducts.filter(p => p.type === "affiliate");
   const resolveRegion = (product: Product): Region => product.region ?? "pt";
+  const resolveRecommendationGroup = (product: Product): RecommendationGroup =>
+    product.recommendationGroup ?? "daily";
   const affiliateInventoryByRegion: Record<Region, Product[]> = { pt: [], br: [] };
   allAffiliateProducts.forEach((product) => {
     affiliateInventoryByRegion[resolveRegion(product)].push(product);
   });
   const regionOrder: Region[] = ["pt", "br"];
+  const partnersByRegion: Record<Region, Partner[]> = { pt: [], br: [] };
+  partners.forEach((partner) => {
+    partnersByRegion[partner.region].push(partner);
+  });
   const isAffiliateTypeVisible = selectedType === "all" || selectedType === "affiliate";
   const shouldRenderAffiliateSection =
     isAffiliateTypeVisible &&
@@ -494,13 +698,40 @@ export default function EquipmentPage() {
                           <span className={styles.regionLabel}>{label}</span>
                           <span className={styles.regionCount}>{countLabel}</span>
                         </div>
+                        {hasCatalog ? (
+                          <div className={styles.regionGroups}>
+                            {recommendationGroupsOrder.map((group) => {
+                              const groupMeta = recommendationGroupConfig[group];
+                              const groupProducts = regionProducts.filter(
+                                (product) => resolveRecommendationGroup(product) === group
+                              );
+                              const groupCount = groupProducts.length;
 
-                        {regionProducts.length > 0 ? (
-                          <div className={styles.productGrid}>
-                            {regionProducts.map(renderProductTile)}
+                              return (
+                                <div key={`${region}-${group}`} className={styles.regionGroup}>
+                                  <div className={styles.regionGroupHeader}>
+                                    <div className={styles.regionGroupMeta}>
+                                      <span className={styles.regionGroupIcon}>{groupMeta.icon}</span>
+                                      <div className={styles.regionGroupText}>
+                                        <p className={styles.regionGroupTitle}>{groupMeta.title}</p>
+                                        <p className={styles.regionGroupDescription}>{groupMeta.description}</p>
+                                      </div>
+                                    </div>
+                                    <span className={styles.regionGroupCount}>{formatItemCount(groupCount)}</span>
+                                  </div>
+                                  {groupCount > 0 ? (
+                                    <div className={styles.productGrid}>
+                                      {groupProducts.map(renderProductTile)}
+                                    </div>
+                                  ) : (
+                                    <div className={styles.regionEmpty}>
+                                      {regionGroupPlaceholders[region]}
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
                           </div>
-                        ) : hasCatalog ? (
-                          <div className={styles.regionEmpty}>{t("equipment.affiliates.noMatches")}</div>
                         ) : (
                           <div className={styles.regionEmpty}>{t("equipment.affiliates.emptyRegion")}</div>
                         )}
@@ -528,35 +759,66 @@ export default function EquipmentPage() {
               </div>
               <p className={styles.sectionSubtitle}>{t("equipment.partners.subtitle")}</p>
 
-              <div className={styles.partnersGrid}>
-                {partners.map((partner) => (
-                  <a
-                    key={partner.id}
-                    href={partner.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.partnerCard}
-                  >
-                    <div className={styles.partnerLogo}>
-                      <Image
-                        src={partner.logo}
-                        alt={partner.name}
-                        width={100}
-                        height={50}
-                        style={{ objectFit: "contain" }}
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = "none";
-                        }}
-                      />
+              <div className={styles.affiliatesWrapper}>
+                {regionOrder.map((region) => {
+                  const regionLabel =
+                    region === "pt"
+                      ? t("equipment.affiliates.region.pt")
+                      : t("equipment.affiliates.region.br");
+                  const regionPartners = partnersByRegion[region];
+
+                  return (
+                    <div key={`partners-${region}`} className={styles.regionBlock}>
+                      <div className={styles.regionHeader}>
+                        <span className={styles.regionLabel}>{regionLabel}</span>
+                        <span className={styles.regionCount}>
+                          {formatItemCount(regionPartners.length)}
+                        </span>
+                      </div>
+
+                      {regionPartners.length > 0 ? (
+                        <div className={styles.partnersGrid}>
+                          {regionPartners.map((partner) => (
+                            <a
+                              key={partner.id}
+                              href={partner.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={styles.partnerCard}
+                            >
+                              {partner.logo ? (
+                                <div className={styles.partnerLogo}>
+                                  <Image
+                                    src={partner.logo}
+                                    alt={partner.name}
+                                    width={100}
+                                    height={50}
+                                    style={{ objectFit: "contain" }}
+                                    onError={(e) => {
+                                      const target = e.target as HTMLImageElement;
+                                      target.style.display = "none";
+                                    }}
+                                  />
+                                </div>
+                              ) : (
+                                <div className={styles.partnerLogoFallback}>
+                                  <span>{partner.name.slice(0, 2).toUpperCase()}</span>
+                                </div>
+                              )}
+                              <div className={styles.partnerInfo}>
+                                <h3 className={styles.partnerName}>{partner.name}</h3>
+                                <p className={styles.partnerDescription}>{partner.description}</p>
+                              </div>
+                              <ExternalLink className={styles.partnerArrow} size={18} />
+                            </a>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className={styles.regionEmpty}>{partnerRegionEmptyMessages[region]}</div>
+                      )}
                     </div>
-                    <div className={styles.partnerInfo}>
-                      <h3 className={styles.partnerName}>{partner.name}</h3>
-                      <p className={styles.partnerDescription}>{partner.description}</p>
-                    </div>
-                    <ExternalLink className={styles.partnerArrow} size={18} />
-                  </a>
-                ))}
+                  );
+                })}
               </div>
 
               <div className={styles.disclaimer}>

@@ -729,6 +729,75 @@
   gap: 1rem;
 }
 
+.regionGroups {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.regionGroup {
+  border: 1px solid rgba(88, 166, 255, 0.18);
+  border-radius: 16px;
+  padding: 1.25rem;
+  background: rgba(30, 77, 139, 0.08);
+  backdrop-filter: blur(6px);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.regionGroup:hover {
+  border-color: rgba(88, 166, 255, 0.32);
+  transform: translateY(-2px);
+}
+
+.regionGroupHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.regionGroupMeta {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.regionGroupIcon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.regionGroupText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.regionGroupTitle {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #f5f5f5;
+}
+
+.regionGroupDescription {
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(245, 245, 245, 0.65);
+}
+
+.regionGroupCount {
+  font-size: 0.8rem;
+  color: rgba(245, 245, 245, 0.85);
+  background: rgba(88, 166, 255, 0.1);
+  border: 1px solid rgba(88, 166, 255, 0.2);
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  white-space: nowrap;
+}
+
 .regionHeader {
   display: flex;
   align-items: center;
@@ -805,6 +874,21 @@
   background: rgba(255, 255, 255, 0.95);
   border-radius: 8px;
   padding: 0.375rem;
+}
+
+.partnerLogoFallback {
+  width: 70px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(88, 166, 255, 0.15);
+  border: 1px dashed rgba(88, 166, 255, 0.4);
+  border-radius: 8px;
+  font-weight: 600;
+  color: #58A6FF;
+  letter-spacing: 0.5px;
 }
 
 .partnerInfo {
